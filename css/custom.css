@@ -1,0 +1,13 @@
+.bookmenu {
+    border:1px solid darkgray;
+    width: 180px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.editor {
+    border:1px solid darkgray;
+    width: 600px;
+    display: inline-block;
+    vertical-align: top;
+}
