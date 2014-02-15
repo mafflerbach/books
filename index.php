@@ -35,3 +35,25 @@
 
 </body>
 </html>
+
+
+<?php
+require_once('MySQLAdapter.php');
+require_once('MySQLAdapterException.php');
+require_once('DomainObjectAbstract.php');
+require_once('DomainObjectException.php');
+require_once('Book.php');
+
+
+$db = MySQLAdapter::getInstance(array('localhost', 'root', '', 'books'));
+$db->query('SELECT * FROM book');
+
+
+$b = new Book();
+$b->titel = 'mee';
+
+
+while ($book = $db->fetch()) {
+    echo 'titel: ' . $book->titel. ' id: ' . $book->id. '<br />';
+}
+

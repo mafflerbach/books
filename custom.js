@@ -30,29 +30,26 @@ $(document).ready(function () {
         dnd:true,
         onBeforeDrop : function(target, source, point) {
 
-            if ($(target).attr('data-book') == 'undefined' && point == 'append' ||
-                $(target).attr('data-book') != 'undefined' && point == 'top') {
+            if (($(target).attr('data-book') == 'undefined' && point == 'append') ||
+                ($(target).attr('data-book') != 'undefined' && point == 'top') ||
+                ($(target).attr('data-book') != 'undefined' && point == 'bottom')) {
                 return false
             }
 
-            if($(target).attr('data-book') != 'undefined' && source.book != 'undefined') {
+            if($(target).attr('data-book') != 'undefined' && source.book != undefined) {
                 return false;
             }
-
         },
         onDrop : function (target,source,point) {
             var node = $('#tt').tree('find', source.id);
             var parentNode = $('#tt').tree('getParent', node.target);
 
-            if ($(target).attr('data-book')) {
-                var list = $(target).parent().find('div[data-chapter]')
-                list.each(function (index, val) {
-                    //console.log($(val).attr('data-chapter'));
-                })
-            } else if (parentNode != null) {
+            console.log(parentNode);
+
+            if (parentNode != null) {
                 var list = $('div#'+parentNode.domId).parent().find('div[data-chapter]')
                 list.each(function (index, val) {
-                    //console.log($(val).attr('data-chapter'));
+                    console.log($(val).attr('data-chapter'));
                 })
             }
         },
