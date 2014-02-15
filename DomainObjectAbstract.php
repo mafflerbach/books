@@ -2,7 +2,7 @@
 abstract class DomainObjectAbstract {
 
     protected $_data = array();
-    protected $_tabelName = '';
+    public $tableName = '';
 
     public function __construct(array $data = NULL) {
         if ($data !== NULL) {

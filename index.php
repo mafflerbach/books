@@ -42,18 +42,24 @@ require_once('MySQLAdapter.php');
 require_once('MySQLAdapterException.php');
 require_once('DomainObjectAbstract.php');
 require_once('DomainObjectException.php');
+require_once('Command.php');
+require_once('CommandChain.php');
+require_once('BookCommand.php');
+require_once('ChapterCommand.php');
 require_once('Book.php');
 
 
 $db = MySQLAdapter::getInstance(array('localhost', 'root', '', 'books'));
 $db->query('SELECT * FROM book');
 
-
-$b = new Book();
-$b->titel = 'mee';
-
-
 while ($book = $db->fetch()) {
     echo 'titel: ' . $book->titel. ' id: ' . $book->id. '<br />';
 }
 
+
+$b = new Book();
+$b->id = 3;
+
+$c = new CommandChain();
+$c->addCommand(new BookCommand());
+$c->runCommand('delete', $b);

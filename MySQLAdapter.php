@@ -1,4 +1,6 @@
 <?php
+// TODO Change to PDO implementation
+
 class MySQLAdapter {
 
     private $_config = array();
@@ -77,9 +79,6 @@ class MySQLAdapter {
         is_resource($this->_link) AND mysqli_close($this->_link);
     }
 
-    public function insert(DomainObjectAbstract $object) {
-
-    }
 
 }
 
