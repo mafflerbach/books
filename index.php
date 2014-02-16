@@ -22,15 +22,18 @@
 </div>
 
 <div id="mm" class="easyui-menu" style="width:120px;">
-  <div onclick="append()" data-options="iconCls:'icon-add'">Append</div>
-  <div onclick="removeit()" data-options="iconCls:'icon-remove'">Remove</div>
-  <div onclick="rename()" data-options="iconCls:'icon-edit'">rename</div>
+  <div onclick="EditorAction.append()" data-options="iconCls:'icon-add'">Append</div>
+  <div onclick="EditorAction.removeit()" data-options="iconCls:'icon-remove'">Remove</div>
+  <div onclick="EditorAction.rename()" data-options="iconCls:'icon-edit'">rename</div>
   <div class="menu-sep"></div>
-  <div onclick="expand()">Expand</div>
-  <div onclick="collapse()">Collapse</div>
+  <div onclick="EditorAction.expand()">Expand</div>
+  <div onclick="EditorAction.collapse()">Collapse</div>
 </div>
 
-<script src="custom.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/tree.js"></script>
+
+<script src="js/custom.js"></script>
 
 </body>
 </html>

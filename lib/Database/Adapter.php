@@ -1,5 +1,4 @@
 <?php
-// TODO Change to PDO implementation
 
 namespace Database;
 
@@ -55,7 +54,6 @@ class Adapter {
   public function query($query, $param = null) {
     if (is_string($query) and !empty($query)) {
       $this->connect();
-
       $this->_stm = $this->_link->prepare($query);
 
       if ($param) {
@@ -64,6 +62,11 @@ class Adapter {
         }
       }
     }
+  }
+
+  public function execute () {
+    print_r($this->_stm);
+    $this->_stm->execute();
   }
 
 

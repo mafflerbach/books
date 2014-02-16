@@ -12,11 +12,15 @@ class Command implements
           $this->delete($args);
         break;
       case 'getBook' :
-          return $this->getBook($args);
+        return $this->getBook($args);
+        break;
+      case 'getChapter' :
+        return $this->getChapter($args);
         break;
       default:
           print('unknown command');
         break;
+
     }
   }
 
@@ -41,8 +45,21 @@ class Command implements
     $db->query('delete from chapter where bookid = ' . $args->id . '');
   }
 
-  private function getBook() {
+  private function getChapter($args) {
+    $db = \Database\Adapter::getInstance(array('localhost',
+                                               'root',
+                                               '',
+                                               'books'
+                                         ));
 
+
+    $db->query('select * from chapter where bookId = :bookid and id = :id' , $args);
+    $result = $db->fetch();
+    return json_encode($result[0]);
+
+  }
+
+  private function getBook() {
     $db = \Database\Adapter::getInstance(array('localhost',
                                                'root',
                                                '',
@@ -51,9 +68,7 @@ class Command implements
     );
     $db->query('select * from book');
     $books = $db->fetch();
-
     $treeArray = array();
-
 
     foreach ($books as $book) {
       $db->query('select * from chapter where bookid = :id order by sort', array(':id' => $book['id']));

@@ -94,7 +94,7 @@
 			'placeholder'	: false,
 			'br'			: true,
 			'p'				: true,
-			'save'				: true,
+			'save'		    : true,
 
 			// events
 			'change'		: "",
@@ -106,7 +106,8 @@
 		$.fn.jqteVal = function(value){
 			$(this).closest("."+vars.css).find("."+vars.css+"_editor").html(value);
 		}
-		
+
+
 		// browser information is received
 		var thisBrowser = navigator.userAgent.toLowerCase();
 		
@@ -145,7 +146,7 @@
 		addParams('remove','removeformat','.','',false); // remove all styles --> ctrl + delete
 		addParams('rule','inserthorizontalrule','H',["hr"],false); // insertion horizontal rule --> ctrl + H
 		addParams('source','displaysource','','',false); // feature of displaying source
-		addParams('save','save','','',false); // feature of displaying source
+		addParams('save','save','save', 'save' ,false); // feature of displaying source
 
 		return this.each(function(){
 			if(!$(this).data("jqte") || $(this).data("jqte")==null || $(this).data("jqte")=="undefined")
@@ -1070,10 +1071,6 @@
 			toolbutton
 				.unbind("click")
 				.click(function(e){
-                    if ($(this).data('command')=='save') {
-                        console.log(editor.html());
-
-                    }
 					// if source button is clicked
 					if($(this).data('command')=='displaysource' && !toolbar.data("sourceOpened"))
 					{

@@ -1,8 +1,10 @@
 <?php
 namespace Chapter;
 
+use Domain;
+
 class Object extends
-  DomainObjectAbstract {
+  Domain\Object {
   protected $_data = array('id' => NULL,
                            'titel' => '',
                            'content' => '',
