@@ -19,6 +19,9 @@ class Command implements
       case 'addChapter':
         $this->addChapter($args);
         break;
+      case 'removeChapter':
+        $this->removeChapter($args);
+        break;
       default:
         print('unknown command');
         break;
@@ -44,7 +47,15 @@ class Command implements
                        )
     );
 
-    print_r($args);
+    $this->db()->execute();
+  }
+
+  private function removeChapter($args) {
+
+    $this->db()->query('delete from chapter where id = :id',
+                       array(':id' => $args->id
+                       )
+    );
 
     $this->db()->execute();
   }

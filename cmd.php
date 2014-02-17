@@ -48,7 +48,15 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'addChapter') {
   $c->runCommand('addChapter', $chapter);
 
 }
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'removeChapter') {
+  $c = new Command\Chain();
+  $c->addCommand(new Chapter\Command());
 
+  $chapter = new \Chapter\Object();
+  $chapter->id = $_POST['id'];
+
+  $c->runCommand('removeChapter', $chapter);
+}
 
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveChapter') {

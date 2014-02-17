@@ -94,8 +94,6 @@ var EditorAction =
                                     ]
                                 });
 
-                                console.log(node);
-
                                 $.ajax({
                                     url: "cmd.php",
                                     type: "POST",
@@ -210,7 +208,18 @@ var EditorAction =
                         if ($('#chapterName').val() != "") {
                             $('#tt').tree('remove', node.target);
                             dialog.dialog('close');
-                            console.log(node);
+                            $.ajax({
+                                url: "cmd.php",
+                                type: "POST",
+                                data: {
+                                    id: node.id,
+                                    cmd: 'removeChapter'
+                                },
+                                dataType: "json"
+                            }).done(function (data) {
+                                });
+
+
                             $('#dd').remove();
                         }
                     }
