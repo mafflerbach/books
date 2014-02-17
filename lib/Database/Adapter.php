@@ -7,6 +7,7 @@ use Database\Adapter\Exception;
 class Adapter {
 
   private $_config = array();
+  private static $db = NULL;
   private static $_instance = NULL;
   private static $_connected = FALSE;
   /**
@@ -20,13 +21,23 @@ class Adapter {
   private $_result = NULL;
 
 
-  public static function getInstance(array $config = array()) {
+  public static function getInstance() {
     if (self::$_instance === NULL) {
-      self::$_instance = new self($config);
+      self::$db = self::config();
+      self::$_instance = new self(self::$db);
     }
     return self::$_instance;
   }
 
+  public static function config(\Config $config = null) {
+    if ($config != null) {
+      self::$db = $config->getConfig('database');
+    } else {
+      $conf = new \Config();
+      self::$db = $conf->getConfig('database');
+    }
+    return self::$db;
+  }
 
   private function __construct(array $config) {
 
@@ -42,8 +53,8 @@ class Adapter {
 
   private function connect() {
     if (self::$_connected === FALSE) {
-      list($host, $user, $password, $database) = $this->_config;
-      if ((!$this->_link = new \PDO('mysql:host=' . $host . ';charset=UTF8;dbname=' . $database, $user, $password))) {
+
+      if ((!$this->_link = new \PDO('mysql:host=' . self::$db['host'] . ';charset=UTF8;dbname=' . self::$db['database'], self::$db['user'], self::$db['password']))) {
         throw new Exception('Error connecting to MySQL');
       }
       self::$_connected = TRUE;
@@ -64,7 +75,7 @@ class Adapter {
     }
   }
 
-  public function execute () {
+  public function execute() {
     $this->_stm->execute();
   }
 

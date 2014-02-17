@@ -13,8 +13,43 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'getChapter') {
   $c = new Command\Chain();
   $c->addCommand(new Book\Command());
 
-  print($c->runCommand('getChapter', array(':id'=>$_POST['chapterId'], ':bookid' => $_POST['bookId'])));
+  print($c->runCommand('getChapter', array(':id' => $_POST['chapterId'],
+                                           ':bookid' => $_POST['bookId']
+                                     )
+  ));
 }
+
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'rename') {
+  $c = new Command\Chain();
+
+  if ($_POST['type'] == 'chapter') {
+    $c->addCommand(new Chapter\Command());
+  }
+
+  if ($_POST['type'] == 'book') {
+    $c->addCommand(new Book\Command());
+  }
+
+  $c->runCommand('rename', array(':id' => $_POST['id'],
+                                 ':title' => $_POST['text']
+                           )
+  );
+}
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'addChapter') {
+  $c = new Command\Chain();
+  $c->addCommand(new Chapter\Command());
+
+  $chapter = new \Chapter\Object();
+  $chapter->bookid = $_POST['id'];
+  $chapter->title = $_POST['text'];
+
+  $c->runCommand('addChapter', $chapter);
+
+}
+
+
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveChapter') {
   $c = new Command\Chain();

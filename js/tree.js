@@ -38,21 +38,24 @@ function initTree() {
         onSelect: function (node) {
 
             var parentNode = $('#tt').tree('getParent', node.target);
-            var chapterId = node.chapter;
-            var bookId = parentNode.book;
+            if (parentNode != null) {
+                var chapterId = node.chapter;
+                var bookId = parentNode.book;
 
-            $.ajax({
-                url: "cmd.php",
-                type: "POST",
-                data: { bookId: bookId,
-                    chapterId : chapterId,
-                    cmd: 'getChapter'
-                },
-                dataType: "json"
-            }).done(function (data) {
-                    $("textarea").jqteVal(data.content);
-                    console.log(data)
-                });
+                $.ajax({
+                    url: "cmd.php",
+                    type: "POST",
+                    data: { bookId: bookId,
+                        chapterId: chapterId,
+                        cmd: 'getChapter'
+                    },
+                    dataType: "json"
+                }).done(function (data) {
+                        $("textarea").jqteVal(data.content);
+                        console.log(data)
+                    });
+            }
+
         }
 
     });
@@ -80,9 +83,9 @@ var EditorAction =
                         handler: function () {
                             if ($('#chapterName').val() != "") {
 
-                                var selected = $('#tt').tree('getSelected');
+                                var node = $('#tt').tree('getSelected');
                                 $('#tt').tree('append', {
-                                    parent: selected.target,
+                                    parent: node.target,
                                     data: [
                                         {
                                             id: 23,
@@ -90,6 +93,21 @@ var EditorAction =
                                         }
                                     ]
                                 });
+
+                                console.log(node);
+
+                                $.ajax({
+                                    url: "cmd.php",
+                                    type: "POST",
+                                    data: {
+                                        id: node.id,
+                                        cmd: 'addChapter',
+                                        text: $('#chapterName').val()
+                                    },
+                                    dataType: "json"
+                                }).done(function (data) {
+                                    });
+
                                 dialog.dialog('close');
                                 $('#dd').remove();
                             }
@@ -113,7 +131,7 @@ var EditorAction =
 
     rename: function () {
         var node = $('#tt').tree('getSelected');
-        var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="chapterName" value="" type="text"/></div>';
+        var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="rename" value="" type="text"/></div>';
 
         $('body').append(content);
 
@@ -128,14 +146,35 @@ var EditorAction =
                     text: 'Ok',
                     iconCls: 'icon-ok',
                     handler: function () {
-                        if ($('#chapterName').val() != "") {
+                        if ($('#rename').val() != "") {
                             dialog.dialog('close');
-                            var me = $('#tt').tree('update', {
+                            $('#tt').tree('update', {
                                 target: node.target,
-                                text: $('#chapterName').val()
+                                text: $('#rename').val()
                             });
 
                             console.log(node);
+
+                            var type = '';
+                            if (node.book != undefined) {
+                                type = 'book';
+                            } else {
+                                type = 'chapter';
+                            }
+
+                            $.ajax({
+                                url: "cmd.php",
+                                type: "POST",
+                                data: {
+                                    id: node.id,
+                                    cmd: 'rename',
+                                    type: type,
+                                    text: $('#rename').val()
+                                },
+                                dataType: "json"
+                            }).done(function (data) {
+                                });
+
 
                             $('#dd').remove();
                         }

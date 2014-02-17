@@ -6,7 +6,7 @@ use Domain;
 class Object extends
   Domain\Object {
   protected $_data = array('id' => NULL,
-                           'titel' => '',
+                           'title' => '',
                            'content' => '',
                            'sort' => '',
                            'bookid' => ''

@@ -3,13 +3,16 @@ namespace Book;
 
 class Command implements
   \Command {
+
+  private $db;
+
   public function onCommand($name, $args) {
     switch ($name) {
       case 'create':
-          $this->create($args);
+        $this->create($args);
         break;
       case 'delete' :
-          $this->delete($args);
+        $this->delete($args);
         break;
       case 'getBook' :
         return $this->getBook($args);
@@ -17,64 +20,48 @@ class Command implements
       case 'getChapter' :
         return $this->getChapter($args);
         break;
+      case 'rename' :
+        return $this->rename($args);
+        break;
       default:
-          print('unknown command');
+        print('unknown command');
         break;
 
     }
   }
 
   private function create(DomainObjectAbstract $args) {
-    $db = \Database\Adapter::getInstance(array('localhost',
-                                          'root',
-                                          'root',
-                                          'books'
-                                    )
-    );
-    $db->query('insert into ' . $args->tableName . ' (titel)values("' . $args->titel . '")');
+    $this->db()->query('insert into ' . $args->tableName . ' (titel)values("' . $args->titel . '")');
   }
 
   private function delete(DomainObjectAbstract $args) {
-    $db = \Database\Adapter::getInstance(array('localhost',
-                                          'root',
-                  'root',
-                                          'books'
-                                    )
-    );
-    $db->query('delete from ' . $args->tableName . ' where id = ' . $args->id . '');
-    $db->query('delete from chapter where bookid = ' . $args->id . '');
+    $this->db()->query('delete from ' . $args->tableName . ' where id = ' . $args->id . '');
+    $this->db()->query('delete from chapter where bookid = ' . $args->id . '');
   }
 
   private function getChapter($args) {
-    $db = \Database\Adapter::getInstance(array('localhost',
-                                               'root',
-      'root',
-                                               'books'
-                                         ));
 
-
-    $db->query('select * from chapter where bookId = :bookid and id = :id' , $args);
-    $result = $db->fetch();
+    $this->db()->query('select * from chapter where bookId = :bookid and id = :id', $args);
+    $result = $this->db()->fetch();
     $json = json_encode($result[0]);
 
     return $json;
+  }
 
+  private function rename($args) {
+
+    $this->db()->query('update book set title = :title where id = :id', $args);
+    $this->db()->execute();
   }
 
   private function getBook() {
-    $db = \Database\Adapter::getInstance(array('localhost',
-                                               'root',
-        'root',
-                                               'books'
-                                         )
-    );
-    $db->query('select * from book');
-    $books = $db->fetch();
+    $this->db()->query('select * from book');
+    $books = $this->db()->fetch();
     $treeArray = array();
 
     foreach ($books as $book) {
-      $db->query('select * from chapter where bookId = :id order by sort', array(':id' => $book['id']));
-      $chapters= $db->fetch();
+      $this->db()->query('select * from chapter where bookId = :id order by sort', array(':id' => $book['id']));
+      $chapters = $this->db()->fetch();
 
       $bookTmp = array(
         'id' => $book['id'],
@@ -93,6 +80,15 @@ class Command implements
     }
 
     return json_encode($treeArray);
+  }
+
+  public function db(\Database\Adapter $instance = null) {
+    if ($instance != null) {
+      $this->db = $instance;
+    } else {
+      $this->db = \Database\Adapter::getInstance();
+    }
+    return $this->db;
   }
 
 }

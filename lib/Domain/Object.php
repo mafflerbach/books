@@ -1,6 +1,8 @@
 <?php
 
 namespace Domain;
+use Domain\Object\Exception;
+
 abstract class Object {
 
   protected $_data = array();
@@ -19,11 +21,11 @@ abstract class Object {
   public function __set($property, $value) {
 
     if (!array_key_exists($property, $this->_data)) {
-      throw new ModelObjectException('The specified property is not valid for this domain object.');
+      throw new Exception('The specified property is not valid for this domain object.');
     }
 
     if (strtolower($property) === 'id' AND $this->_data['id'] !== NULL) {
-      throw new DomainObjectException('ID for this domain object is immutable.');
+      throw new Exception('ID for this domain object is immutable.');
     }
 
     $this->_data[$property] = $value;
@@ -33,7 +35,7 @@ abstract class Object {
   public function __get($property) {
 
     if (!array_key_exists($property, $this->_data)) {
-      throw new DomainObjectException('The property requested is not valid for this domain object.');
+      throw new Exception('The property requested is not valid for this domain object.');
     }
 
     return $this->_data[$property];
