@@ -19,7 +19,7 @@ class Command implements
   private function saveChapter($args) {
     $db = \Database\Adapter::getInstance(array('localhost',
                                                'root',
-                                               '',
+        'root',
                                                'books'
                                          )
     );
@@ -30,6 +30,7 @@ class Command implements
                      ':content' => $args->content
                )
     );
+
     $db->execute();
 
   }

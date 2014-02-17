@@ -1,6 +1,7 @@
 <?php
 
 require_once('autoload.php');
+header('Content-Type: text/html; charset=utf-8');
 
 if (isset($_GET['cmd']) && $_GET['cmd'] == 'getTree') {
   $c = new Command\Chain();

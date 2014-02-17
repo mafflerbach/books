@@ -43,7 +43,7 @@ class Adapter {
   private function connect() {
     if (self::$_connected === FALSE) {
       list($host, $user, $password, $database) = $this->_config;
-      if ((!$this->_link = new \PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password))) {
+      if ((!$this->_link = new \PDO('mysql:host=' . $host . ';charset=UTF8;dbname=' . $database, $user, $password))) {
         throw new Exception('Error connecting to MySQL');
       }
       self::$_connected = TRUE;
@@ -65,7 +65,6 @@ class Adapter {
   }
 
   public function execute () {
-    print_r($this->_stm);
     $this->_stm->execute();
   }
 

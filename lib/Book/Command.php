@@ -27,7 +27,7 @@ class Command implements
   private function create(DomainObjectAbstract $args) {
     $db = \Database\Adapter::getInstance(array('localhost',
                                           'root',
-                                          '',
+                                          'root',
                                           'books'
                                     )
     );
@@ -37,7 +37,7 @@ class Command implements
   private function delete(DomainObjectAbstract $args) {
     $db = \Database\Adapter::getInstance(array('localhost',
                                           'root',
-                                          '',
+                  'root',
                                           'books'
                                     )
     );
@@ -48,21 +48,23 @@ class Command implements
   private function getChapter($args) {
     $db = \Database\Adapter::getInstance(array('localhost',
                                                'root',
-                                               '',
+      'root',
                                                'books'
                                          ));
 
 
     $db->query('select * from chapter where bookId = :bookid and id = :id' , $args);
     $result = $db->fetch();
-    return json_encode($result[0]);
+    $json = json_encode($result[0]);
+
+    return $json;
 
   }
 
   private function getBook() {
     $db = \Database\Adapter::getInstance(array('localhost',
                                                'root',
-                                               '',
+        'root',
                                                'books'
                                          )
     );
@@ -71,18 +73,18 @@ class Command implements
     $treeArray = array();
 
     foreach ($books as $book) {
-      $db->query('select * from chapter where bookid = :id order by sort', array(':id' => $book['id']));
+      $db->query('select * from chapter where bookId = :id order by sort', array(':id' => $book['id']));
       $chapters= $db->fetch();
 
       $bookTmp = array(
         'id' => $book['id'],
-        'text' => $book['titel'],
+        'text' => $book['title'],
         'book' => $book['id'],
       );
       foreach ($chapters as $chapter) {
         $chapterTmp = array(
           'id' => $chapter['id'],
-          'text' => $chapter['titel'],
+          'text' => $chapter['title'],
           'chapter' => $chapter['id'],
         );
         $bookTmp['children'][] = $chapterTmp;

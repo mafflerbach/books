@@ -12,6 +12,8 @@
   <link rel="stylesheet" type="text/css" href="js/themes/icon.css">
   <script src="js/jquery.easyui.min.js"></script>
 
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
 </head>
 <body>
 <div class="bookmenu">
