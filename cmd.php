@@ -58,6 +58,26 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'removeChapter') {
   $c->runCommand('removeChapter', $chapter);
 }
 
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'removeBook') {
+  $c = new Command\Chain();
+  $c->addCommand(new Book\Command());
+
+  $book = new \Book\Object();
+  $book->id = $_POST['id'];
+
+  $c->runCommand('delete', $book);
+}
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'addBook') {
+  $c = new Command\Chain();
+  $c->addCommand(new Book\Command());
+
+  $book = new \Book\Object();
+  $book->title = $_POST['text'];
+
+  $c->runCommand('addBook', $book);
+}
+
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveChapter') {
   $c = new Command\Chain();

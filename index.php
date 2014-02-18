@@ -16,6 +16,9 @@
 
 </head>
 <body>
+<div>
+  <button id="addBook">Buch hinzufügen</button>
+</div>
 <div class="bookmenu">
   <ul id="tt" class="easyui-tree"></ul>
 </div>

@@ -8,9 +8,6 @@ class Command implements
 
   public function onCommand($name, $args) {
     switch ($name) {
-      case 'create':
-        $this->create($args);
-        break;
       case 'delete' :
         $this->delete($args);
         break;
@@ -23,6 +20,9 @@ class Command implements
       case 'rename' :
         return $this->rename($args);
         break;
+      case 'addBook' :
+        return $this->addBook($args);
+        break;
       default:
         print('unknown command');
         break;
@@ -30,13 +30,16 @@ class Command implements
     }
   }
 
-  private function create(DomainObjectAbstract $args) {
-    $this->db()->query('insert into ' . $args->tableName . ' (titel)values("' . $args->titel . '")');
+  private function addBook(\Domain\Object $args) {
+    $this->db()->query('insert into ' . $args->tableName . ' (title)values("' . $args->title . '")');
+    $this->db()->execute();
   }
 
-  private function delete(DomainObjectAbstract $args) {
-    $this->db()->query('delete from ' . $args->tableName . ' where id = ' . $args->id . '');
-    $this->db()->query('delete from chapter where bookid = ' . $args->id . '');
+  private function delete(\Domain\Object $args) {
+    $this->db()->query('delete from book where id =:id', array(':id' => $args->id));
+    $this->db()->execute();
+    $this->db()->query('delete from chapter where bookid =:bookId',array(':bookId' => $args->id));
+    $this->db()->execute();
   }
 
   private function getChapter($args) {

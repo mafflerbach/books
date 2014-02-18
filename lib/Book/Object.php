@@ -4,7 +4,7 @@ namespace Book;
 class Object extends
   \Domain\Object {
   protected $_data = array('id' => NULL,
-                           'titel' => ''
+                           'title' => ''
   );
   public $tableName = 'book';
 }

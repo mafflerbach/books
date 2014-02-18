@@ -1,4 +1,51 @@
 function initTree() {
+
+    $('#addBook').click(function () {
+        var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="bookName" value="" type="text"/></div>';
+        $('body').append(content);
+        var dialog = $('#dd').dialog({
+            title: 'My Dialog',
+            width: 400,
+            height: 200,
+            cache: false,
+            modal: true,
+            buttons: [
+                {
+                    text: 'Ok',
+                    iconCls: 'icon-ok',
+                    handler: function () {
+                        if ($('#bookName').val() != "") {
+
+                            $.ajax({
+                                url: "cmd.php",
+                                type: "POST",
+                                data: {
+                                    cmd: 'addBook',
+                                    text: $('#bookName').val()
+                                },
+                                dataType: "json"
+                            }).done(function (data) {
+
+                                });
+
+                            dialog.dialog('close');
+                            $('#dd').remove();
+                        }
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    handler: function () {
+                        dialog.dialog('close');
+                        $('#dd').remove();
+                    }
+                }
+            ]
+        });
+
+
+    });
+
     $('#tt').tree({
         animate: true,
         url: 'cmd.php?cmd=getTree',
@@ -104,6 +151,7 @@ var EditorAction =
                                     },
                                     dataType: "json"
                                 }).done(function (data) {
+
                                     });
 
                                 dialog.dialog('close');
@@ -208,18 +256,24 @@ var EditorAction =
                         if ($('#chapterName').val() != "") {
                             $('#tt').tree('remove', node.target);
                             dialog.dialog('close');
+                            console.log(node);
+
+                            var type = '';
+                            if (node.book != undefined) {
+                                type = 'removeBook';
+                            } else {
+                                type = 'removeChapter';
+                            }
+
                             $.ajax({
                                 url: "cmd.php",
                                 type: "POST",
                                 data: {
                                     id: node.id,
-                                    cmd: 'removeChapter'
-                                },
+                                    cmd: type                                },
                                 dataType: "json"
                             }).done(function (data) {
                                 });
-
-
                             $('#dd').remove();
                         }
                     }
