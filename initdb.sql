@@ -1,18 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Erstellungszeit: 17. Feb 2014 um 10:18
--- Server Version: 5.5.25
--- PHP-Version: 5.4.4
+-- Host: 127.0.0.1
+-- Erstellungszeit: 19. Feb 2014 um 23:22
+-- Server Version: 5.6.11
+-- PHP-Version: 5.5.3
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
 -- Datenbank: `books`
 --
+CREATE DATABASE IF NOT EXISTS `books` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `books`;
 
 -- --------------------------------------------------------
 
@@ -20,11 +22,11 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `book`
 --
 
-CREATE TABLE `book` (
+CREATE TABLE IF NOT EXISTS `book` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 -- --------------------------------------------------------
 
@@ -32,11 +34,24 @@ CREATE TABLE `book` (
 -- Tabellenstruktur für Tabelle `chapter`
 --
 
-CREATE TABLE `chapter` (
+CREATE TABLE IF NOT EXISTS `chapter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text,
   `title` text NOT NULL,
-  `bookId` int(11) NOT NULL,
+  `content` text,
+  `bookid` int(11) NOT NULL,
   `sort` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `sections`
+--
+
+CREATE TABLE IF NOT EXISTS `sections` (
+  `chapterid` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

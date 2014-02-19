@@ -130,8 +130,8 @@ var TreeAction =
 {
     append: function () {
         var node = $('#tt').tree('getSelected');
-        if ($(node.target).parent().parent().parent().hasClass('bookmenu') == true) {
 
+        if (node.book || node.chapter) {
             var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="chapterName" value="" type="text"/></div>';
 
             $('body').append(content);
