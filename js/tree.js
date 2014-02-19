@@ -1,4 +1,22 @@
-function initTree() {
+$(document).ready(function () {
+
+    $('.export').click(function () {
+        var _this = $(this);
+
+        console.log(_this);
+        $.ajax({
+            url: "cmd.php",
+            type: "POST",
+            data: {
+                cmd: 'export',
+                bookId: _this.attr('value')
+            }
+        }).done(function (data) {
+                console.log(data);
+            });
+
+    })
+
 
     $('#addBook').click(function () {
         var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="bookName" value="" type="text"/></div>';
@@ -15,17 +33,16 @@ function initTree() {
                     iconCls: 'icon-ok',
                     handler: function () {
                         if ($('#bookName').val() != "") {
-
                             $.ajax({
                                 url: "cmd.php",
                                 type: "POST",
                                 data: {
                                     cmd: 'addBook',
                                     text: $('#bookName').val()
-                                },
-                                dataType: "json"
-                            }).done(function (data) {
-
+                                }
+                            }).done(function () {
+                                    $('#tt').empty();
+                                    initTree();
                                 });
 
                             dialog.dialog('close');
@@ -42,9 +59,10 @@ function initTree() {
                 }
             ]
         });
-
-
     });
+})
+
+function initTree() {
 
     $('#tt').tree({
         animate: true,
@@ -108,7 +126,7 @@ function initTree() {
     });
 }
 
-var EditorAction =
+var TreeAction =
 {
     append: function () {
         var node = $('#tt').tree('getSelected');
@@ -135,7 +153,6 @@ var EditorAction =
                                     parent: node.target,
                                     data: [
                                         {
-                                            id: 23,
                                             text: $('#chapterName').val()
                                         }
                                     ]
@@ -272,7 +289,7 @@ var EditorAction =
                                     id: node.id,
                                     cmd: type                                },
                                 dataType: "json"
-                            }).done(function (data) {
+                            }).done(function () {
                                 });
                             $('#dd').remove();
                         }

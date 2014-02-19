@@ -92,3 +92,49 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveChapter') {
 
 }
 
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'export') {
+  export($_POST['bookId']);
+}
+
+
+
+function export($bookId) {
+  $db = \Database\Adapter::getInstance();
+
+  $db->query('select * from book where id=:id', array(':id' => $bookId));
+  $db->execute();
+  $bookResult= $db->fetch();
+
+  $db->query('select * from chapter where bookid=:bookid', array(':bookid' => $bookId));
+  $db->execute();
+  $result = $db->fetch();
+
+  $html = '';
+  foreach($result as $chapter) {
+    $html .= '<div><h2>'.$chapter['title'].'</h2>';
+    $html .= $chapter['content'].'</div>';
+  }
+
+
+  $str = '
+<html>
+  <head>
+    <title>'.$bookResult[0]['title'].'</title>
+  </head>
+  <body>'.$html.'</body>
+</html>';
+
+    file_put_contents('tmp/test.html', $str);
+
+  $doc = new DOMDocument();
+  $xsl = new XSLTProcessor();
+
+  $doc->load('templates/docbook.xsl');
+  $xsl->importStyleSheet($doc);
+
+  $doc->loadHTML($str);
+  file_put_contents('tmp/test.docbook', $xsl->transformToXML($doc));
+
+
+}

@@ -15,7 +15,7 @@ function initEditor() {
             remove: false,
             formats: [
                 ["p", "Paragraph"],
-                ["h1", "titel"],
+                ["h3", "titel"],
                 ["pre", "pre"]
             ]
         }
