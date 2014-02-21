@@ -23,7 +23,7 @@ class Command implements
         $this->removeChapter($args);
         break;
       default:
-        print('unknown command');
+        return 'unknown command';
         break;
     }
   }

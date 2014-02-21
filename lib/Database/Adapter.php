@@ -81,10 +81,8 @@ class Adapter {
 
 
   public function fetch() {
-
     $this->_stm->execute();
     $this->_result = $this->_stm->fetchAll(\PDO::FETCH_ASSOC);
-
     return $this->_result;
   }
 }

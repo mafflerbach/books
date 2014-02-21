@@ -34,8 +34,6 @@ require_once('autoload.php');
     $db->execute();
     $result = $db->fetch();
 
-    print_r($result);
-
     $html = '<ul>';
     foreach ($result as $book) {
 
@@ -57,7 +55,6 @@ require_once('autoload.php');
   <ul id="tt" class="easyui-tree"></ul>
 </div>
 <div class="editor">
-  <textarea id="editor"></textarea>
 </div>
 
 <div id="mm" class="easyui-menu" style="width:120px;">

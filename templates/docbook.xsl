@@ -12,13 +12,13 @@
     <xsl:param name="graphics_location">file:///epicuser/AISolutions/graphics/AIWorkbench/</xsl:param>
 
     <!-- Main block-level conversions -->
-    <xsl:template match="html:html">
-        <xsl:apply-templates select="html:body"/>
+    <xsl:template match="html">
+        <xsl:apply-templates select="body"/>
     </xsl:template>
 
     <!-- This template converts each HTML file encountered into a DocBook
          section.  For a title, it selects the first h1 element -->
-    <xsl:template match="html:body">
+    <xsl:template match="body">
         <section>
             <xsl:if test="$filename != ''">
                 <xsl:attribute name="id">
@@ -28,9 +28,9 @@
                 </xsl:attribute>
             </xsl:if>
             <title>
-                <xsl:value-of select=".//html:h1[1]
-                         |.//html:h2[1]
-                         |.//html:h3[1]"/>
+                <xsl:value-of select=".//h1[1]
+                         |.//h2[1]
+                         |.//h3[1]"/>
             </title>
             <xsl:apply-templates select="*"/>
         </section>
@@ -40,27 +40,27 @@
          bridgeheads. It attempts to assign an ID to each bridgehead by looking
          for a named anchor as a child of the header or as the immediate preceding
          or following sibling -->
-    <xsl:template match="html:h1
-              |html:h2
-              |html:h3
-              |html:h4
-              |html:h5
-              |html:h6">
+    <xsl:template match="h1
+              |h2
+              |h3
+              |h4
+              |h5
+              |h6">
         <title>
             <xsl:choose>
-                <xsl:when test="count(html:a/@name)">
+                <xsl:when test="count(a/@name)">
                     <xsl:attribute name="id">
-                        <xsl:value-of select="html:a/@name"/>
+                        <xsl:value-of select="a/@name"/>
                     </xsl:attribute>
                 </xsl:when>
-                <xsl:when test="preceding-sibling::* = preceding-sibling::html:a[@name != '']">
+                <xsl:when test="preceding-sibling::* = preceding-sibling::a[@name != '']">
                     <xsl:attribute name="id">
-                        <xsl:value-of select="concat($prefix,preceding-sibling::html:a[1]/@name)"/>
+                        <xsl:value-of select="concat($prefix,preceding-sibling::a[1]/@name)"/>
                     </xsl:attribute>
                 </xsl:when>
-                <xsl:when test="following-sibling::* = following-sibling::html:a[@name != '']">
+                <xsl:when test="following-sibling::* = following-sibling::a[@name != '']">
                     <xsl:attribute name="id">
-                        <xsl:value-of select="concat($prefix,following-sibling::html:a[1]/@name)"/>
+                        <xsl:value-of select="concat($prefix,following-sibling::a[1]/@name)"/>
                     </xsl:attribute>
                 </xsl:when>
             </xsl:choose>
@@ -70,7 +70,7 @@
 
     <!-- These templates perform one-to-one conversions of HTML elements into
          DocBook elements -->
-    <xsl:template match="html:p">
+    <xsl:template match="p">
         <!-- if the paragraph has no text (perhaps only a child <img>), don't
              make it a para -->
         <xsl:choose>
@@ -84,14 +84,14 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    <xsl:template match="html:pre">
+    <xsl:template match="pre">
         <programlisting>
             <xsl:apply-templates/>
         </programlisting>
     </xsl:template>
 
     <!-- Hyperlinks -->
-    <xsl:template match="html:a[contains(@href,'http://')]" priority="1.5">
+    <xsl:template match="a[contains(@href,'http://')]" priority="1.5">
         <ulink>
             <xsl:attribute name="url">
                 <xsl:value-of select="normalize-space(@href)"/>
@@ -100,7 +100,7 @@
         </ulink>
     </xsl:template>
 
-    <xsl:template match="html:a[contains(@href,'#')]" priority="0.6">
+    <xsl:template match="a[contains(@href,'#')]" priority="0.6">
         <xref>
             <xsl:attribute name="linkend">
                 <xsl:call-template name="make_id">
@@ -110,7 +110,7 @@
         </xref>
     </xsl:template>
 
-    <xsl:template match="html:a[@href != '']">
+    <xsl:template match="a[@href != '']">
         <xref>
             <xsl:attribute name="linkend">
                 <xsl:value-of select="$prefix"/>
@@ -162,11 +162,11 @@
 
     <!-- Images -->
     <!-- Images and image maps -->
-    <xsl:template match="html:img">
+    <xsl:template match="img">
         <xsl:variable name="tag_name">
             <xsl:choose>
-                <xsl:when test="boolean(parent::html:p) and
-        boolean(normalize-space(parent::html:p/text()))">
+                <xsl:when test="boolean(parent::p) and
+        boolean(normalize-space(parent::p/text()))">
                     <xsl:text>inlinemediaobject</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>mediaobject</xsl:otherwise>
@@ -209,7 +209,7 @@
         <xsl:value-of select="$graphics_location"/><xsl:value-of select="$name_only"/>
     </xsl:template>
 
-    <xsl:template match="html:ul[count(*) = 0]">
+    <xsl:template match="ul[count(*) = 0]">
         <xsl:message>Matched</xsl:message>
         <blockquote>
             <xsl:apply-templates/>
@@ -231,37 +231,37 @@
     </xsl:template>
 
     <!-- LIST ELEMENTS -->
-    <xsl:template match="html:ul">
+    <xsl:template match="ul">
         <itemizedlist>
             <xsl:apply-templates/>
         </itemizedlist>
     </xsl:template>
 
-    <xsl:template match="html:ol">
+    <xsl:template match="ol">
         <orderedlist>
             <xsl:apply-templates/>
         </orderedlist>
     </xsl:template>
 
     <!-- This template makes a DocBook variablelist out of an HTML definition list -->
-    <xsl:template match="html:dl">
+    <xsl:template match="dl">
         <variablelist>
-            <xsl:for-each select="html:dt">
+            <xsl:for-each select="dt">
                 <varlistentry>
                     <term>
                         <xsl:apply-templates/>
                     </term>
                     <listitem>
-                        <xsl:apply-templates select="following-sibling::html:dd[1]"/>
+                        <xsl:apply-templates select="following-sibling::dd[1]"/>
                     </listitem>
                 </varlistentry>
             </xsl:for-each>
         </variablelist>
     </xsl:template>
 
-    <xsl:template match="html:dd">
+    <xsl:template match="dd">
         <xsl:choose>
-            <xsl:when test="boolean(html:p)">
+            <xsl:when test="boolean(p)">
                 <xsl:apply-templates/>
             </xsl:when>
             <xsl:otherwise>
@@ -272,10 +272,10 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="html:li">
+    <xsl:template match="li">
         <listitem>
             <xsl:choose>
-                <xsl:when test="count(html:p) = 0">
+                <xsl:when test="count(p) = 0">
                     <para>
                         <xsl:apply-templates/>
                     </para>
@@ -300,27 +300,27 @@
     </xsl:template>
 
     <!-- inline formatting -->
-    <xsl:template match="html:b">
+    <xsl:template match="b">
         <emphasis role="bold">
             <xsl:apply-templates/>
         </emphasis>
     </xsl:template>
-    <xsl:template match="html:i">
+    <xsl:template match="i">
         <emphasis>
             <xsl:apply-templates/>
         </emphasis>
     </xsl:template>
-    <xsl:template match="html:u">
+    <xsl:template match="u">
         <citetitle>
             <xsl:apply-templates/>
         </citetitle>
     </xsl:template>
 
     <!-- Ignored elements -->
-    <xsl:template match="html:hr"/>
-    <xsl:template match="html:h1[1]|html:h2[1]|html:h3[1]" priority="1"/>
-    <xsl:template match="html:br"/>
-    <xsl:template match="html:p[normalize-space(.) = '' and count(*) = 0]"/>
+    <xsl:template match="hr"/>
+    <xsl:template match="h1[1]|h2[1]|h3[1]" priority="1"/>
+    <xsl:template match="br"/>
+    <xsl:template match="p[normalize-space(.) = '' and count(*) = 0]"/>
     <xsl:template match="text()">
         <xsl:choose>
             <xsl:when test="normalize-space(.) = ''"></xsl:when>
@@ -329,14 +329,14 @@
     </xsl:template>
 
     <!-- Workbench Hacks -->
-    <xsl:template match="html:div[contains(@style,'margin-left: 2em')]">
+    <xsl:template match="div[contains(@style,'margin-left: 2em')]">
         <blockquote><para>
             <xsl:apply-templates/></para>
         </blockquote>
     </xsl:template>
 
-    <xsl:template match="html:a[@href != ''
-                      and not(boolean(ancestor::html:p|ancestor::html:li))]"
+    <xsl:template match="a[@href != ''
+                      and not(boolean(ancestor::p|ancestor::li))]"
                   priority="1">
         <para>
             <xref>
@@ -351,8 +351,8 @@
         </para>
     </xsl:template>
 
-    <xsl:template match="html:a[contains(@href,'#')
-                    and not(boolean(ancestor::html:p|ancestor::html:li))]"
+    <xsl:template match="a[contains(@href,'#')
+                    and not(boolean(ancestor::p|ancestor::li))]"
                   priority="1.1">
         <para>
             <xref>
@@ -368,9 +368,9 @@
     </xsl:template>
 
     <!-- Table conversion -->
-    <xsl:template match="html:table">
+    <xsl:template match="table">
         <!-- <xsl:variable name="column_count"
-                       select="saxon:max(.//html:tr,saxon:expression('count(html:td)'))"/> -->
+                       select="saxon:max(.//tr,saxon:expression('count(td)'))"/> -->
         <xsl:variable name="column_count">
             <xsl:call-template name="count_columns">
                 <xsl:with-param name="table" select="."/>
@@ -385,10 +385,10 @@
                     <xsl:with-param name="count" select="$column_count"/>
                 </xsl:call-template>
                 <thead>
-                    <xsl:apply-templates select="html:tr[1]"/>
+                    <xsl:apply-templates select="tr[1]"/>
                 </thead>
                 <tbody>
-                    <xsl:apply-templates select="html:tr[position() != 1]"/>
+                    <xsl:apply-templates select="tr[position() != 1]"/>
                 </tbody>
             </tgroup>
         </informaltable>
@@ -416,13 +416,13 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="html:tr">
+    <xsl:template match="tr">
         <row>
             <xsl:apply-templates/>
         </row>
     </xsl:template>
 
-    <xsl:template match="html:th|html:td">
+    <xsl:template match="th|td">
         <xsl:variable name="position" select="count(preceding-sibling::*) + 1"/>
         <entry>
             <xsl:if test="@colspan &gt; 1">
@@ -442,13 +442,13 @@
         </entry>
     </xsl:template>
 
-    <xsl:template match="html:td_null">
+    <xsl:template match="td_null">
         <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template name="count_columns">
         <xsl:param name="table" select="."/>
-        <xsl:param name="row" select="$table/html:tr[1]"/>
+        <xsl:param name="row" select="$table/tr[1]"/>
         <xsl:param name="max" select="0"/>
         <xsl:choose>
             <xsl:when test="local-name($table) != 'table'">
@@ -461,7 +461,7 @@
                 <!-- Count cells in the current row -->
                 <xsl:variable name="current_count">
                     <xsl:call-template name="count_cells">
-                        <xsl:with-param name="cell" select="$row/html:td[1]|$row/html:th[1]"/>
+                        <xsl:with-param name="cell" select="$row/td[1]|$row/th[1]"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <!-- Check for the maximum value of $current_count and $max -->
@@ -477,13 +477,13 @@
                 </xsl:variable>
                 <!-- If this is the last row, return $max, otherwise continue -->
                 <xsl:choose>
-                    <xsl:when test="count($row/following-sibling::html:tr) = 0">
+                    <xsl:when test="count($row/following-sibling::tr) = 0">
                         <xsl:value-of select="$new_max"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:call-template name="count_columns">
                             <xsl:with-param name="table" select="$table"/>
-                            <xsl:with-param name="row" select="$row/following-sibling::html:tr"/>
+                            <xsl:with-param name="row" select="$row/following-sibling::tr"/>
                             <xsl:with-param name="max" select="$new_max"/>
                         </xsl:call-template>
                     </xsl:otherwise>

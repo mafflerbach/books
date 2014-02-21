@@ -24,7 +24,7 @@ class Command implements
         return $this->addBook($args);
         break;
       default:
-        print('unknown command');
+        return 'unknown command';
         break;
 
     }
@@ -77,7 +77,21 @@ class Command implements
           'text' => $chapter['title'],
           'chapter' => $chapter['id'],
         );
+
+        $this->db()->query('select * from sections where chapterid= :id ', array(':id' => $chapter['id']));
+        $sections = $this->db()->fetch();
+
+        foreach ($sections as $section) {
+          $sectointmp = array(
+            'id' => $section['id'],
+            'text' => $section['title'],
+            'section' => $section['id'],
+          );
+          $chapterTmp['children'][] = $sectointmp;
+        }
+
         $bookTmp['children'][] = $chapterTmp;
+
       }
       $treeArray[] = $bookTmp;
     }
