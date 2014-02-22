@@ -8,7 +8,8 @@ class Object extends
   protected $_data = array('id' => NULL,
     'title' => '',
     'content' => '',
-    'chapterid' => ''
+    'chapterid' => '',
+    'sort' => ''
   );
   protected $_tabelName = 'sections';
 }

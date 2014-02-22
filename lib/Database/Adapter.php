@@ -14,6 +14,7 @@ class Adapter {
    * @var \PDO
    */
   private $_link = NULL;
+
   /**
    * @var \PDOStatement
    */

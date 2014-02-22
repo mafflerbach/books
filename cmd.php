@@ -130,6 +130,27 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'export') {
 }
 
 
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'updateSection') {
+  $c = new Command\Chain();
+  $c->addCommand(new Section\Command());
+
+  $order =
+  array ('order' => json_decode($_POST['node']));
+  $c->runCommand('updateSection', $order);
+}
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'updateChapter') {
+
+  $c = new Command\Chain();
+  $c->addCommand(new Chapter\Command());
+
+  print_r($_POST);
+  $order =
+  array ('order' => json_decode($_POST['node']));
+  $c->runCommand('updateChapter', $order);
+}
+
+
 function export($bookId) {
   $db = \Database\Adapter::getInstance();
 
@@ -179,8 +200,6 @@ function export($bookId) {
   $doc->loadHTML($str);
   file_put_contents('tmp/test.docbook', $xsl->transformToXML($doc));
 
-
-
   $doc = new DOMDocument();
   $xsl = new XSLTProcessor();
 
@@ -189,7 +208,5 @@ function export($bookId) {
 
   $doc->loadXml(file_get_contents('tmp/test.docbook'));
   file_put_contents('tmp/ebook/test.xml', $xsl->transformToXML($doc));
-
-
 
 }

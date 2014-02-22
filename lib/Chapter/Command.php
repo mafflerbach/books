@@ -22,6 +22,9 @@ class Command implements
       case 'removeChapter':
         $this->removeChapter($args);
         break;
+      case 'updateChapter':
+        $this->updateChapter($args);
+        break;
       default:
         return 'unknown command';
         break;
@@ -37,6 +40,20 @@ class Command implements
     );
 
     $this->db()->execute();
+  }
+
+  private function updateChapter($args) {
+
+    $s =1;
+    foreach ($args['order'] as $node) {
+      $this->db()->query('update chapter set sort=:sort where id=:id',
+                         array(':sort' => $s,
+                               ':id' => $node
+                         )
+      );
+      $this->db()->execute();
+      $s++;
+    }
   }
 
   private function addChapter($args) {

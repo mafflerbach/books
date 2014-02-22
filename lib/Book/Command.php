@@ -78,7 +78,7 @@ class Command implements
           'chapter' => $chapter['id'],
         );
 
-        $this->db()->query('select * from sections where chapterid= :id ', array(':id' => $chapter['id']));
+        $this->db()->query('select * from sections where chapterid= :id order by sort', array(':id' => $chapter['id']));
         $sections = $this->db()->fetch();
 
         foreach ($sections as $section) {

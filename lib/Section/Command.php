@@ -16,6 +16,9 @@ class Command implements
       case 'getSection':
         return $this->getSection($args);
         break;
+      case 'updateSection':
+        return $this->updateSection($args);
+        break;
       default:
         return 'unknown command';
         break;
@@ -32,7 +35,21 @@ class Command implements
     $this->db()->execute();
   }
 
-  private function getSection($args) {
+  private function updateSection ($args) {
+
+    $s =1;
+    foreach ($args['order'] as $node) {
+          $this->db()->query('update sections set sort=:sort where id=:id',
+                             array(':sort' => $s,
+                                   ':id' => $node
+                             )
+          );
+          $this->db()->execute();
+      $s++;
+    }
+  }
+
+    private function getSection($args) {
     $this->db()->query('select * from sections where id=:id',
       array(':id' => $args->id,
       )

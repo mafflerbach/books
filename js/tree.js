@@ -74,23 +74,54 @@ function initTree() {
         ($(target).attr('data-book') != 'undefined' && point == 'bottom')) {
         return false
       }
-
+      if (source.section && $(target).attr('data-chapter') != 'undefined' ) {
+        return false;
+      }
+      if ($(target).attr('data-book') != 'undefined' && source.section != undefined) {
+          return false;
+      }
       if ($(target).attr('data-book') != 'undefined' && source.book != undefined) {
         return false;
       }
     },
     onDrop: function (target, source, point) {
-      var node = $('#tt').tree('find', source.id);
-      var parentNode = $('#tt').tree('getParent', node.target);
 
-      console.log(parentNode);
+        var parent = '';
+        var list = '';
+        var type = '';
+        var tmp  = new Array();
+        var id = '';
 
-      if (parentNode != null) {
-        var list = $('div#' + parentNode.domId).parent().find('div[data-chapter]')
-        list.each(function (index, val) {
-          console.log($(val).attr('data-chapter'));
-        })
-      }
+        if (source.section) {
+            parent = $(target).parent().parent().parent().children('div');
+            list = parent.parent().find('div[data-section]');
+            type = 'updateSection';
+            list.each(function () {
+                tmp.push($(this).attr('data-section'));
+            })
+        }
+
+        if (source.chapter) {
+            parent = $(target).parent().parent().parent().children('ul');
+            list = parent.find("div[data-chapter!='undefined']");
+            type = 'updateChapter';
+            list.each(function () {
+                tmp.push($(this).attr('data-chapter'));
+            })
+        }
+
+        if (list != '' && parent != '' && type != '') {
+            $.ajax({
+                url: "cmd.php",
+                type: "POST",
+                data: {
+                    node: tmp.toSource(),
+                    cmd: type
+                },
+                dataType: "json"
+            }).done(function (data) {
+                });
+        }
     },
     onContextMenu: function (e, node) {
       e.preventDefault();
@@ -147,7 +178,6 @@ var TreeAction =
               if ($('#chapterName').val() != "") {
 
                 var node = $('#tt').tree('getSelected');
-                console.log(node);
                 $('#tt').tree('append', {
                   parent: node.target,
                   data: [
