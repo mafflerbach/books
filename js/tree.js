@@ -2,8 +2,6 @@ $(document).ready(function () {
 
   $('.export').click(function () {
     var _this = $(this);
-
-    console.log(_this);
     $.ajax({
       url: "cmd.php",
       type: "POST",
@@ -11,12 +9,8 @@ $(document).ready(function () {
         cmd: 'export',
         bookId: _this.attr('value')
       }
-    }).done(function (data) {
-        console.log(data);
-      });
-
+    });
   })
-
 
   $('#addBook').click(function () {
     var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="bookName" value="" type="text"/></div>';
@@ -37,8 +31,9 @@ $(document).ready(function () {
                 url: "cmd.php",
                 type: "POST",
                 data: {
-                  cmd: 'addBook',
-                  text: $('#bookName').val()
+                  cmd: 'add',
+                  text: $('#bookName').val(),
+                  type: 'book'
                 }
               }).done(function () {
                   $('#tt').empty();
@@ -70,15 +65,15 @@ function initTree() {
     dnd: true,
     onBeforeDrop: function (target, source, point) {
       if (($(target).attr('data-book') == 'undefined' && point == 'append') ||
-        ($(target).attr('data-book') != 'undefined' && point == 'top') ||
-        ($(target).attr('data-book') != 'undefined' && point == 'bottom')) {
+          ($(target).attr('data-book') != 'undefined' && point == 'top') ||
+          ($(target).attr('data-book') != 'undefined' && point == 'bottom')) {
         return false
       }
-      if (source.section && $(target).attr('data-chapter') != 'undefined' ) {
+      if (source.section && $(target).attr('data-chapter') != 'undefined') {
         return false;
       }
       if ($(target).attr('data-book') != 'undefined' && source.section != undefined) {
-          return false;
+        return false;
       }
       if ($(target).attr('data-book') != 'undefined' && source.book != undefined) {
         return false;
@@ -86,50 +81,52 @@ function initTree() {
     },
     onDrop: function (target, source, point) {
 
-        var parent = '';
-        var list = '';
-        var type = '';
-        var tmp  = new Array();
-        var id = '';
+      var parent = '';
+      var list = '';
+      var type = '';
+      var tmp = new Array();
+      var id = '';
 
-        if (source.section) {
-            parent = $(target).parent().parent().parent().children('div');
-            list = parent.parent().find('div[data-section]');
-            type = 'updateSection';
-            list.each(function () {
-                tmp.push($(this).attr('data-section'));
-            })
-        }
+      if (source.section) {
+        parent = $(target).parent().parent().parent().children('div');
+        list = parent.parent().find('div[data-section]');
+        type = 'section';
+        list.each(function () {
+          tmp.push($(this).attr('data-section'));
+        })
+      }
 
-        if (source.chapter) {
-            parent = $(target).parent().parent().parent().children('ul');
-            list = parent.find("div[data-chapter!='undefined']");
-            type = 'updateChapter';
-            list.each(function () {
-                tmp.push($(this).attr('data-chapter'));
-            })
-        }
+      if (source.chapter) {
+        parent = $(target).parent().parent().parent().children('ul');
+        list = parent.find("div[data-chapter!='undefined']");
+        type = 'chapter';
+        list.each(function () {
+          tmp.push($(this).attr('data-chapter'));
+        })
+      }
 
-        if (list != '' && parent != '' && type != '') {
-            $.ajax({
-                url: "cmd.php",
-                type: "POST",
-                data: {
-                    node: tmp.toSource(),
-                    cmd: type
-                },
-                dataType: "json"
-            }).done(function (data) {
-                });
-        }
+      if (list != '' && parent != '' && type != '') {
+        $.ajax({
+          url: "cmd.php",
+          type: "POST",
+          data: {
+            node: tmp.toSource(),
+            cmd: 'update',
+            type: type
+          },
+          dataType: "json"
+        })
+      }
     },
     onContextMenu: function (e, node) {
       e.preventDefault();
-      $(this).tree('select', node.target);
-      $('#mm').menu('show', {
-        left: e.pageX,
-        top: e.pageY
-      });
+      $(this).tree('select',
+        node.target);
+      $('#mm').menu('show',
+        {
+          left: e.pageX,
+          top: e.pageY
+        });
     },
     onSelect: function (node) {
       $('.editor').empty();
@@ -148,20 +145,18 @@ function initTree() {
             $('.editor').append(content);
             initEditor();
             $("#editor").jqteVal(data.content);
-            console.log(data)
           });
       }
     }
   });
 }
 
-var TreeAction =
-{
+var TreeAction = {
   append: function () {
     var node = $('#tt').tree('getSelected');
 
     if (node.book || node.chapter) {
-      var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="chapterName" value="" type="text"/></div>';
+      var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="name" value="" type="text"/></div>';
 
       $('body').append(content);
       var dialog = $('#dd').dialog({
@@ -178,20 +173,24 @@ var TreeAction =
               if ($('#chapterName').val() != "") {
 
                 var node = $('#tt').tree('getSelected');
-                $('#tt').tree('append', {
-                  parent: node.target,
-                  data: [
-                    {
-                      text: $('#chapterName').val()
-                    }
-                  ]
-                });
+                $('#tt').tree('append',
+                  {
+                    parent: node.target,
+                    data: [
+                      {
+                        text: $('#name').val()
+                      }
+                    ]
+                  });
 
                 var action = '';
+                var type = '';
+
                 if (node.book) {
-                  action = 'addChapter';
-                } else {
-                  action = 'addSection';
+                  type = 'chapter';
+                }
+                if (node.chapter) {
+                  type = 'section';
                 }
 
                 $.ajax({
@@ -199,12 +198,14 @@ var TreeAction =
                   type: "POST",
                   data: {
                     id: node.id,
-                    cmd: action,
-                    text: $('#chapterName').val()
+                    cmd: 'add',
+                    text: $('#name').val(),
+                    type: type
                   },
                   dataType: "json"
                 }).done(function (data) {
-
+                    $('#tt').empty();
+                    initTree();
                   });
 
                 dialog.dialog('close');
@@ -221,7 +222,6 @@ var TreeAction =
           }
         ]
       });
-
 
     } else {
       console.log('kann kein subcapitel erstellen')
@@ -247,12 +247,11 @@ var TreeAction =
           handler: function () {
             if ($('#rename').val() != "") {
               dialog.dialog('close');
-              $('#tt').tree('update', {
-                target: node.target,
-                text: $('#rename').val()
-              });
-
-              console.log(node);
+              $('#tt').tree('update',
+                {
+                  target: node.target,
+                  text: $('#rename').val()
+                });
 
               var type = '';
               if (node.book != undefined) {
@@ -271,10 +270,7 @@ var TreeAction =
                   text: $('#rename').val()
                 },
                 dataType: "json"
-              }).done(function (data) {
-                });
-
-
+              })
               $('#dd').remove();
             }
           }
@@ -307,15 +303,14 @@ var TreeAction =
           iconCls: 'icon-ok',
           handler: function () {
             if ($('#chapterName').val() != "") {
-              $('#tt').tree('remove', node.target);
+              $('#tt').tree('remove',
+                node.target);
               dialog.dialog('close');
-              console.log(node);
-
               var type = '';
               if (node.book != undefined) {
-                type = 'removeBook';
+                type = 'book';
               } else {
-                type = 'removeChapter';
+                type = 'chapter';
               }
 
               $.ajax({
@@ -323,10 +318,11 @@ var TreeAction =
                 type: "POST",
                 data: {
                   id: node.id,
-                  cmd: type                                },
+                  type: type,
+                  cmd: 'remove'
+                },
                 dataType: "json"
-              }).done(function () {
-                });
+              });
               $('#dd').remove();
             }
           }
@@ -344,11 +340,13 @@ var TreeAction =
 
   collapse: function () {
     var node = $('#tt').tree('getSelected');
-    $('#tt').tree('collapse', node.target);
+    $('#tt').tree('collapse',
+      node.target);
   },
   expand: function () {
     var node = $('#tt').tree('getSelected');
-    $('#tt').tree('expand', node.target);
+    $('#tt').tree('expand',
+      node.target);
   }
 
 };

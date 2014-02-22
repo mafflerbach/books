@@ -8,7 +8,7 @@ class Command implements
 
   public function onCommand($name, $args) {
     switch ($name) {
-      case 'delete' :
+      case 'remove' :
         $this->delete($args);
         break;
       case 'getBook' :
@@ -20,7 +20,7 @@ class Command implements
       case 'rename' :
         return $this->rename($args);
         break;
-      case 'addBook' :
+      case 'add' :
         return $this->addBook($args);
         break;
       default:

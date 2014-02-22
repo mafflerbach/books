@@ -7,7 +7,7 @@ class Command implements
 
   public function onCommand($name, $args) {
     switch ($name) {
-      case 'addSection':
+      case 'add':
         $this->addSection($args);
         break;
       case 'saveSection':
@@ -16,7 +16,7 @@ class Command implements
       case 'getSection':
         return $this->getSection($args);
         break;
-      case 'updateSection':
+      case 'update':
         return $this->updateSection($args);
         break;
       default:
@@ -28,31 +28,31 @@ class Command implements
 
   private function addSection($args) {
     $this->db()->query('insert into sections (title, chapterid) values (:title, :chapterid)',
-      array(':chapterid' => $args->chapterid,
-        ':title' => $args->title
-      )
+                       array(':chapterid' => $args->chapterid,
+                             ':title' => $args->title
+                       )
     );
     $this->db()->execute();
   }
 
-  private function updateSection ($args) {
+  private function updateSection($args) {
 
-    $s =1;
+    $s = 1;
     foreach ($args['order'] as $node) {
-          $this->db()->query('update sections set sort=:sort where id=:id',
-                             array(':sort' => $s,
-                                   ':id' => $node
-                             )
-          );
-          $this->db()->execute();
+      $this->db()->query('update sections set sort=:sort where id=:id',
+                         array(':sort' => $s,
+                               ':id' => $node
+                         )
+      );
+      $this->db()->execute();
       $s++;
     }
   }
 
-    private function getSection($args) {
+  private function getSection($args) {
     $this->db()->query('select * from sections where id=:id',
-      array(':id' => $args->id,
-      )
+                       array(':id' => $args->id,
+                       )
     );
 
     $this->db()->execute();
@@ -62,9 +62,9 @@ class Command implements
 
   private function saveSection($args) {
     $this->db()->query('update sections set content=:content where id=:id',
-      array(':id' => $args->id,
-        ':content' => $args->content
-      )
+                       array(':id' => $args->id,
+                             ':content' => $args->content
+                       )
     );
 
     $this->db()->execute();
@@ -79,6 +79,5 @@ class Command implements
     }
     return $this->db;
   }
-
 
 }

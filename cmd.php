@@ -19,6 +19,14 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'getChapter') {
   ));
 }
 
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'getSection') {
+  $c = new Command\Chain();
+  $c->addCommand(new Section\Command());
+
+  $section = new \Section\Object();
+  $section->id = $_POST['id'];
+  print($c->runCommand('getSection', $section));
+}
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'rename') {
   $c = new Command\Chain();
@@ -37,60 +45,48 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'rename') {
   );
 }
 
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'addChapter') {
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'add') {
   $c = new Command\Chain();
-  $c->addCommand(new Chapter\Command());
+  $obj = '';
+  if ($_POST['type'] == 'chapter') {
+    $c->addCommand(new Chapter\Command());
+    $obj = new \Chapter\Object();
+    $obj->bookid = $_POST['id'];
+    $obj->title = $_POST['text'];
+  }
 
-  $chapter = new \Chapter\Object();
-  $chapter->bookid = $_POST['id'];
-  $chapter->title = $_POST['text'];
+  if ($_POST['type'] == 'book') {
+    $c->addCommand(new Book\Command());
+    $obj = new \Book\Object();
+    $obj->title = $_POST['text'];
+  }
 
-  $c->runCommand('addChapter', $chapter);
+  if ($_POST['type'] == 'section') {
+    $c->addCommand(new Section\Command());
+    $obj = new \Section\Object();
+    $obj->chapterid = $_POST['id'];
+    $obj->title = $_POST['text'];
 
+  }
+  $c->runCommand('add', $obj);
 }
 
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'addSection') {
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'remove') {
   $c = new Command\Chain();
-  $c->addCommand(new Section\Command());
 
-  $chapter = new \Section\Object();
-  $chapter->chapterid = $_POST['id'];
-  $chapter->title = $_POST['text'];
+  if ($_POST['type'] == 'chapter') {
+    $c->addCommand(new Chapter\Command());
+    $obj = new \Chapter\Object();
+  }
 
-  $c->runCommand('addSection', $chapter);
+  if ($_POST['type'] == 'book') {
+    $c->addCommand(new Book\Command());
+    $obj = new \Book\Object();
+  }
 
+  $obj->id = $_POST['id'];
+  $c->runCommand('remove', $obj);
 }
-
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'removeChapter') {
-  $c = new Command\Chain();
-  $c->addCommand(new Chapter\Command());
-
-  $chapter = new \Chapter\Object();
-  $chapter->id = $_POST['id'];
-
-  $c->runCommand('removeChapter', $chapter);
-}
-
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'removeBook') {
-  $c = new Command\Chain();
-  $c->addCommand(new Book\Command());
-
-  $book = new \Book\Object();
-  $book->id = $_POST['id'];
-
-  $c->runCommand('delete', $book);
-}
-
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'addBook') {
-  $c = new Command\Chain();
-  $c->addCommand(new Book\Command());
-
-  $book = new \Book\Object();
-  $book->title = $_POST['text'];
-
-  $c->runCommand('addBook', $book);
-}
-
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveChapter') {
   $c = new Command\Chain();
@@ -115,39 +111,24 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveSection') {
 
 }
 
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'getSection') {
-  $c = new Command\Chain();
-  $c->addCommand(new Section\Command());
-
-  $section = new \Section\Object();
-  $section->id = $_POST['id'];
-  print($c->runCommand('getSection', $section));
-}
-
-
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'export') {
   export($_POST['bookId']);
 }
 
 
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'updateSection') {
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'update') {
   $c = new Command\Chain();
-  $c->addCommand(new Section\Command());
 
-  $order =
-  array ('order' => json_decode($_POST['node']));
-  $c->runCommand('updateSection', $order);
-}
+  if ($_POST['type'] == 'section') {
+    $c->addCommand(new Section\Command());
+  }
 
-if (isset($_POST['cmd']) && $_POST['cmd'] == 'updateChapter') {
+  if ($_POST['type'] == 'chapter') {
+    $c->addCommand(new Chapter\Command());
+  }
 
-  $c = new Command\Chain();
-  $c->addCommand(new Chapter\Command());
-
-  print_r($_POST);
-  $order =
-  array ('order' => json_decode($_POST['node']));
-  $c->runCommand('updateChapter', $order);
+  $order = array ('order' => json_decode($_POST['node']));
+  $c->runCommand('update', $order);
 }
 
 
@@ -189,8 +170,6 @@ function export($bookId) {
   <body>' . $html . '</body>
 </html>';
 
-  file_put_contents('tmp/test.html', $str);
-
   $doc = new DOMDocument();
   $xsl = new XSLTProcessor();
 
@@ -198,15 +177,17 @@ function export($bookId) {
   $xsl->importStyleSheet($doc);
 
   $doc->loadHTML($str);
-  file_put_contents('tmp/test.docbook', $xsl->transformToXML($doc));
+  file_put_contents('tmp/'.str_replace(' ', '_', $bookResult[0]['title']).'.xml', $xsl->transformToXML($doc));
 
-  $doc = new DOMDocument();
-  $xsl = new XSLTProcessor();
+  //$docbook = $xsl->transformToXML($doc);
 
-  $doc->load('vendor/docbook/epub3/chunk.xsl');
-  $xsl->importStyleSheet($doc);
+  //$doc = new DOMDocument();
+  //$xsl = new XSLTProcessor();
 
-  $doc->loadXml(file_get_contents('tmp/test.docbook'));
-  file_put_contents('tmp/ebook/test.xml', $xsl->transformToXML($doc));
+  //$doc->load('vendor/docbook/epub3/chunk.xsl');
+ // $xsl->importStyleSheet($doc);
+  //$doc->loadXml($docbook);
+
+  //$output = $xsl->transformToXML($doc);
 
 }

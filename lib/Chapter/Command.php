@@ -8,21 +8,19 @@ class Command implements
 
   public function onCommand($name, $args) {
     switch ($name) {
-      case 'create':
-        break;
       case 'saveChapter':
         $this->saveChapter($args);
         break;
       case 'rename':
         $this->rename($args);
         break;
-      case 'addChapter':
+      case 'add':
         $this->addChapter($args);
         break;
-      case 'removeChapter':
+      case 'remove':
         $this->removeChapter($args);
         break;
-      case 'updateChapter':
+      case 'update':
         $this->updateChapter($args);
         break;
       default:
@@ -43,8 +41,7 @@ class Command implements
   }
 
   private function updateChapter($args) {
-
-    $s =1;
+    $s = 1;
     foreach ($args['order'] as $node) {
       $this->db()->query('update chapter set sort=:sort where id=:id',
                          array(':sort' => $s,
@@ -68,8 +65,12 @@ class Command implements
   }
 
   private function removeChapter($args) {
-
     $this->db()->query('delete from chapter where id = :id',
+                       array(':id' => $args->id
+                       )
+    );
+    $this->db()->execute();
+    $this->db()->query('delete from sections where chapterid=:id',
                        array(':id' => $args->id
                        )
     );
