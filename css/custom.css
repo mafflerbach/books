@@ -16,3 +16,8 @@
 .editContainer {
     margin-top: 25px;
 }
+
+p {
+    padding: 0px;
+    margin: 0px;
+}
