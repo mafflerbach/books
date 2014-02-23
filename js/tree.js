@@ -7,7 +7,7 @@ $(document).ready(function () {
       type: "POST",
       data: {
         cmd: 'export',
-        bookId: _this.attr('value')
+        bookId: _this.attr('id').replace('book_', '')
       }
     });
   })
@@ -254,8 +254,10 @@ var TreeAction = {
                 });
 
               var type = '';
-              if (node.book != undefined) {
+              if (node.book) {
                 type = 'book';
+              }if (node.section ) {
+                type = 'section';
               } else {
                 type = 'chapter';
               }

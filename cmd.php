@@ -39,6 +39,10 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'rename') {
     $c->addCommand(new Book\Command());
   }
 
+  if ($_POST['type'] == 'section') {
+    $c->addCommand(new Section\Command());
+  }
+
   $c->runCommand('rename', array(':id' => $_POST['id'],
       ':title' => $_POST['text']
     )

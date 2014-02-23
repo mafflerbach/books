@@ -19,6 +19,9 @@ class Command implements
       case 'update':
         return $this->updateSection($args);
         break;
+      case 'rename':
+        return $this->rename($args);
+        break;
       default:
         return 'unknown command';
         break;
@@ -78,6 +81,11 @@ class Command implements
       $this->db = \Database\Adapter::getInstance();
     }
     return $this->db;
+  }
+
+  private function rename($args) {
+    $this->db()->query('update sections set title = :title where id = :id', $args);
+    $this->db()->execute();
   }
 
 }
