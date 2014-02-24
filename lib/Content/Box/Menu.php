@@ -28,6 +28,9 @@ class Menu {
 												</ul>
 											</div>
 										</li>
+										<li class="icon">
+											<a class="icon icon-phone" href="#">Downloads</a>
+										</li>
 									</ul>
 								</div>
 							</li>

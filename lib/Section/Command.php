@@ -30,6 +30,7 @@ class Command implements
 
 
   private function addSection($args) {
+    print_r($args);
     $this->db()->query('insert into sections (title, chapterid) values (:title, :chapterid)',
                        array(':chapterid' => $args->chapterid,
                              ':title' => $args->title
