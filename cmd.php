@@ -6,16 +6,39 @@ header('Content-Type: text/html; charset=utf-8');
 if (isset($_GET['cmd']) && $_GET['cmd'] == 'getTree') {
   $c = new Command\Chain();
   $c->addCommand(new Book\Command());
-  print($c->runCommand('getBook', Null));
+  print($c->runCommand('getBook', array(':id' => $_GET['id'])));
 }
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'edit') {
+  $bookpage = new Content\Page\Editbook();
+  print($bookpage->content());
+}
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'login') {
+  $username = $_POST["username"];
+  $password = md5($_POST["password"]);
+
+  $db = \Database\Adapter::getInstance();
+  $db->query('SELECT username, password FROM book WHERE username=:username', array(':username' => $username)
+  );
+  $user = $db->fetch();
+
+  if (isset($user['password']) && $user['password'] == $password) {
+    $_SESSION["username"] = $username;
+    print('true');
+  } else {
+    print('false');
+  }
+}
+
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'getChapter') {
   $c = new Command\Chain();
   $c->addCommand(new Book\Command());
 
   print($c->runCommand('getChapter', array(':id' => $_POST['chapterId'],
-      ':bookid' => $_POST['bookId']
-    )
+                                           ':bookid' => $_POST['bookId']
+                                     )
   ));
 }
 
@@ -44,8 +67,8 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'rename') {
   }
 
   $c->runCommand('rename', array(':id' => $_POST['id'],
-      ':title' => $_POST['text']
-    )
+                                 ':title' => $_POST['text']
+                           )
   );
 }
 
@@ -131,7 +154,7 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'update') {
     $c->addCommand(new Chapter\Command());
   }
 
-  $order = array ('order' => json_decode($_POST['node']));
+  $order = array('order' => json_decode($_POST['node']));
   $c->runCommand('update', $order);
 }
 
@@ -181,17 +204,6 @@ function export($bookId) {
   $xsl->importStyleSheet($doc);
 
   $doc->loadHTML($str);
-  file_put_contents('tmp/'.str_replace(' ', '_', $bookResult[0]['title']).'.xml', $xsl->transformToXML($doc));
-
-  //$docbook = $xsl->transformToXML($doc);
-
-  //$doc = new DOMDocument();
-  //$xsl = new XSLTProcessor();
-
-  //$doc->load('vendor/docbook/epub3/chunk.xsl');
- // $xsl->importStyleSheet($doc);
-  //$doc->loadXml($docbook);
-
-  //$output = $xsl->transformToXML($doc);
+  file_put_contents('tmp/' . str_replace(' ', '_', $bookResult[0]['title']) . '.xml', $xsl->transformToXML($doc));
 
 }

@@ -12,6 +12,25 @@ $(document).ready(function () {
     });
   })
 
+  $('.edit').click(function () {
+    var _this = $(this);
+    $.ajax({
+      url: "cmd.php",
+      type: "POST",
+      data: {
+        cmd: 'edit',
+        bookId: _this.attr('id').replace('book_', '')
+      }
+    }).done(function (data) {
+        $('#tt').empty();
+        if ($('.scroller').length == 0) {
+          $('#mp-pusher').append(data);
+        }
+        initTree(_this.attr('id').replace('book_', ''));
+
+      });
+    });
+
   $('#addBook').click(function () {
     var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="bookName" value="" type="text"/></div>';
     $('body').append(content);
@@ -57,11 +76,11 @@ $(document).ready(function () {
   });
 })
 
-function initTree() {
+function initTree(bookId) {
 
   $('#tt').tree({
     animate: true,
-    url: 'cmd.php?cmd=getTree',
+    url: 'cmd.php?cmd=getTree&id='+bookId,
     dnd: true,
     onBeforeDrop: function (target, source, point) {
       if (($(target).attr('data-book') == 'undefined' && point == 'append') ||
@@ -120,8 +139,7 @@ function initTree() {
     },
     onContextMenu: function (e, node) {
       e.preventDefault();
-      $(this).tree('select',
-        node.target);
+      $(this).tree('select', node.target);
       $('#mm').menu('show',
         {
           left: e.pageX,

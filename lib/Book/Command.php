@@ -57,8 +57,8 @@ class Command implements
     $this->db()->execute();
   }
 
-  private function getBook() {
-    $this->db()->query('select * from book');
+  private function getBook($args) {
+    $this->db()->query('select * from book where id=:id', $args);
     $books = $this->db()->fetch();
     $treeArray = array();
 
