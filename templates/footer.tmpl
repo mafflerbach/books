@@ -4,7 +4,9 @@
 <script src="js/classie.js"></script>
 <script src="js/mlpushmenu.js"></script>
 <script>
-    new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) );
+    if ($('#mp-menu').length > 0) {
+        new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) );
+    }
 </script>
 </body>
 </html>

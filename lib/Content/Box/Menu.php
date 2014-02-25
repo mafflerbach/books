@@ -9,10 +9,10 @@ class Menu {
 					<div class="mp-level">
 						<h2 class="icon icon-world">All Categories</h2>
 						<ul>
-							<li class="icon icon-arrow-left">
-								<a class="icon icon-display" href="#">Books</a>
+							<li class="fa icon-arrow-left">
+								<a class="fa fa-book" href="#">Books</a>
 								<div class="mp-level">
-									<h2 class="icon icon-display">Books</h2>
+									<h2 class="fa fa-book">Books</h2>
 									<a class="mp-back" href="#">back</a>
 									<ul>
 										<li class="icon icon-arrow-left">
@@ -32,15 +32,15 @@ class Menu {
 								</div>
 							</li>
 							<li class="icon icon-arrow-left">
-								<a class="icon icon-news" href="#">Actions</a>
+								<a class="fa fa-caret-square-o-right" href="#">Actions</a>
 								<div class="mp-level">
-									<h2 class="icon icon-news">Actions</h2>
+									<h2 class="fa-caret-square-o-right">Actions</h2>
 									<a class="mp-back" href="#">back</a>
 									<ul>
-										<li><a href="#" id="addBook">Add Book</a></li>
-										<li><a href="#">Delete Books</a></li>
+										<li><a href="#" class="icon icon-add" id="addBook">Add Book</a></li>
+										<li><a href="#" class="icon icon-remove">Delete Books</a></li>
 										<li class="icon icon-arrow-left">
-											<a class="icon icon-phone" href="#">Edit</a>
+											<a class="icon icon-edit" href="#">Edit</a>
 											<div class="mp-level">
 												<h2>Edit</h2>
 												<a class="mp-back" href="#">back</a>
@@ -54,6 +54,7 @@ class Menu {
 							</li>
 							<li><a class="icon icon-photo" href="#">Settings</a></li>
 							<li><a class="icon icon-wallet" href="#">Help</a></li>
+							<li><a class="icon icon-wallet" href="logout.php">Logout</a></li>
 						</ul>
 
 					</div>

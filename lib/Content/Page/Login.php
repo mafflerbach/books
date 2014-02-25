@@ -9,10 +9,10 @@ class Login {
         <section class="main">
             <form class="loginform clearfix">
                 <p>
-                    <input type="text" id="login" name="login" placeholder="Username">
+                    <input type="text" id="loginname" name="login" placeholder="Username">
                     <input type="password" name="password" id="password" placeholder="Password">
                 </p>
-            <button id="submit" name="submit">
+            <button id="login">
               <i class="icon-arrow-right"></i>
               <span>Sign in</span>
             </button>
@@ -34,10 +34,19 @@ class Login {
                     <input id="emailsignup" name="emailsignup" required="required" type="text" placeholder="your_email@mail.com"/>
                     <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="your Password"/>
                 </p>
-            <button id="submit" name="submit">
+            <button id="signup" name="submit">
               <i class="icon-arrow-right"></i>
               <span>Sign up</span>
             </button>
+            <p class="emailExist">
+                Email exist
+            </p>
+            <p class="usernameExist">
+                User Exist
+            </p>
+            <p class="required">
+                Field required
+            </p>
             <p class="registerUser">
                 You are a member ?
                 <a href="#tologin" class="to_login"> Go and sign in</a>

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once('autoload.php');
 header('Content-Type: text/html; charset=utf-8');
 
@@ -14,21 +14,50 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'edit') {
   print($bookpage->content());
 }
 
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'signup') {
+
+  $c = new Command\Chain();
+  $c->addCommand(new User\Command());
+
+  $user = new \User\Object();
+  $user->username = $_POST['username'];
+  $user->email = $_POST['email'];
+  $user->password = $_POST['password'];
+
+  $fields = array();
+
+  if ($_POST['username'] == '') {
+    $fields['empty'][] = 'username';
+  }
+  if ($_POST['email'] == '') {
+    $fields['empty'][] = 'email';
+  }
+  if ($_POST['password'] == '') {
+    $fields['empty'][] = 'password';
+  }
+
+  if (count($fields) > 0) {
+    print(json_encode($fields));
+  } else {
+    print(json_encode($c->runCommand('add', $user)));
+  }
+}
+
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'login') {
   $username = $_POST["username"];
-  $password = md5($_POST["password"]);
+  $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
   $db = \Database\Adapter::getInstance();
-  $db->query('SELECT username, password FROM book WHERE username=:username', array(':username' => $username)
-  );
+  $db->query('SELECT * FROM user WHERE username=:username', array(':username' => $username));
   $user = $db->fetch();
 
-  if (isset($user['password']) && $user['password'] == $password) {
-    $_SESSION["username"] = $username;
+  if (password_verify($_POST["password"], $user[0]['password'])) {
+    $_SESSION["user"] = $user[0]['id'];
     print('true');
   } else {
     print('false');
   }
+
 }
 
 

@@ -39,8 +39,8 @@ html, body, .container, .scroller {
 
 .menu-trigger {
 	position: relative;
-	padding-left: 60px;
-	font-size: 0.9em;
+	padding-left: 48px;
+	font-size: 1.5em;
 }
 
 .menu-trigger:before {
