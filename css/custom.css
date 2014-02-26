@@ -278,3 +278,12 @@ section .emailExist
 input.error {
     border:1px solid red;
 }
+
+a {
+    text-decoration: none;
+    color:#333;
+}
+
+.mp-menu span {
+
+}
