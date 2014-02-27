@@ -20,7 +20,6 @@ function initEditor() {
     }
   );
 
-
   $("div[data-tool='21']").click(function () {
     var content = $('.jqte_editor').html();
     var node = $('#tt').tree('getSelected');

@@ -69,7 +69,7 @@ class Menu {
     $result = $db->fetch();
     $html = '';
     foreach ($result as $book) {
-      $html .= '<li class="'.$type.'" id="book_' . $book['id'] . '"><a class="">' . $book['title'] . '</a></li>';
+      $html .= '<li class="'.$type.'" id="book_' . $book['id'] . '"><a class=""><span class="fa fa-file-text-o"></span>' . $book['title'] . '</a></li>';
     }
     return $html;
   }

@@ -13,7 +13,7 @@ class Login {
                     <input type="password" name="password" id="password" placeholder="Password">
                 </p>
             <button id="login">
-              <i class="icon-arrow-right"></i>
+              <i class="fa fa-arrow-right"></i>
               <span>Sign in</span>
             </button>
             <p class="wrongPassword">
@@ -31,11 +31,11 @@ class Login {
             <form class="register clearfix">
                 <p>
                     <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="username" />
-                    <input id="emailsignup" name="emailsignup" required="required" type="text" placeholder="your_email@mail.com"/>
+                    <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="your_email@mail.com"/>
                     <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="your Password"/>
                 </p>
             <button id="signup" name="submit">
-              <i class="icon-arrow-right"></i>
+              <i class="fa fa-arrow-right"></i>
               <span>Sign up</span>
             </button>
             <p class="emailExist">

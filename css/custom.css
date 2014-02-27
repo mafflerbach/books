@@ -2,19 +2,11 @@
 body {
     background-color: silver;
 }
-.bookmenu {
-    border:1px solid darkgray;
-    width: 180px;
-    display: inline-block;
-    vertical-align: top;
-}
 
 .editor {
-  border: 1px solid #A9A9A9;
-  display: inline-block;
   height: 100%;
   vertical-align: top;
-  width: 88%;
+  width: 100%;
 }
 
 .editContainer {
@@ -46,12 +38,13 @@ p.menuList {
 }
 
 section p {
-    width: 70%;
+    width: 75%;
     float: left;
     padding: 0;
     margin: 0;
 }
 
+ input[type=email],
  input[type=text],
  input[type=password] {
     /* Size and position */
@@ -74,6 +67,10 @@ section p {
     font-size: 20px;
 }
 
+input[type=email] {
+    border-top: 0px;
+
+}
  input[type=text] {
     border-bottom: 1px solid #fff; /* Fallback */
     border-bottom: 1px solid rgba(255,255,255,0.7);
@@ -117,7 +114,7 @@ section p {
 
  button {
     /* Size and position */
-    width: 30%;
+    width: 25%;
 
     float: left;
     position: relative;

@@ -27,6 +27,7 @@ $(document).ready(function () {
           $('#mp-pusher').append(data);
         }
         initTree(_this.attr('id').replace('book_', ''));
+        $('#cc').layout();
 
       });
     });
