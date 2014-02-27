@@ -33,7 +33,7 @@ $(document).ready(function () {
     });
 
   $('#addBook').click(function () {
-    var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="bookName" value="" type="text"/></div>';
+    var content = '<div id="dd" class="easyui-dialog" title="Add Book" data-options="iconCls:\'icon-save\'"><input id="bookName" value="" type="text"/></div>';
     $('body').append(content);
     var dialog = $('#dd').dialog({
       title: 'My Dialog',
@@ -175,7 +175,7 @@ var TreeAction = {
     var node = $('#tt').tree('getSelected');
 
     if (node.book || node.chapter) {
-      var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="name" value="" type="text"/></div>';
+      var content = '<div id="dd" class="easyui-dialog" title="Add" data-options="iconCls:\'icon-save\'"><input id="name" value="" type="text"/></div>';
 
       $('body').append(content);
       var dialog = $('#dd').dialog({
@@ -249,7 +249,7 @@ var TreeAction = {
 
   rename: function () {
     var node = $('#tt').tree('getSelected');
-    var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true"><input id="rename" value="" type="text"/></div>';
+    var content = '<div id="dd" class="easyui-dialog" title="Rename" data-options="iconCls:\'icon-save\'"><input id="rename" value="" type="text"/></div>';
 
     $('body').append(content);
 
@@ -309,7 +309,7 @@ var TreeAction = {
 
   removeit: function () {
     var node = $('#tt').tree('getSelected');
-    var content = '<div id="dd" class="easyui-dialog" title="My Dialog" data-options="iconCls:\'icon-save\',resizable:true,modal:true">Wollen sie wirklich löschen?</div>';
+    var content = '<div id="dd" class="easyui-dialog" title="Delete" data-options="iconCls:\'icon-save\'">Wollen sie wirklich löschen?</div>';
 
     $('body').append(content);
     var dialog = $('#dd').dialog({
