@@ -9,6 +9,36 @@ class Menu {
 					<div class="mp-level">
 						<h2 class="icon icon-world">All Categories</h2>
 						<ul>
+						<li class="icon icon-arrow-left">
+								<a href="#"><span class="fa fa-caret-square-o-right"></span>Actions</a>
+								<div class="mp-level">
+									<h2><span class="fa fa-caret-square-o-right"></span>Actions</h2>
+									<a class="mp-back" href="#">back</a>
+									<ul>
+                    <li class="icon icon-arrow-left">
+											<a href="#"><span class="fa fa-edit"></span>Edit</a>
+											<div class="mp-level">
+												<h2><span class="fa fa-edit"></span>Edit</h2>
+												<a class="mp-back" href="#">back</a>
+												<ul>
+												' . $this->getList('edit') . '
+												</ul>
+											</div>
+										</li>
+										<li><a href="#" id="addBook"><span class="fa fa-plus"></span>Add Book</a></li>
+										<li class="icon icon-arrow-left">
+											<a href="#"><span class="fa fa-minus"></span>Delete Books</a>
+											<div class="mp-level">
+												<h2><span class="fa fa-edit"></span>Edit</h2>
+												<a class="mp-back" href="#">back</a>
+												<ul>
+												' . $this->getList('delete') . '
+												</ul>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</li>
 							<li class="fa icon-arrow-left">
 								<a href="#"><span class="fa fa-book"></span>Books</a>
 								<div class="mp-level">
@@ -27,27 +57,6 @@ class Menu {
 										</li>
 										<li class="icon">
 											<a><span class="fa fa-download"></span>Downloads</a>
-										</li>
-									</ul>
-								</div>
-							</li>
-							<li class="icon icon-arrow-left">
-								<a href="#"><span class="fa fa-caret-square-o-right"></span>Actions</a>
-								<div class="mp-level">
-									<h2><span class="fa fa-caret-square-o-right"></span>Actions</h2>
-									<a class="mp-back" href="#">back</a>
-									<ul>
-										<li><a href="#" id="addBook"><span class="fa fa-plus"></span>Add Book</a></li>
-										<li><a href="#" ><span class="fa fa-minus"></span>Delete Books</a></li>
-										<li class="icon icon-arrow-left">
-											<a href="#"><span class="fa fa-edit"></span>Edit</a>
-											<div class="mp-level">
-												<h2><span class="fa fa-edit"></span>Edit</h2>
-												<a class="mp-back" href="#">back</a>
-												<ul>
-												' . $this->getList('edit') . '
-												</ul>
-											</div>
 										</li>
 									</ul>
 								</div>

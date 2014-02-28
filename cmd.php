@@ -199,6 +199,9 @@ function export($bookId) {
   $db->execute();
   $result = $db->fetch();
 
+  $db->query('select * from user where id=:id', array(':id' => $_SESSION['user']));
+  $db->execute();
+  $user = $db->fetch();
 
   $html = '';
   foreach ($result as $chapter) {
@@ -211,11 +214,8 @@ function export($bookId) {
     foreach ($sections as $seciton) {
       $html .= '<div><h3>' . $seciton['title'] . '</h3>';
       $html .= $seciton['content'] . '</div>';
-
     }
-
     $html .= '</div>';
-
   }
 
   $str = '
@@ -228,11 +228,20 @@ function export($bookId) {
 
   $doc = new DOMDocument();
   $xsl = new XSLTProcessor();
-
-  $doc->load('templates/docbook2.xsl');
+  $xsl->setParameter('','firstname', $user[0]['name']);
+  $xsl->setParameter('', 'surname', $user[0]['surname']);
+  $xsl->setParameter('', 'year', date("Y"));
+  $doc->load('templates/docbook.xsl');
   $xsl->importStyleSheet($doc);
 
   $doc->loadHTML($str);
-  file_put_contents('tmp/' . str_replace(' ', '_', $bookResult[0]['title']) . '.xml', $xsl->transformToXML($doc));
+  if(file_exists('tmp/'.$user[0]['hash'])) {
+    file_put_contents('tmp/'.$user[0]['hash'].'/'. str_replace(' ', '_', $bookResult[0]['title']) . '.xml', $xsl->transformToXML($doc));
+  } else {
+    mkdir('tmp/'.$user[0]['hash'], 0777);
+    file_put_contents('tmp/'.$user[0]['hash'].'/'. str_replace(' ', '_', $bookResult[0]['title']) . '.xml', $xsl->transformToXML($doc));
+  }
 
+  $command='create.cmd '.str_replace(' ', '_', $bookResult[0]['title']) . ' ' .$user[0]['hash'];
+  exec($command, $out);
 }

@@ -7,7 +7,8 @@ $(document).ready(function () {
       type: "POST",
       data: {
         cmd: 'export',
-        bookId: _this.attr('id').replace('book_', '')
+        bookId: _this.attr('id').replace('book_',
+          '')
       }
     });
   })
@@ -19,18 +20,62 @@ $(document).ready(function () {
       type: "POST",
       data: {
         cmd: 'edit',
-        bookId: _this.attr('id').replace('book_', '')
+        bookId: _this.attr('id').replace('book_',
+          '')
       }
     }).done(function (data) {
         $('#tt').empty();
         if ($('.scroller').length == 0) {
           $('#mp-pusher').append(data);
         }
-        initTree(_this.attr('id').replace('book_', ''));
+        initTree(_this.attr('id').replace('book_',
+          ''));
         $('#cc').layout();
 
       });
+  });
+
+  $('.delete').click(function () {
+    var content = '<div id="dd" class="easyui-dialog" title="Delete" data-options="iconCls:\'icon-save\'">Wollen sie wirklich löschen?</div>';
+    var _this = $(this);
+
+    $('body').append(content);
+    var dialog = $('#dd').dialog({
+      title: 'My Dialog',
+      width: 400,
+      height: 200,
+      cache: false,
+      modal: true,
+      buttons: [
+        {
+          text: 'Ok',
+          iconCls: 'icon-ok',
+          handler: function () {
+            $.ajax({
+              url: "cmd.php",
+              type: "POST",
+              data: {
+                cmd: 'remove',
+                id: _this.attr('id').replace('book_',''),
+                type:'book'
+              }
+            }).done(function (data) {
+                _this.remove();
+                dialog.dialog('close');
+                $('#dd').remove();
+              });
+          }
+        },
+        {
+          text: 'Cancel',
+          handler: function () {
+            dialog.dialog('close');
+            $('#dd').remove();
+          }
+        }
+      ]
     });
+  });
 
   $('#addBook').click(function () {
     var content = '<div id="dd" class="easyui-dialog" title="Add Book" data-options="iconCls:\'icon-save\'"><input id="bookName" value="" type="text"/></div>';
@@ -81,7 +126,7 @@ function initTree(bookId) {
 
   $('#tt').tree({
     animate: true,
-    url: 'cmd.php?cmd=getTree&id='+bookId,
+    url: 'cmd.php?cmd=getTree&id=' + bookId,
     dnd: true,
     onBeforeDrop: function (target, source, point) {
       if (($(target).attr('data-book') == 'undefined' && point == 'append') ||
@@ -140,7 +185,8 @@ function initTree(bookId) {
     },
     onContextMenu: function (e, node) {
       e.preventDefault();
-      $(this).tree('select', node.target);
+      $(this).tree('select',
+        node.target);
       $('#mm').menu('show',
         {
           left: e.pageX,
@@ -275,7 +321,8 @@ var TreeAction = {
               var type = '';
               if (node.book) {
                 type = 'book';
-              }if (node.section ) {
+              }
+              if (node.section) {
                 type = 'section';
               } else {
                 type = 'chapter';

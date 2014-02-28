@@ -11,14 +11,60 @@
     <xsl:param name="prefix">wb</xsl:param>
     <xsl:param name="graphics_location">file:///epicuser/AISolutions/graphics/AIWorkbench/</xsl:param>
 
+    <xsl:param name="firstname"/>
+    <xsl:param name="surname"/>
+    <xsl:param name="year"/>
+
     <!-- Main block-level conversions -->
     <xsl:template match="html">
-        <xsl:apply-templates select="body"/>
+        <book>
+            <xsl:call-template name="info">
+                <xsl:with-param name="head" select="head"/>
+            </xsl:call-template>
+            <xsl:apply-templates select="body"/>
+        </book>
+    </xsl:template>
+
+    <xsl:template name="info">
+        <xsl:param name="head"/>
+        <info>
+            <title>
+                <xsl:value-of select="$head/title"/>
+            </title>
+            <author>
+                <personname>
+                    <firstname>
+                        <xsl:value-of select="$firstname"/>
+                    </firstname>
+                    <surname>
+                        <xsl:value-of select="$surname"/>
+                    </surname>
+                </personname>
+            </author>
+            <copyright>
+                <year>
+                    <xsl:value-of select="$year"/>
+                </year>
+                <holder>
+                    <xsl:value-of select="$firstname"/><xsl:text> </xsl:text><xsl:value-of select="$surname"/>
+                </holder>
+            </copyright>
+        </info>
     </xsl:template>
 
     <!-- This template converts each HTML file encountered into a DocBook
          section.  For a title, it selects the first h1 element -->
     <xsl:template match="body">
+        <xsl:apply-templates select="div" mode="chapter"/>
+    </xsl:template>
+
+    <xsl:template match="div" mode="chapter">
+        <chapter>
+            <title><xsl:value-of select="h2"/></title>
+            <xsl:apply-templates select="div" mode="section"/>
+        </chapter>
+        </xsl:template>
+    <xsl:template match="div" mode="section">
         <section>
             <xsl:if test="$filename != ''">
                 <xsl:attribute name="id">
@@ -35,6 +81,7 @@
             <xsl:apply-templates select="*"/>
         </section>
     </xsl:template>
+
 
     <!-- This template matches on all HTML header items and makes them into
          bridgeheads. It attempts to assign an ID to each bridgehead by looking
@@ -333,6 +380,22 @@
         <blockquote><para>
             <xsl:apply-templates/></para>
         </blockquote>
+    </xsl:template>
+
+    <xsl:template match="div">
+        <xsl:choose>
+            <xsl:when test="./title">
+                <chapter>
+                <title>
+                    <xsl:value-of select="./title"/>
+                </title>
+                    <xsl:apply-templates select="*"/>
+                </chapter>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="div/*"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="a[@href != ''
