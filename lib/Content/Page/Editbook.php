@@ -3,23 +3,17 @@ namespace Content\Page;
 
 class Editbook {
   public function content() {
+    $d = new \Xml\Document();
+    $div = $d->appendElement('div', array('class' => 'scroller'));
+    $layout = $div->appendElement('div', array('id'=>'cc','class' => 'easyui-layout', 'style'=>'width:100%;height:100%;'));
+    $west = $layout->appendElement('div', array('data-options' => "region:'west',title:'Table of Content',split:true", 'style'=>"width:200px;"));
+    $menu = $west->appendElement('div', array('class' => 'bookmenu'));
+    $menu->appendElement('ul', array('class' => 'easyui-tree', 'id'=>'tt'));
 
-    $bookMenu = '
-                <div class="bookmenu">
-                  <ul id="tt" class="easyui-tree"></ul>
-                </div>';
-    $editor = '<div class="editor">
-               </div>';
+    $center = $layout->appendElement('div', array('data-options' => "region:'center',title:''"));
+    $center->appendElement('div', array('class' => 'editor'));
 
-
-    $screen = '<div id="cc" class="easyui-layout" style="width:100%;height:100%;">
-    <div data-options="region:\'west\',title:\'Table of Content\',split:true" style="width:200px;">'.$bookMenu.'</div>
-    <div data-options="region:\'center\',title:\'\'">'.$editor.'</div>
-    </div>';
-
-
-    return '<div class="scroller">' . $screen. '</div>';
-
+    return $d->saveXml();
   }
 
 }

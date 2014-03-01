@@ -1,60 +1,94 @@
 <?php
 namespace Content\Page;
 
+use Xml;
+
 class Login {
   public function content() {
+    return $this->getLoginForm() . $this->getRegisterForm();
+  }
 
+  private function getRegisterForm() {
 
-    $login = '
-        <section class="main">
-            <form class="loginform clearfix">
-                <p>
-                    <input type="text" id="loginname" name="login" placeholder="Username">
-                    <input type="password" name="password" id="password" placeholder="Password">
-                </p>
-            <button id="login">
-              <i class="fa fa-arrow-right"></i>
-              <span>Sign in</span>
-            </button>
-            <p class="wrongPassword">
-                Your password or username is wrong
-            </p>
-            <p class="newUser">
-                Not a member ?
-                <a href="#tosignUp" class="to_register"> Go and sign up</a>
-            </p>
-            </form>
-        ​</section>';
+    $d = new Xml\Document();
+    $section = $d->appendElement('section', array('class' => 'registermain'));
+    $form = $section->appendElement('form', array('class' => 'register clearfix'));
 
-    $register = '
-     <section class="registermain">
-            <form class="register clearfix">
-                <p>
-                    <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="username" />
-                    <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="your_email@mail.com"/>
-                    <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="your Password"/>
-                </p>
-            <button id="signup" name="submit">
-              <i class="fa fa-arrow-right"></i>
-              <span>Sign up</span>
-            </button>
-            <p class="emailExist">
-                Email exist
-            </p>
-            <p class="usernameExist">
-                User Exist
-            </p>
-            <p class="required">
-                Field required
-            </p>
-            <p class="registerUser">
-                You are a member ?
-                <a href="#tologin" class="to_login"> Go and sign in</a>
-            </p>
-            </form>
-        ​</section>';
+    $para = $form->appendElement('p');
+    $para->appendElement('input', array('type' => "text",
+                                        'id' => "usernamesignup",
+                                        'name' => "usernamesignup",
+                                        'placeholder' => "Username",
+                                        'required' => "required"
+                                  )
+    );
+    $para->appendElement('input', array('type' => "email",
+                                        'id' => "emailsignup",
+                                        'name' => "emailsignup",
+                                        'placeholder' => "your_email@mail.com",
+                                        'required' => "required"
+                                  )
+    );
+    $para->appendElement('input', array('type' => "password",
+                                        'id' => "passwordsignup",
+                                        'name' => "passwordsignup",
+                                        'placeholder' => "Your Password",
+                                        'required' => "required"
+                                  )
+    );
 
-    return $login .$register;
+    $button = $form->appendElement('button', array('id' => 'signup',
+                                                   'name' => 'submit'
+                                             )
+    );
+    $button->appendElement('i', array('class' => 'fa fa-arrow-right'), '');
+    $button->appendElement('span', array(), 'Sign up');
+
+    $form->appendElement('p', array('class' => 'emailExist'), 'Email exist');
+    $form->appendElement('p', array('class' => 'usernameExist'), 'User Exist');
+    $form->appendElement('p', array('class' => 'required'), 'Field required');
+
+    $para2 = $form->appendElement('p', array('class' => 'registerUser'), 'You are a member ?');
+    $para2->appendElement('a', array('class' => 'to_login',
+                                     'href' => "#tologin"
+                               ), 'Go and sign in'
+    );
+
+    return $d->saveXML();
+  }
+
+  private function getLoginForm() {
+    $d = new Xml\Document();
+    $section = $d->appendElement('section', array('class' => 'main'));
+    $form = $section->appendElement('form', array('class' => 'loginform clearfix'));
+
+    $para = $form->appendElement('p');
+    $para->appendElement('input', array('type' => "text",
+                                        'id' => "loginname",
+                                        'name' => "login",
+                                        'placeholder' => "Username"
+                                  )
+    );
+    $para->appendElement('input', array('type' => "password",
+                                        'id' => "password",
+                                        'name' => "password",
+                                        'placeholder' => "Password"
+                                  )
+    );
+
+    $button = $form->appendElement('button', array('id' => 'login'));
+    $button->appendElement('i', array('class' => 'fa fa-arrow-right'), '');
+    $button->appendElement('span', array(), 'Sign in');
+
+    $form->appendElement('p', array('class' => 'wrongPassword'), 'Your password or username is wrong');
+    $para2 = $form->appendElement('p', array('class' => 'newUser'), 'Not a member ?');
+    $para2->appendElement('a', array('class' => 'to_register',
+                                     'href' => "#tosignUp"
+                               ), 'Go and sign in'
+    );
+
+    return $d->saveXML();
+
   }
 }
 
