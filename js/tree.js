@@ -13,6 +13,25 @@ $(document).ready(function () {
     });
   })
 
+  $('a[data-page]').click(function() {
+    var page = $(this).data('page');
+
+    $.ajax({
+      url: "cmd.php",
+      type: "POST",
+      data: {
+        cmd: 'getPage',
+        page: page
+      },
+      dataType: 'html'
+    }).done(function (data) {
+        if ($('.scroller').length > 0) {
+          $('.scroller').remove();
+        }
+      $('#mp-pusher').append(data);
+      });
+  });
+
   $('.edit').click(function () {
     var _this = $(this);
     $.ajax({

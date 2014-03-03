@@ -187,6 +187,26 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'update') {
   $c->runCommand('update', $order);
 }
 
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'getPage') {
+  switch ($_POST['page']) {
+    case 'download':
+      $page = new Content\Page\Download();
+    break;
+    case 'settings':
+      $page = new Content\Page\Settings();
+    break;
+    case 'help':
+      $page = new Content\Page\Help();
+    break;
+
+    default:
+      $page = new Content\Page\Notfound();
+
+      break;
+  }
+  print($page->content());
+}
+
 
 function export($bookId) {
   $db = \Database\Adapter::getInstance();
@@ -235,13 +255,19 @@ function export($bookId) {
   $xsl->importStyleSheet($doc);
 
   $doc->loadHTML($str);
+  $bookName=str_replace(' ', '_', $bookResult[0]['title']);
+  $path = 'tmp/'.$user[0]['hash'].'/gen/'. $bookName;
+
+  if (!file_exists($path)) {
+    mkdir($path, 0777, true);
+  }
+
   if(file_exists('tmp/'.$user[0]['hash'])) {
-    file_put_contents('tmp/'.$user[0]['hash'].'/'. str_replace(' ', '_', $bookResult[0]['title']) . '.xml', $xsl->transformToXML($doc));
-  } else {
-    mkdir('tmp/'.$user[0]['hash'], 0777);
-    file_put_contents('tmp/'.$user[0]['hash'].'/'. str_replace(' ', '_', $bookResult[0]['title']) . '.xml', $xsl->transformToXML($doc));
+    file_put_contents('tmp/'.$user[0]['hash'].'/gen/'. $bookName. '/'.$bookName.'.xml', $xsl->transformToXML($doc));
   }
 
   $command='create.cmd '.str_replace(' ', '_', $bookResult[0]['title']) . ' ' .$user[0]['hash'];
   exec($command, $out);
+
+  print_r($out);
 }

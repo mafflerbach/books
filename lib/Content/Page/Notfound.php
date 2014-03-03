@@ -1,13 +1,10 @@
 <?php
 namespace Content\Page;
 
-class Settings {
+class Notfound {
   public function content() {
-
-    print('settings');
-
+    print('Not Found');
   }
-
 }
 
 
