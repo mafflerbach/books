@@ -61,6 +61,18 @@ class Menu {
 									</ul>
 								</div>
 							</li>
+							<li class="fa fa-arrow-left">
+								<a href="#" data-page="media"><span class="fa fa-book"></span>Images</a>
+								<div class="mp-level">
+									<h2><span class="fa fa-book"></span>Images</h2>
+									<a class="mp-back" href="#">back</a>
+									<ul>
+										<li class="icon">
+											<a href="#" data-page="upload"><span class="fa fa-archive"></span>Upload</a>
+										</li>
+									</ul>
+								</div>
+							</li>
 							<li><a href="#" data-page="settings"><span class="fa fa-cog"></span>Settings</a></li>
 							<li><a href="#" data-page="help"><span class="fa fa-question"></span>Help</a></li>
 							<li><a href="logout.php"><span class="fa fa-sign-out"></span>Logout</a></li>

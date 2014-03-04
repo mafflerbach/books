@@ -1,3 +1,16 @@
+function supportMultiple() {
+  //do I support input type=file/multiple
+  var el = document.createElement("input");
+
+  return ("multiple" in el);
+}
+
+function initUpload() {
+  if(supportMultiple()) {
+    document.querySelector("#multipleFileLabel").setAttribute("style","");
+  }
+}
+
 $(document).ready(function () {
 
   $('.export').click(function () {

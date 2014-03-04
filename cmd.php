@@ -198,6 +198,12 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'getPage') {
     case 'help':
       $page = new Content\Page\Help();
     break;
+    case 'media':
+      $page = new Content\Page\Media();
+    break;
+    case 'upload':
+      $page = new Content\Page\Upload();
+    break;
 
     default:
       $page = new Content\Page\Notfound();

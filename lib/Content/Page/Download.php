@@ -47,7 +47,7 @@ class Download {
           $elem->appendElement('span', array('class' => 'date'), date('l jS \of F Y h:i:s A', $fileInfo2->getMTime()));
         }
       } else {
-        $elem = $ul->appendElement('li', array('class' => 'item'), $fileInfo->getFilename());
+        $ul->appendElement('li', array('class' => 'item'), $fileInfo->getFilename());
       }
     }
 
