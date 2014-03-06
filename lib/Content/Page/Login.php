@@ -54,7 +54,7 @@ class Login {
                                ), 'Go and sign in'
     );
 
-    return $d->saveXML();
+    return $section->saveXML();
   }
 
   private function getLoginForm() {
@@ -87,7 +87,7 @@ class Login {
                                ), 'Go and sign in'
     );
 
-    return $d->saveXML();
+    return $section->saveXML();
 
   }
 }

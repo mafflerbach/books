@@ -6,8 +6,9 @@ function supportMultiple() {
 }
 
 function initUpload() {
-  if(supportMultiple()) {
-    document.querySelector("#multipleFileLabel").setAttribute("style","");
+  if (supportMultiple()) {
+    document.querySelector("#multipleFileLabel").setAttribute("style",
+      "");
   }
 }
 
@@ -26,9 +27,8 @@ $(document).ready(function () {
     });
   })
 
-  $('a[data-page]').click(function() {
+  $('a[data-page]').click(function () {
     var page = $(this).data('page');
-
     $.ajax({
       url: "cmd.php",
       type: "POST",
@@ -38,10 +38,8 @@ $(document).ready(function () {
       },
       dataType: 'html'
     }).done(function (data) {
-        if ($('.scroller').length > 0) {
-          $('.scroller').remove();
-        }
-      $('#mp-pusher').append(data);
+        $('.scroller').empty();
+        $('.scroller').append(data);
       });
   });
 
@@ -56,10 +54,8 @@ $(document).ready(function () {
           '')
       }
     }).done(function (data) {
-        $('#tt').empty();
-        if ($('.scroller').length == 0) {
-          $('#mp-pusher').append(data);
-        }
+        $('.scroller').empty();
+        $('.scroller').append(data);
         initTree(_this.attr('id').replace('book_',
           ''));
         $('#cc').layout();
@@ -88,8 +84,9 @@ $(document).ready(function () {
               type: "POST",
               data: {
                 cmd: 'remove',
-                id: _this.attr('id').replace('book_',''),
-                type:'book'
+                id: _this.attr('id').replace('book_',
+                  ''),
+                type: 'book'
               }
             }).done(function (data) {
                 _this.remove();
@@ -450,3 +447,59 @@ var TreeAction = {
   }
 
 };
+
+var foo = [
+  {
+    "id": 1,
+    "text": "Folder1",
+    "iconCls": "icon-ok",
+    "children": [
+      {
+        "id": 2,
+        "text": "File1",
+        "checked": true
+      },
+      {
+        "id": 3,
+        "text": "Folder2",
+        "state": "open",
+        "children": [
+          {
+            "id": 4,
+            "text": "File3",
+            "attributes": {
+              "p1": "value1",
+              "p2": "value2"
+            },
+            "iconCls": "icon-reload"
+          },
+          {
+            "id": 8,
+            "text": "File8"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "text": "Languages",
+    "children": [
+      {
+        "id": "j1",
+        "text": "Java"
+      },
+      {
+        "id": "j2",
+        "text": "C#"
+      },
+      {
+        "id": "j3",
+        "text": "Ruby"
+      },
+      {
+        "id": "j4",
+        "text": "Erlang"
+      }
+    ]
+  }
+]

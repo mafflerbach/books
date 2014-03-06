@@ -53,6 +53,7 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'login') {
 
   if (password_verify($_POST["password"], $user[0]['password'])) {
     $_SESSION["user"] = $user[0]['id'];
+    $_SESSION["hash"] = $user[0]['hash'];
     print('true');
   } else {
     print('false');
@@ -169,6 +170,17 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveSection') {
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'export') {
   export($_POST['bookId']);
+}
+
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'addDir') {
+  $_POST['dirname'] = $name;
+  $_POST['parent'] = $parent;
+  $hash = $_SESSION['hash'];
+}
+
+if (isset($_POST['cmd']) && $_POST['cmd'] == 'getFileTree') {
+
 }
 
 

@@ -16,7 +16,7 @@ if (isset($_SESSION['user'])) {
   print($login->content());
 }
 
-print('</div>');
+print('<div class="scroller"></div></div>');
 echo  '<div id="mm" class="easyui-menu" style="width:120px;">
                   <div onclick="TreeAction.append()" data-options="iconCls:\'fa-plus\'">Append</div>
                   <div onclick="TreeAction.removeit()" data-options="iconCls:\'fa-minus\'">Remove</div>

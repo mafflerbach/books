@@ -24,8 +24,7 @@ class Download {
 
   private function getFileList() {
     $d = new \Xml\Document();
-    $div = $d->appendElement('div', array('class' => 'scroller'));
-    $ul = $div->appendElement('ul', array('class' => 'filelist'));
+    $ul = $d->appendElement('ul', array('class' => 'filelist'));
     $path = $this->getUserDir();
 
     foreach (new \DirectoryIterator($path) as $fileInfo) {
@@ -51,7 +50,7 @@ class Download {
       }
     }
 
-    print($div->saveXML());
+    print($ul->saveXML());
   }
 }
 

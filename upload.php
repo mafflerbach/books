@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $files = array();
 $fdata = $_FILES['imageURL'];
 if (is_array($fdata['name'])) {
@@ -16,12 +16,13 @@ if (is_array($fdata['name'])) {
   $files[] = $fdata;
 }
 
-print_r($files );
+print_r($files);
 
-foreach ($_FILES["pictures"]["error"] as $key => $error) {
-  if ($error == UPLOAD_ERR_OK) {
-    $tmp_name = $_FILES["pictures"]["tmp_name"][$key];
-    $name = $_FILES["pictures"]["name"][$key];
-    move_uploaded_file($tmp_name, "data/$name");
+foreach ($files as $file) {
+  if ($file['error'] == UPLOAD_ERR_OK) {
+    $tmp_name = $file['tmp_name'];
+    $name = $file['name'];
+    $hash = $_SESSION['hash'];
+    move_uploaded_file($tmp_name, 'tmp/'.$hash.'/images/'.$name);
   }
 }
