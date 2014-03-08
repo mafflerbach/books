@@ -4,15 +4,23 @@ namespace Content\Page;
 class Editbook {
   public function content() {
     $d = new \Xml\Document();
-    $layout = $d->appendElement('div', array('id'=>'cc','class' => 'easyui-layout', 'style'=>'width:100%;height:100%;'));
-    $west = $layout->appendElement('div', array('data-options' => "region:'west',title:'Table of Content',split:true", 'style'=>"width:200px;"));
-    $menu = $west->appendElement('div', array('class' => 'bookmenu'));
-    $menu->appendElement('ul', array('class' => 'easyui-tree', 'id'=>'tt'));
+    $c = new \Command\Chain();
+    $c->addCommand(new \Book\Command());
+    $list = $c->runCommand('getBook', array(':id' => 1));
 
-    $center = $layout->appendElement('div', array('data-options' => "region:'center',title:''"));
+    $layout = $d->appendElement('div', array('class'=>'layout'));
+
+    $center = $layout->appendElement('div', array('class' => "ui-layout-center"));
     $center->appendElement('div', array('class' => 'editor'));
+    $west = $layout->appendElement('div', array('class' => 'ui-layout-west'));
+    $menu = $west->appendElement('div', array('class' => 'bookmenu'));
+    $menu->appendXml('<div class="bookmenu">'.$list->saveXml().'</div>');
 
-    return $layout->saveXml();
+    $sc = new \Xml\Document();
+    $script = $d->appendElement('script', array('type' => 'text/javascript'), "$('.layout').layout({ applyDemoStyles: true });initBooktree()");
+
+
+    return $layout->saveXml().$script->saveXml() ;
   }
 
 }

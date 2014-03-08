@@ -17,11 +17,7 @@ if (isset($_SESSION['user'])) {
 }
 
 print('<div class="scroller"></div></div>');
-echo  '<div id="mm" class="easyui-menu" style="width:120px;">
-                  <div onclick="TreeAction.append()" data-options="iconCls:\'fa-plus\'">Append</div>
-                  <div onclick="TreeAction.removeit()" data-options="iconCls:\'fa-minus\'">Remove</div>
-                  <div onclick="TreeAction.rename()" data-options="iconCls:\'fa-edit\'">rename</div>
-                </div>';
+
 print(file_get_contents('templates/footer.tmpl'));
 
 

@@ -4,9 +4,11 @@ body {
 }
 
 .editor {
-  height: 100%;
-  vertical-align: top;
-  width: 100%;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    vertical-align: top;
 }
 
 .editContainer {
@@ -17,7 +19,6 @@ p.menuList {
     padding: 0px;
     margin: 0px;
 }
-
 
  .loginform{
     /* Size and position */
@@ -283,4 +284,45 @@ a {
 
 .mp-menu span {
     margin-right: 0.5em;
+}
+
+.addDir h2, .fileupload h2 {
+    padding:0px;
+    margin: 5px;
+}
+
+.uploadDialog , .addDirDialog{
+    display: none;
+}
+#adddir {
+    padding: 10px;
+    width: 100px;
+}
+
+.addDir #dirname {
+    border: 1px solid #C0C0C0;
+    border-radius: 0;
+    height: auto;
+    margin: 5px 0;
+    padding: 0;}
+
+.addDirDialog {
+    padding-bottom: 20px;
+}
+
+
+.fileupload {
+    border-top: 1px solid #C0C0C0;
+    margin-top: 31px;
+}
+
+
+#myMenu a {
+    padding-left: 15px ;
+}
+
+
+
+.layout {
+    position: static !important;
 }

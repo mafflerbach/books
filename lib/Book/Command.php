@@ -60,43 +60,48 @@ class Command implements
   private function getBook($args) {
     $this->db()->query('select * from book where id=:id', $args);
     $books = $this->db()->fetch();
-    $treeArray = array();
+
 
     foreach ($books as $book) {
       $this->db()->query('select * from chapter where bookId = :id order by sort', array(':id' => $book['id']));
       $chapters = $this->db()->fetch();
 
+
+      $d = new \Xml\Document();
+      $ul = $d->appendElement('ul', array('id' =>'treeData'));
       $bookTmp = array(
-        'id' => $book['id'],
-        'text' => $book['title'],
-        'book' => $book['id'],
+        'data-id' => $book['id'],
+        'data-book' => $book['id'],
+        'class' => 'folder',
       );
+      $li = $ul->appendElement('li',$bookTmp, $book['title']);
+
       foreach ($chapters as $chapter) {
+
         $chapterTmp = array(
-          'id' => $chapter['id'],
-          'text' => $chapter['title'],
-          'chapter' => $chapter['id'],
+          'data-id' => $chapter['id'],
+          'data-chapter' => $chapter['id'],
+          'class' => 'folder',
         );
+
+        $ul2 = $li->appendElement('ul');
+        $li2 = $ul2->appendElement('li',$chapterTmp , $chapter['title']);
 
         $this->db()->query('select * from sections where chapterid= :id order by sort', array(':id' => $chapter['id']));
         $sections = $this->db()->fetch();
 
         foreach ($sections as $section) {
           $sectointmp = array(
-            'id' => $section['id'],
-            'text' => $section['title'],
-            'section' => $section['id'],
+            'data-id' => $section['id'],
+            'data-section' => $section['id'],
           );
-          $chapterTmp['children'][] = $sectointmp;
+          $ul3 = $li2->appendElement('ul');
+          $ul3->appendElement('li', $sectointmp ,$section['title']);
         }
-
-        $bookTmp['children'][] = $chapterTmp;
-
       }
-      $treeArray[] = $bookTmp;
     }
 
-    return json_encode($treeArray);
+    return $ul;
   }
 
   public function db(\Database\Adapter $instance = null) {

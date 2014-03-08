@@ -35,7 +35,7 @@ class Document
     return $node;
   }
 
-  public function appendXml($content, PapayaXmlElement $target = NULL) {
+  public function appendXml($content, \Xml\Element $target = NULL) {
     if (is_null($target)) {
       $target = $this;
     }
