@@ -22,26 +22,16 @@ function initEditor() {
 
   $("div[data-tool='21']").click(function () {
     var content = $('.jqte_editor').html();
-    var node = $('#tt').tree('getSelected');
-    var parentNode = $('#tt').tree('getParent', node.target);
 
-    var chapterId = node.chapter;
-    var bookId = parentNode.book;
-
-    var action = '';
-    if (node.chapter) {
-      action = 'saveChapter';
-    } else {
-      action = 'saveSection';
-    }
+    console.log($('#editor').data('section'));
 
     $.ajax({
       url: "cmd.php",
       type: "POST",
       data: {
-        id: node.id,
+        id: $('#editor').data('section'),
         content: content,
-        cmd: action
+        cmd: 'saveSection'
       },
       dataType: "json"
     }).done(function (data) {

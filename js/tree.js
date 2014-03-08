@@ -55,11 +55,7 @@ $(document).ready(function () {
       }
     }).done(function (data) {
         $('.scroller').empty();
-        $('.scroller').append(data); /*
-        initTree(_this.attr('id').replace('book_',
-          ''));
-        $('#cc').layout(); */
-
+        $('.scroller').append(data);
       });
   });
 
@@ -246,79 +242,39 @@ function initTree(bookId) {
 }
 
 var TreeAction = {
-  append: function () {
-    var node = $('#tt').tree('getSelected');
-    if (node.book || node.chapter) {
+  append: function (type, id) {
       var content = '<div id="dd" class="easyui-dialog" title="Add" data-options="iconCls:\'icon-save\'"><input id="name" value="" type="text"/></div>';
 
       $('body').append(content);
       var dialog = $('#dd').dialog({
-        title: 'My Dialog',
+        title: 'Add',
         width: 400,
         height: 200,
         cache: false,
         modal: true,
-        buttons: [
-          {
-            text: 'Ok',
-            iconCls: 'icon-ok',
-            handler: function () {
-              if ($('#chapterName').val() != "") {
-
-                var node = $('#tt').tree('getSelected');
-                $('#tt').tree('append',
-                  {
-                    parent: node.target,
-                    data: [
-                      {
-                        text: $('#name').val()
-                      }
-                    ]
-                  });
-
-                var action = '';
-                var type = '';
-
-                if (node.book) {
-                  type = 'chapter';
-                }
-                if (node.chapter) {
-                  type = 'section';
-                }
-
-                $.ajax({
-                  url: "cmd.php",
-                  type: "POST",
-                  data: {
-                    id: node.id,
-                    cmd: 'add',
-                    text: $('#name').val(),
-                    type: type
-                  },
-                  dataType: "json"
-                }).done(function (data) {
-                    $('#tt').empty();
-                    initTree();
-                  });
-
-                dialog.dialog('close');
-                $('#dd').remove();
-              }
+        buttons: {
+          Ok: function() {
+            if ($('#chapterName').val() != "") {
+              $.ajax({
+                url: "cmd.php",
+                type: "POST",
+                data: {
+                  id:  id,
+                  cmd: 'add',
+                  text: $('#name').val(),
+                  type: type
+                },
+                dataType: "json"
+              }).done(function (data) {
+                });
+              $(this).dialog( "close" );
             }
           },
-          {
-            text: 'Cancel',
-            handler: function () {
-              dialog.dialog('close');
-              $('#dd').remove();
-            }
+          Cancel: function() {
+            $(this).dialog( "close" );
           }
-        ]
+        }
       });
-
-    } else {
-      console.log('kann kein subcapitel erstellen')
-    }
   },
 
   rename: function () {
@@ -790,18 +746,19 @@ function initBooktree() {
       click: function(event, data) {
 
         console.log(event, data, ", targetType=" + data.targetType);
-
+        var sectionId = data.node.data.id;
         if (data.node.data.section) {
           $.ajax({
             url: "cmd.php",
             type: "POST",
             data: {
-              id: data.node.data.id,
+              id: sectionId,
               cmd: 'getSection'
             },
             dataType: "json"
           }).done(function (data) {
-              var content = '<textarea id="editor" data-origin="textarea" style="height:100%; width:100%;"></textarea>';
+              $('.editor').empty();
+              var content = '<textarea id="editor" data-section="'+sectionId+'" data-origin="textarea" style="height:100%; width:100%;"></textarea>';
               $('.editor').append(content);
               initEditor();
               $("#editor").jqteVal(data.content);
@@ -824,12 +781,20 @@ function initBooktree() {
           //$.ui.fancytree.debug("Menu focus ", data.menuId, data.node);
         },
         select: function(event, data){
-          console.log("Menu select " + data.menuId + ", " + data.node);
+
+          if (data.node.data.book) {
+            TreeAction.append('chapter', data.node.data.id);
+          }
+          if (data.node.data.chapter) {
+            TreeAction.append('section', data.node.data.id);
+          }
+          node.addChildren('test');
         },
         close: function(event, data){
           //$.ui.fancytree.debug("Menu close ", data.$menu, data.node);
         }
       },
+      
       glyph: {
         map: {
           doc: "fa fa-file-o",

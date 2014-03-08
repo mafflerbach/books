@@ -8,6 +8,7 @@ body {
     left: 0;
     position: absolute;
     top: 0;
+    right: 0px;
     vertical-align: top;
 }
 
@@ -325,4 +326,14 @@ a {
 
 .layout {
     position: static !important;
+}
+
+div.ui-layout-center,
+div.ui-layout-west,
+div.ui-layout-resizer-west {
+    height: 100% !important;
+}
+
+ul.fancytree-container {
+    font-size: 12pt;
 }

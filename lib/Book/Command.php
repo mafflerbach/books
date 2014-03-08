@@ -38,7 +38,7 @@ class Command implements
   private function delete(\Domain\Object $args) {
     $this->db()->query('delete from book where id =:id', array(':id' => $args->id));
     $this->db()->execute();
-    $this->db()->query('delete from chapter where bookid =:bookId',array(':bookId' => $args->id));
+    $this->db()->query('delete from chapter where bookid =:bookId', array(':bookId' => $args->id));
     $this->db()->execute();
   }
 
@@ -68,39 +68,47 @@ class Command implements
 
 
       $d = new \Xml\Document();
-      $ul = $d->appendElement('ul', array('id' =>'treeData'));
+      $ul = $d->appendElement('ul', array('id' => 'treeData'));
       $bookTmp = array(
         'data-id' => $book['id'],
         'data-book' => $book['id'],
         'class' => 'folder',
       );
-      $li = $ul->appendElement('li',$bookTmp, $book['title']);
 
-      foreach ($chapters as $chapter) {
+      $li = $ul->appendElement('li', $bookTmp, $book['title']);
 
-        $chapterTmp = array(
-          'data-id' => $chapter['id'],
-          'data-chapter' => $chapter['id'],
-          'class' => 'folder',
-        );
+      if (count($chapters) > 0) {
+
 
         $ul2 = $li->appendElement('ul');
-        $li2 = $ul2->appendElement('li',$chapterTmp , $chapter['title']);
 
-        $this->db()->query('select * from sections where chapterid= :id order by sort', array(':id' => $chapter['id']));
-        $sections = $this->db()->fetch();
-
-        foreach ($sections as $section) {
-          $sectointmp = array(
-            'data-id' => $section['id'],
-            'data-section' => $section['id'],
+        foreach ($chapters as $chapter) {
+          $chapterTmp = array(
+            'data-id' => $chapter['id'],
+            'data-chapter' => $chapter['id'],
+            'class' => 'folder',
           );
-          $ul3 = $li2->appendElement('ul');
-          $ul3->appendElement('li', $sectointmp ,$section['title']);
+
+          $li2 = $ul2->appendElement('li', $chapterTmp, $chapter['title']);
+
+          $this->db()->query('select * from sections where chapterid= :id order by sort', array(':id' => $chapter['id']));
+          $sections = $this->db()->fetch();
+          if (count($sections) > 0) {
+            $ul3 = $li2->appendElement('ul');
+
+            foreach ($sections as $section) {
+              $sectointmp = array(
+                'data-id' => $section['id'],
+                'data-section' => $section['id'],
+              );
+              $li3 = $ul3->appendElement('li', $sectointmp, $section['title']);
+            }
+          }
         }
       }
     }
 
+    print($ul->saveXml());
     return $ul;
   }
 

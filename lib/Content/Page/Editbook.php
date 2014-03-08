@@ -7,20 +7,23 @@ class Editbook {
     $c = new \Command\Chain();
     $c->addCommand(new \Book\Command());
     $list = $c->runCommand('getBook', array(':id' => 1));
-
     $layout = $d->appendElement('div', array('class'=>'layout'));
-
     $center = $layout->appendElement('div', array('class' => "ui-layout-center"));
     $center->appendElement('div', array('class' => 'editor'));
     $west = $layout->appendElement('div', array('class' => 'ui-layout-west'));
     $menu = $west->appendElement('div', array('class' => 'bookmenu'));
     $menu->appendXml('<div class="bookmenu">'.$list->saveXml().'</div>');
 
-    $sc = new \Xml\Document();
+    $menu = '
+    <ul id="myMenu" class="contextMenu ui-helper-hidden ui-menu ui-widget ui-widget-content ui-corner-all ui-menu-icons">
+      <li class="add"><span class="fa fa-plus"></span><a href="#addNode">Add</a></li>
+      <li class="delete"><span class="fa fa-minus"></span><a href="#deleteBode">Delete</a></li>
+    </ul>';
+
     $script = $d->appendElement('script', array('type' => 'text/javascript'), "$('.layout').layout({ applyDemoStyles: true });initBooktree()");
 
 
-    return $layout->saveXml().$script->saveXml() ;
+    return $layout->saveXml().$script->saveXml() .$menu ;
   }
 
 }
