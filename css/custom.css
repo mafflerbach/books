@@ -123,13 +123,13 @@ input[type=email] {
     overflow: hidden;
 
     /* Styles */
-    background: #ee4c8d;
-    background: url(../images/noise.png), -moz-radial-gradient(center, ellipse cover, #ee4c8d 0%, #b53467 100%);
-    background: url(../images/noise.png), -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#ee4c8d), color-stop(100%,#b53467));
-    background: url(../images/noise.png), -webkit-radial-gradient(center, ellipse cover, #ee4c8d 0%,#b53467 100%);
-    background: url(../images/noise.png), -o-radial-gradient(center, ellipse cover, #ee4c8d 0%,#b53467 100%);
-    background: url(../images/noise.png), -ms-radial-gradient(center, ellipse cover, #ee4c8d 0%,#b53467 100%);
-    background: url(../images/noise.png), radial-gradient(ellipse at center, #ee4c8d 0%,#b53467 100%);
+    background: #eee9e7;
+    background: url(../images/noise.png), -moz-radial-gradient(center, ellipse cover, #eee9e7 0%, #aeabad 100%);
+    background: url(../images/noise.png), -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#eee9e7), color-stop(100%,#aeabad));
+    background: url(../images/noise.png), -webkit-radial-gradient(center, ellipse cover, #eee9e7 0%,#aeabad 100%);
+    background: url(../images/noise.png), -o-radial-gradient(center, ellipse cover, #eee9e7 0%,#aeabad 100%);
+    background: url(../images/noise.png), -ms-radial-gradient(center, ellipse cover, #eee9e7 0%,#aeabad 100%);
+    background: url(../images/noise.png), radial-gradient(ellipse at center, #eee9e7 0%,#aeabad 100%);
 
     border-radius: 0 5px 5px 0;
     box-shadow:
