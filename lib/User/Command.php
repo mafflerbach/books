@@ -28,9 +28,15 @@ class Command implements
       return 'email';
     }
 
+    if (function_exists('password_hash')) {
+      $hash = password_hash($args->password, PASSWORD_DEFAULT);
+    } else {
+      $hash = sha1($args->password);
+    }
+
     $this->db()->query('insert into user (username , password, email) values (:username , :password, :email)',
                        array(':username' => $args->username,
-                             ':password' => password_hash($args->password, PASSWORD_DEFAULT),
+                             ':password' => $hash,
                              ':email' => $args->email
                        )
     );

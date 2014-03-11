@@ -60,15 +60,18 @@ class Command implements
   private function getBook($args) {
     $this->db()->query('select * from book where id=:id', $args);
     $books = $this->db()->fetch();
+    $ul='';
 
 
+    print_r($args);
     foreach ($books as $book) {
+
       $this->db()->query('select * from chapter where bookId = :id order by sort', array(':id' => $book['id']));
       $chapters = $this->db()->fetch();
 
-
       $d = new \Xml\Document();
       $ul = $d->appendElement('ul', array('id' => 'treeData'));
+
       $bookTmp = array(
         'data-id' => $book['id'],
         'data-book' => $book['id'],
@@ -78,10 +81,7 @@ class Command implements
       $li = $ul->appendElement('li', $bookTmp, $book['title']);
 
       if (count($chapters) > 0) {
-
-
         $ul2 = $li->appendElement('ul');
-
         foreach ($chapters as $chapter) {
           $chapterTmp = array(
             'data-id' => $chapter['id'],
@@ -107,8 +107,6 @@ class Command implements
         }
       }
     }
-
-    print($ul->saveXml());
     return $ul;
   }
 

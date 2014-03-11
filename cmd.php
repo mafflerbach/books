@@ -6,11 +6,12 @@ header('Content-Type: text/html; charset=utf-8');
 if (isset($_GET['cmd']) && $_GET['cmd'] == 'getTree') {
   $c = new Command\Chain();
   $c->addCommand(new Book\Command());
-  print($c->runCommand('getBook', array(':id' => $_GET['id'])));
+  print($c->runCommand('getBook', array(':id' => $_POST['id'])));
 }
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'edit') {
   $bookpage = new Content\Page\Editbook();
+  $bookpage->setBook($_POST['bookId']);
   print($bookpage->content());
 }
 
@@ -45,20 +46,32 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'signup') {
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'login') {
   $username = $_POST["username"];
-  $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
   $db = \Database\Adapter::getInstance();
   $db->query('SELECT * FROM user WHERE username=:username', array(':username' => $username));
   $user = $db->fetch();
 
-  if (password_verify($_POST["password"], $user[0]['password'])) {
-    $_SESSION["user"] = $user[0]['id'];
-    $_SESSION["hash"] = $user[0]['hash'];
-    print('true');
-  } else {
-    print('false');
-  }
+  if (function_exists('password_hash')) {
+    $hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
+    if (password_verify($_POST["password"], $user[0]['password'])) {
+      $_SESSION["user"] = $user[0]['id'];
+      $_SESSION["hash"] = $user[0]['hash'];
+      print('true');
+    } else {
+      print('false');
+    }
+
+  } else {
+    $hash = sha1($_POST["password"]);
+    if ($hash  == $user[0]['password']) {
+      $_SESSION["user"] = $user[0]['id'];
+      $_SESSION["hash"] = $user[0]['hash'];
+      print('true');
+    } else {
+      print('false');
+    }
+  }
 }
 
 

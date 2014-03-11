@@ -105,45 +105,46 @@ $(document).ready(function () {
   $('#addBook').click(function () {
     var content = '<div id="dd" class="easyui-dialog" title="Add Book" data-options="iconCls:\'icon-save\'"><input id="bookName" value="" type="text"/></div>';
     $('body').append(content);
+
     var dialog = $('#dd').dialog({
-      title: 'My Dialog',
+      title: 'Add',
       width: 400,
       height: 200,
       cache: false,
       modal: true,
-      buttons: [
-        {
-          text: 'Ok',
-          iconCls: 'icon-ok',
-          handler: function () {
-            if ($('#bookName').val() != "") {
-              $.ajax({
-                url: "cmd.php",
-                type: "POST",
-                data: {
-                  cmd: 'add',
-                  text: $('#bookName').val(),
-                  type: 'book'
-                }
-              }).done(function () {
-                  $('#tt').empty();
-                 // initTree();
-                });
+      buttons: {
+        Ok: function() {
+          if ($('#bookName').val() != "") {
+            $.ajax({
+              url: "cmd.php",
+              type: "POST",
+              data: {
+                cmd: 'add',
+                text: $('#bookName').val(),
+                type: 'book'
+              }
+            }).done(function (data) {
 
-              dialog.dialog('close');
-              $('#dd').remove();
-            }
-          }
-        },
-        {
-          text: 'Cancel',
-          handler: function () {
-            dialog.dialog('close');
+
+                var tree = $(".bookmenu").fancytree("getTree"),
+                  node = tree.getActiveNode(),
+                  newData = {title: "New Node"},
+                  newSibling = node.getParent().addChildren(newData, node.getNextSibling());
+
+                console.log(node);
+
+              });
+
+            $(this).dialog('close');
             $('#dd').remove();
           }
+        },
+        Cancel: function() {
+          $(this).dialog( "close" );
         }
-      ]
+      }
     });
+
   });
 })
 
@@ -788,7 +789,8 @@ function initBooktree() {
           if (data.node.data.chapter) {
             TreeAction.append('section', data.node.data.id);
           }
-          node.addChildren('test');
+
+
         },
         close: function(event, data){
           //$.ui.fancytree.debug("Menu close ", data.$menu, data.node);

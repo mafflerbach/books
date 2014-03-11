@@ -32,6 +32,7 @@ class Document
   public function appendElement($name, array $attributes = array(), $content = NULL) {
     $node = self::createElementNode($this, $name, $attributes, $content);
     $this->appendChild($node);
+
     return $node;
   }
 

@@ -2,11 +2,13 @@
 namespace Content\Page;
 
 class Editbook {
+  private $id;
   public function content() {
     $d = new \Xml\Document();
     $c = new \Command\Chain();
     $c->addCommand(new \Book\Command());
-    $list = $c->runCommand('getBook', array(':id' => 1));
+
+    $list = $c->runCommand('getBook', array(':id' => $this->getBook()));
     $layout = $d->appendElement('div', array('class'=>'layout'));
     $center = $layout->appendElement('div', array('class' => "ui-layout-center"));
     $center->appendElement('div', array('class' => 'editor'));
@@ -24,6 +26,14 @@ class Editbook {
 
 
     return $layout->saveXml().$script->saveXml() .$menu ;
+  }
+
+  public function setBook($id) {
+    $this->id = $id;
+  }
+
+  public function getBook($id) {
+    return $this->id;
   }
 
 }
