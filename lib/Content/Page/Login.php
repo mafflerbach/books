@@ -60,7 +60,8 @@ class Login {
   private function getLoginForm() {
     $d = new Xml\Document();
     $section = $d->appendElement('section', array('class' => 'main'));
-    $form = $section->appendElement('form', array('class' => 'loginform clearfix'));
+    $form = $section->appendElement('form', array('class' => 'loginform clearfix', 'action' => '#'));
+
 
     $para = $form->appendElement('p');
     $para->appendElement('input', array('type' => "text",

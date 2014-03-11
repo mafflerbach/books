@@ -12,7 +12,7 @@ $(document).ready(function () {
       dataType: "json"
     }).done(function (data) {
         if (data) {
-          window.location = '/books';
+          window.location = 'index.php';
         } else {
           $('.wrongPassword').fadeIn();
           console.log('false');
