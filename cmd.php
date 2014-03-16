@@ -149,6 +149,11 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'remove') {
     $obj = new \Chapter\Object();
   }
 
+  if ($_POST['type'] == 'section') {
+    $c->addCommand(new Section\Command());
+    $obj = new \Section\Object();
+  }
+
   if ($_POST['type'] == 'book') {
     $c->addCommand(new Book\Command());
     $obj = new \Book\Object();

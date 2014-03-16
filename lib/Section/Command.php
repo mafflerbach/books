@@ -10,6 +10,9 @@ class Command implements
       case 'add':
         $this->addSection($args);
         break;
+      case 'remove':
+        $this->removeSection($args);
+        break;
       case 'saveSection':
         $this->saveSection($args);
         break;
@@ -86,6 +89,15 @@ class Command implements
 
   private function rename($args) {
     $this->db()->query('update sections set title = :title where id = :id', $args);
+    $this->db()->execute();
+  }
+
+  private function removeSection($args) {
+    $this->db()->query('delete from sections where id=:id',
+                       array(':id' => $args->id
+                       )
+    );
+
     $this->db()->execute();
   }
 
