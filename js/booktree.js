@@ -46,6 +46,7 @@ function initBooktree() {
           });
       }
     },
+    autoActivate: true,
     extensions: ["menu", "glyph", "dnd"],
     menu: {
       selector: "#myMenu",
