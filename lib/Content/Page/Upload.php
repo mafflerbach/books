@@ -19,7 +19,7 @@ class Upload {
   }
 
   private function getDir() {
-    $path = 'tmp/' . $_SESSION['hash'] . '/images';
+    $path = 'tmp/' . $_SESSION['hash'];
     if (!file_exists($path)) {
       mkdir($path, 0777, true);
     }

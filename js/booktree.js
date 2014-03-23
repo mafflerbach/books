@@ -23,9 +23,6 @@ function loadPage(id) {
 function initBooktree() {
   $(".bookmenu").fancytree({
     click: function (event, data) {
-      console.log(event,
-        data,
-        ", targetType=" + data.targetType);
       var sectionId = data.node.data.id;
       if (data.node.data.section) {
         $.ajax({
@@ -46,7 +43,6 @@ function initBooktree() {
           });
       }
     },
-    autoActivate: true,
     extensions: ["menu", "glyph", "dnd"],
     menu: {
       selector: "#myMenu",

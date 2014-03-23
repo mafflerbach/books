@@ -23,7 +23,7 @@ class Editbook {
       <li class="rename"><span class="fa fa-pencil"></span><a href="#renameBook">Rename</a></li>
     </ul>';
 
-    $script = $d->appendElement('script', array('type' => 'text/javascript'), "$('.layout').layout({ applyDemoStyles: true });initBooktree()");
+    $script = $d->appendElement('script', array('type' => 'text/javascript'), "$('.layout').layout();initBooktree()");
 
 
     return $layout->saveXml().$script->saveXml() .$menu ;
@@ -33,7 +33,7 @@ class Editbook {
     $this->id = $id;
   }
 
-  public function getBook($id) {
+  public function getBook() {
     return $this->id;
   }
 
