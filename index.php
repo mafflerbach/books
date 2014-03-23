@@ -5,7 +5,6 @@ print(file_get_contents('templates/header.tmpl'));
 
 print('<div class="mp-pusher" id="mp-pusher">');
 
-
 if (isset($_SESSION['user'])) {
   print('<p class="menuList"><a href="#" id="trigger" class="menu-trigger"><span class="fa fa-home"></span>Menu</a></p>');
   $menuBox = new Content\Box\Menu();

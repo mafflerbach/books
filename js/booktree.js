@@ -63,7 +63,6 @@ function initBooktree() {
       select: function (event, data) {
         event.preventDefault();
 
-        console.log($(event.currentTarget));
         if ($(event.currentTarget).hasClass('delete')) {
           if (data.node.data.section) {
             TreeAction.delete('section',
@@ -85,6 +84,19 @@ function initBooktree() {
               data.node.data.id);
           }
         }
+
+        if ($(event.currentTarget).hasClass('rename')) {
+
+          if (data.node.data.chapter) {
+            TreeAction.rename('chapter',
+              data.node.data.id);
+          }
+          if (data.node.data.section) {
+            TreeAction.rename('section',
+              data.node.data.id);
+          }
+        }
+
       },
       close: function (event, data) {
         //$.ui.fancytree.debug("Menu close ", data.$menu, data.node);
@@ -173,7 +185,30 @@ var TreeAction = {
 
   },
 
-  rename: function () {
+  rename: function (type, id) {
+    console.log('rename');
+    var content = '<input id="rename" value="" type="text"/>';
+    function request() {
+      $.ajax({
+        url: "cmd.php",
+        type: "POST",
+        data: {
+          id: id,
+          cmd: 'rename',
+          type: type,
+          text: $('#rename').val()
+        }
+      }).done(function () {
+        var rootNode = $(".bookmenu").fancytree("getRootNode");
+        var id = rootNode.children[0].data.id;
+        loadPage(id)
+      })
+    }
+
+    createDialog(content,
+      'Rename',
+      request)
+
   },
 
   delete: function (type, id) {
@@ -203,7 +238,7 @@ var TreeAction = {
 
 function createDialog(content, title, f) {
   var content = '<div id="dd" class="easyui-dialog" title="' + title + '">' + content + '</div>';
-
+console.log('create dialog')
   $('body').append(content);
   var dialog = $('#dd').dialog({
     title: title,

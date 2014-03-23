@@ -362,3 +362,11 @@ ul.fancytree-container {
     padding: 0 !important;
     padding-top: 10px;
 }
+
+.jqte_editor, .jqte_source {
+    padding:0 25%;
+}
+
+.ui-menu .ui-menu-item a {
+    display: inline-block;
+}

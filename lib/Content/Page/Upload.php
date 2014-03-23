@@ -20,6 +20,9 @@ class Upload {
 
   private function getDir() {
     $path = 'tmp/' . $_SESSION['hash'] . '/images';
+    if (!file_exists($path)) {
+      mkdir($path, 0777, true);
+    }
     $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);
     $dom = new \Xml\Document();
     $list = $dom->appendElement("ul", array('id' => 'treeData'));

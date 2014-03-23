@@ -34,10 +34,11 @@ class Command implements
       $hash = sha1($args->password);
     }
 
-    $this->db()->query('insert into user (username , password, email) values (:username , :password, :email)',
+    $this->db()->query('insert into user (username , password, email, hash) values (:username , :password, :email, :hash)',
                        array(':username' => $args->username,
                              ':password' => $hash,
-                             ':email' => $args->email
+                             ':email' => $args->email,
+                             ':hash' => sha1($args->email)
                        )
     );
 

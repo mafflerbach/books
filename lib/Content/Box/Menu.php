@@ -9,13 +9,13 @@ class Menu {
 					<div class="mp-level">
 						<h2 class="fa fa-certificate">All Categories</h2>
 						<ul>
-						<li class="fa fa-arrow-left">
-								<a href="#"><span class="fa fa-caret-square-o-right"></span>Actions</a>
+						  <li class="fa fa-arrow-left">
+								<a href="#"><span class="fa fa-book"></span>Books</a>
 								<div class="mp-level">
-									<h2 class="icon fa-caret-square-o-right"><span class="fa fa-caret-square-o-right"></span>Actions</h2>
+									<h2><span class="fa fa-book"></span>Books</h2>
 									<a class="mp-back" href="#">back</a>
 									<ul>
-                    <li class="fa fa-arrow-left">
+									  <li class="fa fa-arrow-left">
 											<a href="#"><span class="fa fa-edit"></span>Edit</a>
 											<div class="mp-level">
 												<h2><span class="fa fa-edit"></span>Edit</h2>
@@ -36,15 +36,6 @@ class Menu {
 												</ul>
 											</div>
 										</li>
-									</ul>
-								</div>
-							</li>
-							<li class="fa fa-arrow-left">
-								<a href="#"><span class="fa fa-book"></span>Books</a>
-								<div class="mp-level">
-									<h2><span class="fa fa-book"></span>Books</h2>
-									<a class="mp-back" href="#">back</a>
-									<ul>
 										<li class="fa fa-arrow-left">
 											<a href="#"><span class="fa fa-cogs"></span>Generate</a>
 											<div class="mp-level">
@@ -85,7 +76,7 @@ class Menu {
 
   private function getList($type) {
     $db = \Database\Adapter::getInstance();
-    $db->query('select * from book');
+    $db->query('select * from book where id in(select bookId from bookuserrelation where userid=:userid)', array(':userid' => $_SESSION['user']));
     $db->execute();
     $result = $db->fetch();
     $html = '';
