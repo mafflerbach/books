@@ -292,9 +292,7 @@ a {
     margin: 5px;
 }
 
-.uploadDialog , .addDirDialog{
-    display: none;
-}
+
 #adddir {
     padding: 10px;
     width: 100px;
@@ -309,12 +307,6 @@ a {
 
 .addDirDialog {
     padding-bottom: 20px;
-}
-
-
-.fileupload {
-    border-top: 1px solid #C0C0C0;
-    margin-top: 31px;
 }
 
 
@@ -369,4 +361,14 @@ ul.fancytree-container {
 
 .ui-menu .ui-menu-item a {
     display: inline-block;
+}
+
+#imagetree {
+    width: 300px;
+    display: inline-block;
+}
+
+.fileupload {
+    display: inline-block;
+    vertical-align: top;
 }

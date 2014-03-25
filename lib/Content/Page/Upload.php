@@ -3,19 +3,34 @@ namespace Content\Page;
 
 class Upload {
   public function content() {
-    $tree = '<div id="tree">'.$this->getDir().'</div>';
+    $tree = '<div id="imagetree">'.$this->getDir().'</div>';
     $menu = '
     <ul id="myMenu" class="contextMenu ui-helper-hidden ui-menu ui-widget ui-widget-content ui-corner-all ui-menu-icons">
       <li class="add"><span class="fa fa-plus"></span><a href="#addNode">Add</a></li>
       <li class="delete"><span class="fa fa-minus"></span><a href="#deleteBode">Delete</a></li>
     </ul>';
 
+
+    $fileUpload = '<div class="fileupload"><div class="uploadDialog">
+    <form id="upload" method="post" action="upload.php" enctype="multipart/form-data"> <div id="drop">
+    Drop Here
+    <a>Browse</a>
+    <input type="file" name="upl" multiple />
+    </div>
+    <ul></ul>
+    </form>
+    </div></div>';
+
     $js = '
     <script type="text/javascript">
-        initFiletree()
+        initFiletree();
+        test();
     </script>';
 
-    print($tree . $menu. $js);
+
+
+
+    print($fileUpload . $tree .$menu .$js );
   }
 
   private function getDir() {

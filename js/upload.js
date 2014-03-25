@@ -18,7 +18,7 @@ $(document).ready(function (){
 
 
 function initFiletree() {
-  $("#tree").fancytree({
+  $("#imagetree").fancytree({
     extensions: ["menu", "glyph", "dnd"],
     menu: {
       selector: "#myMenu",
@@ -33,8 +33,9 @@ function initFiletree() {
         //$.ui.fancytree.debug("Menu focus ", data.menuId, data.node);
       },
       select: function(event, data){
-
-        console.log("Menu select " + data.menuId + ", " + data.node);
+        DirAction.append();
+        console.log(data.menuId);
+        console.log(data.node);
       },
       close: function(event, data){
         //$.ui.fancytree.debug("Menu close ", data.$menu, data.node);
@@ -108,73 +109,29 @@ function initUpload() {
 
 var DirAction = {
   append: function () {
-    var node = $('#tt').tree('getSelected');
-
-    var fileUpload = '<div class="fileupload">' + '<h2>Upload</h2>' + '<div class="uploadDialog">' +
-                     '<form action = "upload.php" method="post" enctype="multipart/form-data">' +
-                     '<input type="file" name="imageURL[]" id="imageURL" multiple="" />' +
-                     '<input type="submit" value="submit" name="submit" />' + '</form>' + '</div>' + '</div>';
 
     var dir = '<div class="addDir">' + '<h2>Add Dir</h2>' + '<div class="addDirDialog">' +
               '<form action="" method="post">' + '<input type="text" name="dirname" id="dirname" />' +
               '<button value="Add Dir" name="submit" id="adddir">Add Dir</button>' + '</form>' + '</div>' + '</div>';
 
-    var content = '<div id="dd" class="easyui-dialog"  title="Add" data-options="iconCls:\'icon-save\'">' + dir +
-                  fileUpload + '</div>';
+    var content = dir;
 
-    $('body').append(content);
-    var dialog = $('#dd').dialog({
-      title: 'Add',
-      cache: false,
-      modal: true,
-      width: 300,
-      height: 300,
-      buttons: [
-        {
-          text: 'Ok',
-          iconCls: 'icon-ok',
-          handler: function () {
-
-            var node = $('#filetree').tree('getSelected');
-
-            $('#tt').tree('append',
-              {
-                parent: node.target,
-                data: [
-                  {
-                    text: $('#name').val()
-                  }
-                ]
-              });
-            console.log(node);
-          }
-        },
-        {
-          text: 'Cancel',
-          handler: function () {
-            dialog.dialog('close');
-            $('#dd').remove();
-          }
-        }
-      ]
+    $("#fileupload").submit(function(e){
+      return false;
     });
 
-    $('.fileupload h2').click(function () {
-      $('.addDirDialog').hide();
-      if ($('.uploadDialog:visible').length == 1) {
-        $('.uploadDialog').hide();
-      } else {
-        $('.uploadDialog').show();
-      }
-    })
-    $('.addDir h2').click(function () {
-      $('.uploadDialog').hide();
-      if ($('.addDirDialog:visible').length == 1) {
-        $('.addDirDialog').hide();
-      } else {
-        $('.addDirDialog').show();
-      }
-    })
+    $('body').on('click', '#fileuploadButton', function(e) {
+      alert('foo');
+    });
+
+
+    function request() {
+
+    }
+
+    createDialog(content,
+      'Add',
+      request);
 
   },
 

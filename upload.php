@@ -1,28 +1,24 @@
 <?php
 session_start();
-$files = array();
-$fdata = $_FILES['imageURL'];
-if (is_array($fdata['name'])) {
-  for ($i = 0; $i < count($fdata['name']); ++$i) {
-    $files[] = array(
-      'name' => $fdata['name'][$i],
-      'type' => $fdata['type'][$i],
-      'tmp_name' => $fdata['tmp_name'][$i],
-      'error' => $fdata['error'][$i],
-      'size' => $fdata['size'][$i]
-    );
+// A list of permitted file extensions
+$allowed = array('png', 'jpg', 'gif','zip');
+
+if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
+
+  $extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
+
+  if(!in_array(strtolower($extension), $allowed)){
+    echo '{"status":"error"}';
+    exit;
   }
-} else {
-  $files[] = $fdata;
-}
-
-print_r($files);
-
-foreach ($files as $file) {
-  if ($file['error'] == UPLOAD_ERR_OK) {
-    $tmp_name = $file['tmp_name'];
-    $name = $file['name'];
-    $hash = $_SESSION['hash'];
-    move_uploaded_file($tmp_name, 'tmp/'.$hash.'/images/'.$name);
+  $hash = $_SESSION['hash'];
+  $target='tmp/'.$hash.'/images/'.$_FILES['upl']['name'];
+  print($target);
+  if(move_uploaded_file($_FILES['upl']['tmp_name'], $target)){
+    echo '{"status":"success"}';
+    exit;
   }
 }
+
+echo '{"status":"error"}';
+exit;
