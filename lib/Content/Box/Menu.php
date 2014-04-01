@@ -76,7 +76,7 @@ class Menu {
 
   private function getList($type) {
     $db = \Database\Adapter::getInstance();
-    $db->query('select * from book where id in(select bookId from bookuserrelation where userid=:userid)', array(':userid' => $_SESSION['user']));
+    $db->query('select * from book where userid=:userid', array(':userid' => $_SESSION['user']));
     $db->execute();
     $result = $db->fetch();
     $html = '';

@@ -33,9 +33,27 @@ function initFiletree() {
         //$.ui.fancytree.debug("Menu focus ", data.menuId, data.node);
       },
       select: function(event, data){
-        DirAction.append();
+        event.preventDefault();
+
+
+        if (data.menuId == '#deleteNode') {
+          DirAction.removeit(data);
+        }
+
+        if (data.menuId == '#addNode') {
+          DirAction.append(data);
+        }
+
+
+
+
+
+        /*
+
+*/
         console.log(data.menuId);
         console.log(data.node);
+        console.log(data);
       },
       close: function(event, data){
         //$.ui.fancytree.debug("Menu close ", data.$menu, data.node);
@@ -108,7 +126,7 @@ function initUpload() {
 }
 
 var DirAction = {
-  append: function () {
+  append: function (data) {
 
     var dir = '<div class="addDir">' + '<h2>Add Dir</h2>' + '<div class="addDirDialog">' +
               '<form action="" method="post">' + '<input type="text" name="dirname" id="dirname" />' +
@@ -116,19 +134,21 @@ var DirAction = {
 
     var content = dir;
 
-    $("#fileupload").submit(function(e){
-      return false;
-    });
+    console.log(data.node.path);
 
-    $('body').on('click', '#fileuploadButton', function(e) {
-      alert('foo');
-    });
-
-
-    function request() {
-
+  /*  function request() {
+      $.ajax({
+        url: "cmd.php",
+        type: "POST",
+        data: {
+          folder: data.node.path,
+          cmd: 'add',
+          type: 'folder'
+          name: $('#dirname').val()
+        }
+      })
     }
-
+*/
     createDialog(content,
       'Add',
       request);

@@ -127,8 +127,7 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'add') {
 
   if ($_POST['type'] == 'book') {
     $c->addCommand(new Book\Command());
-    $obj = new \Book\Object();
-    $obj->title = $_POST['text'];
+    $obj = array('title' => $_POST['text'], 'userid'=> $_SESSION['user']);
   }
 
   if ($_POST['type'] == 'section') {
@@ -136,7 +135,6 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'add') {
     $obj = new \Section\Object();
     $obj->chapterid = $_POST['id'];
     $obj->title = $_POST['text'];
-
   }
   $c->runCommand('add', $obj);
 }

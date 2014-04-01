@@ -70,3 +70,78 @@ $(document).ready(function () {
     $('.main').fadeIn();
   });
 })
+
+$('#addBook').click(function () {
+  var content = '<div id="dd" class="easyui-dialog" title="Add Book" data-options="iconCls:\'icon-save\'"><input id="bookName" value="" type="text"/></div>';
+  $('body').append(content);
+
+  var dialog = $('#dd').dialog({
+    title: 'Add',
+    width: 400,
+    height: 200,
+    cache: false,
+    modal: true,
+    buttons: {
+      Ok: function() {
+        if ($('#bookName').val() != "") {
+          $.ajax({
+            url: "cmd.php",
+            type: "POST",
+            data: {
+              cmd: 'add',
+              text: $('#bookName').val(),
+              type: 'book'
+            }
+          }).done(function (data) {
+            });
+
+          $(this).dialog('close');
+          $('#dd').remove();
+        }
+      },
+      Cancel: function() {
+        $(this).dialog( "close" );
+      }
+    }
+  });
+});
+
+$('.delete').click(function () {
+  var content = '<div id="dd" class="easyui-dialog" title="Delete" data-options="iconCls:\'icon-save\'">Wollen sie wirklich löschen?</div>';
+  var _this = $(this);
+
+  $('body').append(content);
+
+  var dialog = $('#dd').dialog({
+    title: 'Add',
+    width: 400,
+    height: 200,
+    cache: false,
+    modal: true,
+    buttons: {
+      Ok: function() {
+        if ($('#bookName').val() != "") {
+          $.ajax({
+            url: "cmd.php",
+            type: "POST",
+            data: {
+              cmd: 'remove',
+              id: _this.attr('id').replace('book_',''),
+              type: 'book'
+            }
+          })
+
+          $(this).dialog('close');
+          $('#dd').remove();
+        }
+      },
+      Cancel: function() {
+        $(this).dialog( "close" );
+      }
+    }
+  });
+
+});
+
+
+

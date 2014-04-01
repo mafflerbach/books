@@ -6,8 +6,8 @@ class Upload {
     $tree = '<div id="imagetree">'.$this->getDir().'</div>';
     $menu = '
     <ul id="myMenu" class="contextMenu ui-helper-hidden ui-menu ui-widget ui-widget-content ui-corner-all ui-menu-icons">
-      <li class="add"><span class="fa fa-plus"></span><a href="#addNode">Add</a></li>
-      <li class="delete"><span class="fa fa-minus"></span><a href="#deleteBode">Delete</a></li>
+      <li class="add" data-type="add"><span class="fa fa-plus"></span><a href="#addNode" data-type="add">Add</a></li>
+      <li class="delete" data-type="delete"><span class="fa fa-minus"></span><a href="#deleteNode">Delete</a></li>
     </ul>';
 
 
