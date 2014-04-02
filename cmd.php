@@ -136,6 +136,12 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'add') {
     $obj->chapterid = $_POST['id'];
     $obj->title = $_POST['text'];
   }
+
+  if ($_POST['type'] == 'folder') {
+    $path = $_POST['dirpath']."/".$_POST['name'];
+    mkdir($path, 0777);
+  }
+
   $c->runCommand('add', $obj);
 }
 

@@ -45,6 +45,22 @@ function test() {
 
             // Automatically upload the file once it is added to the queue
             var jqXHR = data.submit();
+
+          window.setTimeout(function () {
+            $.ajax({
+              url: "cmd.php",
+              type: "POST",
+              data: {
+                cmd: 'getPage',
+                page: 'upload'
+              },
+              dataType: 'html'
+            }).done(function (data) {
+                $('.scroller').empty();
+                $('.scroller').append(data);
+              })
+          }, 1500);
+
         },
 
         progress: function(e, data){

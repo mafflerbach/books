@@ -12,9 +12,7 @@ if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
     exit;
   }
   $hash = $_SESSION['hash'];
-  $target='tmp/'.$hash.'/images/'.$_FILES['upl']['name'];
-  print($target);
-  if(move_uploaded_file($_FILES['upl']['tmp_name'], $target)){
+  if(move_uploaded_file($_FILES['upl']['tmp_name'], $_REQUEST['path'].'/'.$_FILES['upl']['name'])){
     echo '{"status":"success"}';
     exit;
   }

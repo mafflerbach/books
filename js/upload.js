@@ -20,6 +20,9 @@ $(document).ready(function (){
 function initFiletree() {
   $("#imagetree").fancytree({
     extensions: ["menu", "glyph", "dnd"],
+    click: function(event, data) {
+      $('#path').attr('value', data.node.data.path);
+    },
     menu: {
       selector: "#myMenu",
       position: {my: "center"},
@@ -34,8 +37,6 @@ function initFiletree() {
       },
       select: function(event, data){
         event.preventDefault();
-
-
         if (data.menuId == '#deleteNode') {
           DirAction.removeit(data);
         }
@@ -43,17 +44,6 @@ function initFiletree() {
         if (data.menuId == '#addNode') {
           DirAction.append(data);
         }
-
-
-
-
-
-        /*
-
-*/
-        console.log(data.menuId);
-        console.log(data.node);
-        console.log(data);
       },
       close: function(event, data){
         //$.ui.fancytree.debug("Menu close ", data.$menu, data.node);
@@ -134,21 +124,19 @@ var DirAction = {
 
     var content = dir;
 
-    console.log(data.node.path);
-
-  /*  function request() {
+    function request() {
       $.ajax({
         url: "cmd.php",
         type: "POST",
         data: {
-          folder: data.node.path,
+          dirpath: data.node.data.path,
           cmd: 'add',
-          type: 'folder'
+          type: 'folder',
           name: $('#dirname').val()
         }
       })
     }
-*/
+
     createDialog(content,
       'Add',
       request);
@@ -217,7 +205,6 @@ var DirAction = {
   },
 
   removeit: function () {
-    var node = $('#tt').tree('getSelected');
     var content = '<div id="dd" class="easyui-dialog" title="Delete" data-options="iconCls:\'icon-save\'">Wollen sie wirklich löschen?</div>';
 
     $('body').append(content);

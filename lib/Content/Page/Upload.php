@@ -16,6 +16,7 @@ class Upload {
     Drop Here
     <a>Browse</a>
     <input type="file" name="upl" multiple />
+    <input type="hidden" id="path" name="path" value=""/>
     </div>
     <ul></ul>
     </form>
