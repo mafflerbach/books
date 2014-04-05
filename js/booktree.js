@@ -159,7 +159,6 @@ var TreeAction = {
 
     function request() {
       var text = $('#name').val();
-      if ($('#name').val() != "") {
         $.ajax({
           url: "cmd.php",
           type: "POST",
@@ -175,7 +174,6 @@ var TreeAction = {
             loadPage(id);
           });
       }
-    }
 
     createDialog(content, 'Add', request)
 

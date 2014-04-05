@@ -46,9 +46,9 @@ section p {
     margin: 0;
 }
 
- input[type=email],
- input[type=text],
- input[type=password] {
+section input[type=email],
+section  input[type=text],
+section  input[type=password] {
     /* Size and position */
     width: 100%;
     height: 50px;
@@ -69,26 +69,26 @@ section p {
     font-size: 20px;
 }
 
-input[type=email] {
+section input[type=email] {
     border-top: 0px;
 
 }
- input[type=text] {
+section input[type=text] {
     border-bottom: 1px solid #fff; /* Fallback */
     border-bottom: 1px solid rgba(255,255,255,0.7);
     border-radius: 5px 0 0 0;
 }
 
- input[type=password] {
+section input[type=password] {
     border-top: 1px solid #CCC; /* Fallback */
     border-top: 1px solid rgba(0,0,0,0.1);
     border-radius: 0 0 0 5px;
 }
 
- input[type=text]:hover,
- input[type=password]:hover,
- input[type=text]:focus,
- input[type=password]:focus {
+section  input[type=text]:hover,
+section  input[type=password]:hover,
+section input[type=text]:focus,
+section input[type=password]:focus {
     background: #f7def7; /* Fallback */
     background: rgba(255,255,255,0.4);
     outline: none;
@@ -96,25 +96,25 @@ input[type=email] {
 
 /* Placeholder style (from http://stackoverflow.com/questions/2610497/change-an-inputs-html5-placeholder-color-with-css) */
 
- input::-webkit-input-placeholder {
+section  input::-webkit-input-placeholder {
     color: #fff;
     text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
     font-family: 'Handlee', cursive;
 }
 
- input:-moz-placeholder {
+section  input:-moz-placeholder {
     color: #fff;
     text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
     font-family: 'Handlee', cursive;
 }
 
- input:-ms-input-placeholder {
+section input:-ms-input-placeholder {
     color: #fff;
     text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
     font-family: 'Handlee', cursive;
 }
 
- button {
+section  button {
     /* Size and position */
     width: 25%;
 
@@ -155,7 +155,7 @@ input[type=email] {
     display: none;
 }
 
-button i {
+section button i {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -175,7 +175,7 @@ button i {
     transition: all 0.2s ease-out;
 }
 
- button span {
+section  button span {
     display: block;
 
     /* Font styles */
@@ -199,12 +199,12 @@ button i {
 
 /* Focus and hover on button */
 
- button:focus {
+section button:focus {
     outline: none;
 }
 
- button:hover span,
- button:focus span {
+section  button:hover span,
+section  button:focus span {
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     opacity: 0;
@@ -215,8 +215,8 @@ button i {
     transform: rotate(-90deg) translateY(-20px);
 }
 
- button:hover i,
- button:focus i {
+section  button:hover i,
+section button:focus i {
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     opacity: 0.5;
@@ -230,8 +230,8 @@ button i {
 
 /* Click on button */
 
- button:active span,
- button:active i {
+section  button:active span,
+section  button:active i {
     -webkit-transition: none;
     -moz-transition: none;
     -ms-transition: none;
@@ -239,13 +239,13 @@ button i {
     transition: none;
 }
 
- button:active span {
+section  button:active span {
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     opacity: 0;
 }
 
- button:active i {
+section  button:active i {
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     opacity: 0.5;

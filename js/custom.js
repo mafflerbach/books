@@ -1,4 +1,18 @@
 $(document).ready(function () {
+
+  $('.export').click(function () {
+    var _this = $(this);
+    $.ajax({
+      url: "cmd.php",
+      type: "POST",
+      data: {
+        cmd: 'export',
+        bookId: _this.attr('id').replace('book_',
+          '')
+      }
+    });
+  })
+
   $('#login').click(function (e) {
     e.preventDefault();
     $.ajax({
@@ -69,7 +83,7 @@ $(document).ready(function () {
     $('.registermain').hide();
     $('.main').fadeIn();
   });
-})
+});
 
 $('#addBook').click(function () {
   var content = '<div id="dd" class="easyui-dialog" title="Add Book" data-options="iconCls:\'icon-save\'"><input id="bookName" value="" type="text"/></div>';

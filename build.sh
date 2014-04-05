@@ -1,25 +1,22 @@
-#!/bin/sh
-USER_HOME="/home/userhome"
-FOP_HOME="/usr/local/fop/fop-0.95/"
-DOCBOOK_HOME="$USER_HOME/docbook/"
-SOURCE_HOME="$USER_HOME/Documents/documentation"
-OUTPUT_HOME="$USER_HOME/Documents/documentation"
-docbookfo="/usr/share/xml/docbook/stylesheet/nwalsh/current/fo"
+#!/bin/bash
+stylesheet=/vagrant/project/vendor/docbook/epub3/chunk.xsl
+fooutput=/vagrant/project/tmp/$2/gen/output
+source=/vagrant/project/tmp/$2/gen/$1/$1.xml
 
+xsltproc  --stringparam toc.section.depth 0 -o /vagrant/project/tmp/$2/gen/output/OEBPS \
+/vagrant/project/vendor/docbook/epub3/chunk.xsl \
+/vagrant/project/tmp/$2/gen/$1/$1.xml
 
+mimetype=mimetype
+metainf=META-INF
+oebps=OEBPS
 
-# using xslt for xslt:fo
+cd /vagrant/project/tmp/$2/gen/output
+zip -rXD /vagrant/project/tmp/$2/gen/test_book.epub $mimetype $metainf $oebps
+/vagrant/project
+/vagrant/project/vendor/kindleGen/kindlegen /vagrant/project/tmp/$2/gen/$1.epub
 
-#xsltproc	--xinclude \
-#		--nonet \
-#		--stringparam section.autolabel 1 \
-#		--stringparam xref.with.number.and.title 0 \
-#		--stringparam body.start.indent 0mm \
-#		--output $1.fo $docbookfo/docbook.xsl $1.xml
-# using fop to generate pdf.
-#$FOP_HOME/fop -fo $1.fo -pdf $1.pdf
+mv /vagrant/project/tmp/$2/gen/$1.epub /vagrant/project/tmp/$2/gen/$1/$1.epub
+mv /vagrant/project/tmp/$2/gen/$1..mobi /vagrant/project/tmp/$2/gen/$1/$1.mobi
 
-fooutput="output"
-stylepath="vendor/docbook/epub3/"
-src="tmp"
-xsltproc -o $fooutput/ebook1/OEBPS $stylepath/chunk.xsl $src/$1.xml
+rm -rf /vagrant/project/tmp/$2/gen/output

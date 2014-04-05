@@ -6,7 +6,6 @@ class Download {
     $this->getFileList();
   }
 
-
   private function getUserDir() {
     $this->db()->query('select * from user where id = :id', array(':id' => $_SESSION['user']));
     $result = $this->db()->fetch();
@@ -26,7 +25,7 @@ class Download {
     $d = new \Xml\Document();
     $ul = $d->appendElement('ul', array('class' => 'filelist'));
     $path = $this->getUserDir();
-
+    print($path);
     foreach (new \DirectoryIterator($path) as $fileInfo) {
       if ($fileInfo->isDot()) {
         continue;

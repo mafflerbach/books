@@ -306,8 +306,7 @@ function export($bookId) {
     file_put_contents('tmp/'.$user[0]['hash'].'/gen/'. $bookName. '/'.$bookName.'.xml', $xsl->transformToXML($doc));
   }
 
-  $command='create.cmd '.str_replace(' ', '_', $bookResult[0]['title']) . ' ' .$user[0]['hash'];
-  exec($command, $out);
+  $command='/vagrant/project/build.sh '.str_replace(' ', '_', $bookResult[0]['title']) . ' ' .$user[0]['hash'];
+  print(shell_exec($command));
 
-  print_r($out);
 }
