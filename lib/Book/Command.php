@@ -31,7 +31,7 @@ class Command implements
   }
 
   private function addBook($args) {
-    print_r($args);
+
     $this->db()->query('insert into book (title, userid)values(:title, :userid)', array(':title' => $args['title'], ':userid' =>$args['userid']));
     $this->db()->execute();
   }

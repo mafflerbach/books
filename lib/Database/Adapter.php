@@ -78,6 +78,15 @@ class Adapter {
 
   public function execute() {
     $this->_stm->execute();
+    $config = new \Config();
+    $debug = $config->getConfig('env');
+
+    if ($debug['debug']) {
+      $error = $this->_stm->errorInfo();
+      if ($error[1] != '') {
+        print_r($this->_stm->errorInfo());
+      }
+    }
   }
 
 

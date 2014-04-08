@@ -17,6 +17,6 @@ zip -rXD /vagrant/project/tmp/$2/gen/test_book.epub $mimetype $metainf $oebps
 /vagrant/project/vendor/kindleGen/kindlegen /vagrant/project/tmp/$2/gen/$1.epub
 
 mv /vagrant/project/tmp/$2/gen/$1.epub /vagrant/project/tmp/$2/gen/$1/$1.epub
-mv /vagrant/project/tmp/$2/gen/$1..mobi /vagrant/project/tmp/$2/gen/$1/$1.mobi
+mv /vagrant/project/tmp/$2/gen/$1.mobi /vagrant/project/tmp/$2/gen/$1/$1.mobi
 
 rm -rf /vagrant/project/tmp/$2/gen/output

@@ -27,8 +27,6 @@ class Settings {
     $form->appendElement('label', array('for' =>'about'));
     $form->appendElement('textarea', array('id'=>'about', 'name' =>'content'));
     $form->appendElement('button', array('id'=>'sendUserdata', 'name' =>'userdata'), 'save');
-
-
   }
 
   private function changePassword($d) {
