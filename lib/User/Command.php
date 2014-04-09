@@ -9,6 +9,9 @@ class Command implements
       case 'add':
         return $this->addUser($args);
         break;
+      case 'getUser';
+        return $this->getUser($args);
+        break;
       default:
         return 'unknown command';
         break;

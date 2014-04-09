@@ -204,54 +204,28 @@ var DirAction = {
     });
   },
 
-  removeit: function () {
+  removeit: function (data) {
     var content = '<div id="dd" class="easyui-dialog" title="Delete" data-options="iconCls:\'icon-save\'">Wollen sie wirklich löschen?</div>';
 
     $('body').append(content);
-    var dialog = $('#dd').dialog({
-      title: 'My Dialog',
-      width: 400,
-      height: 200,
-      cache: false,
-      modal: true,
-      buttons: [
-        {
-          text: 'Ok',
-          iconCls: 'icon-ok',
-          handler: function () {
-            if ($('#chapterName').val() != "") {
-              $('#tt').tree('remove',
-                node.target);
-              dialog.dialog('close');
-              var type = '';
-              if (node.book != undefined) {
-                type = 'book';
-              } else {
-                type = 'chapter';
-              }
 
-              $.ajax({
-                url: "cmd.php",
-                type: "POST",
-                data: {
-                  id: node.id,
-                  type: type,
-                  cmd: 'remove'
-                },
-                dataType: "json"
-              });
-              $('#dd').remove();
-            }
-          }
-        },
-        {
-          text: 'Cancel',
-          handler: function () {
-            dialog.dialog('close');
-            $('#dd').remove();
-          }
+    print(data.node.data.path);
+
+    function request() {
+      $.ajax({
+        url: "cmd.php",
+        type: "POST",
+        data: {
+          dirpath: data.node.data.path,
+          cmd: 'remove',
+          type: 'folder'
         }
-      ]
-    });
+      })
+    }
+
+    createDialog(content,
+      'Add',
+      request);
+
   }
 };

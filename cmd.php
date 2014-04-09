@@ -138,7 +138,13 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'add') {
   }
 
   if ($_POST['type'] == 'folder') {
-    $path = $_POST['dirpath']."/".$_POST['name'];
+      $path = $_POST['dirpath']."/".$_POST['name'];
+    if (is_file($_POST['dirpath'])){
+      $pathArr = explode('/', $_POST['dirpath']);
+      array_pop($pathArr);
+      $path = implode('/',$pathArr).'/'.$_POST['name'];
+    }
+
     mkdir($path, 0777);
   }
 
@@ -147,6 +153,12 @@ if (isset($_POST['cmd']) && $_POST['cmd'] == 'add') {
 
 if (isset($_POST['cmd']) && $_POST['cmd'] == 'remove') {
   $c = new Command\Chain();
+
+
+  if ($_POST['type'] == 'folder') {
+    $path = '/vagrant/project/'.$_POST['dirpath'];
+    system('/bin/rm -rf ' . escapeshellarg($path));
+  }
 
   if ($_POST['type'] == 'chapter') {
     $c->addCommand(new Chapter\Command());
