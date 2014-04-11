@@ -42,6 +42,7 @@ class Settings {
     $form->appendElement('textarea', array('id'=>'about', 'name' =>'content'), $user->content);
     $form->appendElement('br');
     $form->appendElement('input', array('type'=>'hidden', 'name'=>'save', 'value'=>'saveUserdata'));
+    $form->appendElement('input', array('type'=>'hidden', 'name'=>'page', 'value'=>'settings'));
     $form->appendElement('button', array('id'=>'sendUserdata', 'name' =>'userdata'), 'save');
   }
 
@@ -56,6 +57,11 @@ class Settings {
   private function addFormField($form, $for, $attrInput, $label) {
     $form->appendElement('label', array('for'=> $for), $label);
     $form->appendElement('input', $attrInput);
+  }
+
+  public function safeForm($arg) {
+    print_r($arg);
+
   }
 
 }
