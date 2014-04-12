@@ -34,7 +34,7 @@ class Settings {
     $id =  $_SESSION['user'];
     $user = new \User\Object($id);
 
-    $form = $d->appendElement('form', array('action' => 'form.php', 'method' => 'post'));
+    $form = $d->appendElement('form', array('action' => 'index.php', 'method' => 'post'));
     $this->addFormField($form, 'name', array('id'=>'name', 'name'=>'name', 'type'=>'text', 'value' => $user->name), 'Name');
     $this->addFormField($form, 'surname', array('id'=>'surname', 'name'=>'surname', 'type'=>'text', 'value' => $user->surname), 'Surname');
     $this->addFormField($form, 'email', array('id'=>'email', 'name'=>'email', 'type'=>'text', 'value' => $user->email), 'E-Mail');
@@ -61,7 +61,6 @@ class Settings {
 
   public function safeForm($arg) {
     print_r($arg);
-
   }
 
 }
