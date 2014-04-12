@@ -22,6 +22,8 @@ class Settings {
   private function generateSettings($d) {
     $form = $d->appendElement('form');
     $form->appendElement('button', array('id'=>'sendSettings', 'name' =>'settings'), 'save');
+    $form->appendElement('input', array('type'=>'hidden', 'name'=>'save', 'value'=>'saveGenerateSetting'));
+    $form->appendElement('input', array('type'=>'hidden', 'name'=>'page', 'value'=>'settings'));
 
   }
 
@@ -52,6 +54,9 @@ class Settings {
     $this->addFormField($form, 'email', array('id'=>'repassword', 'name'=>'repassword', 'type'=>'password'), 're Password');
     $form->appendElement('br');
     $form->appendElement('button', array('id'=>'changePass', 'name' =>'changePass'), 'change Password');
+    $form->appendElement('input', array('type'=>'hidden', 'name'=>'save', 'value'=>'savePassword'));
+    $form->appendElement('input', array('type'=>'hidden', 'name'=>'page', 'value'=>'settings'));
+
   }
 
   private function addFormField($form, $for, $attrInput, $label) {
@@ -60,7 +65,19 @@ class Settings {
   }
 
   public function safeForm($arg) {
-    print_r($arg);
+
+    if ($arg['save'] == 'saveUserdata') {
+      $user = new \User\Object();
+      $data = array('content' => $arg['content'],
+            'name' => $arg['name'],
+            'surname' => $arg['surname'],
+            'email' => $arg['email'],
+
+      );
+
+      $user->saveUser($data, $_SESSION['user']);
+    }
+
   }
 
 }

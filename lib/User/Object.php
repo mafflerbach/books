@@ -39,8 +39,11 @@ class Object extends
   }
 
   public function saveUser($args, $id) {
+
     foreach ($args as $key => $val) {
-      $this->db()->query('update user set '.$key.'=:'.$key.'where id=:id', array(':id'=> $id, ':'.$key => $val));
+      $db = $this->db();
+      $db->query('update user set '.$key.'=:'.$key.' where id=:id', array(':'.$key => $val, ':id'=> $id));
+      $db->execute();
     }
   }
 

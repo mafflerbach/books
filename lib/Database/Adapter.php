@@ -84,7 +84,7 @@ class Adapter {
     if ($debug['debug']) {
       $error = $this->_stm->errorInfo();
       if ($error[1] != '') {
-        print_r($this->_stm->errorInfo());
+        error_log(print_r($this->_stm->errorInfo(), true));
       }
     }
   }

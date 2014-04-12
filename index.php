@@ -22,9 +22,11 @@ if (isset($_SESSION['user'])) {
   print('<p class="menuList"><a href="#" id="trigger" class="menu-trigger"><span class="fa fa-home"></span>Menu</a></p>');
   $menuBox = new Content\Box\Menu();
   print($menuBox->content());
-  print($page->content());
+    if ($page != null) {
+        print($page->content());
+    }
 } else {
-    print($page->content());
+  print($page->content());
 }
 
 print('<div class="scroller"></div></div>');
