@@ -63,8 +63,6 @@ class Command implements
     $books = $this->db()->fetch();
     $ul='';
 
-
-    print_r($args);
     foreach ($books as $book) {
 
       $this->db()->query('select * from chapter where bookId = :id order by sort', array(':id' => $book['id']));

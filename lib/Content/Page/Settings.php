@@ -27,9 +27,13 @@ class Settings {
 
   }
 
-  private function appendRadiofield($d, $attrInput, $label) {
-    //$form->appendElement('label', array('for'=> $for), $label);
-    //$form->appendElement('input', $attrInput);
+  private function languageSettings($d) {
+    $d->appendElement();
+  }
+
+  private function appendRadiofield($form, $attrInput, $label) {
+    $form->appendElement('label', array('for'=> $for), $label);
+    $form->appendElement('input', $attrInput);
   }
 
   private function userData($d){
@@ -49,9 +53,10 @@ class Settings {
   }
 
   private function changePassword($d) {
-    $form = $d->appendElement('form');
+    $form = $d->appendElement('form', array('action' => 'index.php', 'method' => 'post'));
     $this->addFormField($form, 'email', array('id'=>'password', 'name'=>'password', 'type'=>'password'), 'Password');
-    $this->addFormField($form, 'email', array('id'=>'repassword', 'name'=>'repassword', 'type'=>'password'), 're Password');
+    $this->addFormField($form, 'email', array('id'=>'repassword', 'name'=>'repassword', 'type'=>'password'), 'Repeat Password');
+    $this->addFormField($form, 'email', array('id'=>'oldPassword', 'name'=>'oldPassword', 'type'=>'password'), 'Old Password');
     $form->appendElement('br');
     $form->appendElement('button', array('id'=>'changePass', 'name' =>'changePass'), 'change Password');
     $form->appendElement('input', array('type'=>'hidden', 'name'=>'save', 'value'=>'savePassword'));
@@ -65,7 +70,6 @@ class Settings {
   }
 
   public function safeForm($arg) {
-
     if ($arg['save'] == 'saveUserdata') {
       $user = new \User\Object();
       $data = array('content' => $arg['content'],
@@ -74,9 +78,52 @@ class Settings {
             'email' => $arg['email'],
 
       );
-
       $user->saveUser($data, $_SESSION['user']);
+      $d = new \Xml\Document();
+      $div = $d->appendElement('div', array('id'=>'message'));
+      $div->appendElement('p', array('id'=>'succsess'), 'Saved');
+      print($div->saveXML());
     }
+
+
+    if ($arg['save'] == 'savePassword') {
+
+      $user = new \User\Object($_SESSION['user']);
+
+      if (function_exists('password_hash')) {
+        $hash = password_hash($arg['oldPassword'], PASSWORD_DEFAULT);
+      } else {
+        $hash = sha1($arg['oldPassword']);
+      }
+
+
+      if ($arg['password'] == $arg['repassword'] && password_verify($arg['oldPassword'], $user->password)) {
+        if (function_exists('password_hash')) {
+          $newpw= password_hash($arg['password'], PASSWORD_DEFAULT);
+        } else {
+          $newpw = sha1($arg['password']);
+        }
+        $data = array('password' => $newpw);
+        $user->saveUser($data, $_SESSION['user']);
+        $d = new \Xml\Document();
+        $div = $d->appendElement('div', array('id'=>'message'));
+        $div->appendElement('p', array('id'=>'failure'), 'New password saved');
+        print($div->saveXML());
+      } else {
+        if ($arg['password'] != $arg['repassword']) {
+          $d = new \Xml\Document();
+          $div = $d->appendElement('div', array('id'=>'message'));
+          $div->appendElement('p', array('id'=>'failure'), 'new password does not match');
+          print($div->saveXML());
+        } else {
+          $d = new \Xml\Document();
+          $div = $d->appendElement('div', array('id'=>'message'));
+          $div->appendElement('p', array('id'=>'failure'), 'Wrong Password');
+          print($div->saveXML());
+        }
+      }
+    }
+
 
   }
 
