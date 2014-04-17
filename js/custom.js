@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+  $("#clock").simpleClock();
+
   setInterval(function () {
     if ($('.jqte_editor').length > 0) {
       var content = $('.jqte_editor').html();

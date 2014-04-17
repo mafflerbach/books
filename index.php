@@ -14,7 +14,7 @@
   print('<div class="mp-pusher" id="mp-pusher">');
 
   if (isset($_SESSION['user'])) {
-    print('<p class="menuList"><a href="#" id="trigger" class="menu-trigger"><span class="fa fa-home"></span>Menu</a></p>');
+    print('<p class="menuList"><a href="#" id="trigger" class="menu-trigger"><span class="fa fa-home"></span>Menu</a><div id="clock"><div id="time"></div></div></p>');
 
     $allowed = array('settings');
     if (in_array($_REQUEST['page'], $allowed)) {
