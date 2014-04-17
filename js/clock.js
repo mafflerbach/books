@@ -15,8 +15,7 @@
         date: date.getDate(),
         month: months[date.getMonth()],
         hour: appendZero(hour),
-        minute: appendZero(date.getMinutes()),
-        second: appendZero(date.getSeconds())
+        minute: appendZero(date.getMinutes())
       };
     }
 
@@ -32,12 +31,12 @@
     function refreshTime() {
       var now = getTime();
       $('#date').html(now.day + ', ' + now.date + '. ' + now.month);
-      $('#time').html("<span class='hour'>" + now.hour + "</span>" + "<span class='minute'>" + now.minute + "</span>" + "<span class='second'>" + now.second + "</span>");
+      $('#time').html("<span class='hour'>" + now.hour + "</span>" + "<span class='minute'>" + now.minute + "</span>");
     }
 
     // Tick tock - Run the clock.
     refreshTime();
-    setInterval(refreshTime, 1000);
+    setInterval(refreshTime, 60000);
 
   };
 })(jQuery);

@@ -18,7 +18,7 @@ $(document).ready(function () {
         console.log('save');
       });
     }
-  }, 1500);
+  }, 15000);
 
 
   $('.export').click(function () {
