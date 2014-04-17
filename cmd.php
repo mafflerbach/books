@@ -300,7 +300,9 @@
   <body>' . $html . '</body>
 </html>';
 
-    $doc = new DOMDocument();
+    print($html);
+
+    $doc = new DOMDocument('1.0', 'UTF-8');
     $xsl = new XSLTProcessor();
     $xsl->setParameter('', 'firstname', $user[0]['name']);
     $xsl->setParameter('', 'surname', $user[0]['surname']);
@@ -318,7 +320,7 @@
 
     if (file_exists('tmp/' . $user[0]['hash'])) {
       file_put_contents('tmp/' . $user[0]['hash'] . '/gen/' . $bookName . '/' . $bookName . '.xml',
-        $xsl->transformToXML($doc));
+        utf8_decode($xsl->transformToXML($doc)));
     }
 
     $command = '/vagrant/project/build.sh ' . str_replace(' ', '_', $bookResult[0]['title']) . ' ' . $user[0]['hash'];

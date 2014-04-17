@@ -19,7 +19,6 @@ abstract class Object {
   }
 
   public function __set($property, $value) {
-    error_log("::".$property);
     if (!array_key_exists($property, $this->_data)) {
       throw new Exception('The specified property is not valid for this domain object.');
     }

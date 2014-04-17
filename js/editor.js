@@ -23,8 +23,6 @@ function initEditor() {
   $("div[data-tool='21']").click(function () {
     var content = $('.jqte_editor').html();
 
-    console.log($('#editor').data('section'));
-
     $.ajax({
       url: "cmd.php",
       type: "POST",

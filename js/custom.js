@@ -1,5 +1,24 @@
 $(document).ready(function () {
 
+  setInterval(function () {
+    if ($('.jqte_editor').length > 0) {
+      var content = $('.jqte_editor').html();
+      $.ajax({
+        url: "cmd.php",
+        type: "POST",
+        data: {
+          id: $('#editor').data('section'),
+          content: content,
+          cmd: 'saveSection'
+        },
+        dataType: "json"
+      }).done(function (data) {
+        console.log('save');
+      });
+    }
+  }, 1500);
+
+
   $('.export').click(function () {
     var _this = $(this);
     $.ajax({
@@ -154,7 +173,6 @@ $('.delete').click(function () {
       }
     }
   });
-
 });
 
 
