@@ -168,6 +168,10 @@
               </exsl:document>
             </xsl:when>
             <xsl:otherwise><!-- $doctype-public = '' and $doctype-system = ''"> -->
+                <xsl:message>
+                    Base:<xsl:value-of select="$chunk.base.dir"/>
+                    File:<xsl:value-of select="$filename"/>
+                </xsl:message>
               <exsl:document href="{$filename}" method="{$method}" encoding="{$encoding}" indent="{$indent}" omit-xml-declaration="{$omit-xml-declaration}" cdata-section-elements="{$cdata-section-elements}" standalone="{$standalone}">
                 <xsl:copy-of select="$content"/>
               </exsl:document>

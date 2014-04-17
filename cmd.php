@@ -300,8 +300,7 @@
   <body>' . $html . '</body>
 </html>';
 
-    print($html);
-
+    // CREATE DOCBOOK
     $doc = new DOMDocument('1.0', 'UTF-8');
     $xsl = new XSLTProcessor();
     $xsl->setParameter('', 'firstname', $user[0]['name']);
@@ -322,10 +321,102 @@
       file_put_contents('tmp/' . $user[0]['hash'] . '/gen/' . $bookName . '/' . $bookName . '.xml',
         utf8_decode($xsl->transformToXML($doc)));
     }
+    //END CREATE DOCBOOK
 
-    $command = '/vagrant/project/build.sh ' . str_replace(' ', '_', $bookResult[0]['title']) . ' ' . $user[0]['hash'];
+    //CREATE EPUB
+    $doc = new DOMDocument('1.0', 'UTF-8');
+    $xsl = new XSLTProcessor();
+    $xsl->setSecurityPrefs(0);
+    $doc->load('vendor/docbook/epub3/chunk.xsl');
+    $xsl->importStyleSheet($doc);
+    $doc->load('tmp/' . $user[0]['hash'] . '/gen/' . $bookName . '/' . $bookName . '.xml');
+
+    if (!file_exists('tmp/' . $user[0]['hash'] . '/gen/output/OEBPS')) {
+      mkdir('tmp/' . $user[0]['hash'] . '/gen/output/OEBPS', 0777, true);
+      mkdir('tmp/' . $user[0]['hash'] . '/gen/output/META-INF', 0777);
+    }
+
+    $xsl->setParameter('',
+      'base.dir',
+      'tmp/' . $user[0]['hash'] . '/gen/output/OEBPS');
+    @$xsl->transformToDoc($doc);
+
+    Zip('tmp/' . $user[0]['hash'] . '/gen/output', 'tmp/' . $user[0]['hash'] . '/gen/'.$bookName .'/'.$bookName .'.epub');
+    //END CREATE EPUB
+
+
+    //CREATE PDF
+    $doc = new DOMDocument('1.0', 'UTF-8');
+    $xsl = new XSLTProcessor();
+    $xsl->setSecurityPrefs(0);
+    $doc->load('vendor/docbook/fo/docbook.xsl');
+    $xsl->importStyleSheet($doc);
+    $doc->load('tmp/' . $user[0]['hash'] . '/gen/' . $bookName . '/' . $bookName . '.xml');
+    $xsl->setParameter('', 'section.autolabel', 1);
+    $xsl->setParameter('', 'xref.with.number.and.title', 0);
+    $xsl->setParameter('', 'body.start.indent', '0mm');
+    file_put_contents('tmp/' . $user[0]['hash'] . '/gen/output/' . $bookName . '.fo', $xsl->transformToXml($doc));
+
+    // END PDF
+
+    $command = './build.sh ' . str_replace(' ', '_', $bookResult[0]['title']) . ' ' . $user[0]['hash'];
     print(shell_exec($command));
+
+
+    $dir = 'tmp/' . $user[0]['hash'] . '/gen/output/';
+    $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+    $files = new RecursiveIteratorIterator($it,
+      RecursiveIteratorIterator::CHILD_FIRST);
+    foreach($files as $file) {
+      if ($file->getFilename() === '.' || $file->getFilename() === '..') {
+        continue;
+      }
+      if ($file->isDir()){
+        rmdir($file->getRealPath());
+      } else {
+        unlink($file->getRealPath());
+      }
+    }
+    rmdir($dir);
+
 
   }
 
+  function Zip($source, $destination) {
+    if (!extension_loaded('zip') || !file_exists($source)) {
+      return FALSE;
+    }
 
+    $zip = new ZipArchive();
+    if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
+      return FALSE;
+    }
+
+    $source = str_replace('\\', '/', realpath($source));
+
+    if (is_dir($source) === TRUE) {
+      $files
+        = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
+
+      foreach ($files as $file) {
+        $file = str_replace('\\', '/', $file);
+
+        // Ignore "." and ".." folders
+        if (in_array(substr($file, strrpos($file, '/') + 1), array('.', '..'))) {
+          continue;
+        }
+
+        $file = realpath($file);
+
+        if (is_dir($file) === TRUE) {
+          $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
+        } else if (is_file($file) === TRUE) {
+          $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
+        }
+      }
+    } else if (is_file($source) === TRUE) {
+      $zip->addFromString(basename($source), file_get_contents($source));
+    }
+
+    return $zip->close();
+  }

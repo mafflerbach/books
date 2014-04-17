@@ -392,12 +392,9 @@ label {
 span.hour:after {
   content:":";
 }
-span.minute:after {
-  content:":";
-}
 
 #clock {
   position: absolute;
-  top: 8px;
+  top: 6px;
   right: 10px;
 }
