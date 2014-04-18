@@ -28,11 +28,12 @@
     if ($page != NULL) {
       print($page->content());
     }
+    print('<div class="scroller"></div></div>');
+
   } else {
     print($page->content());
   }
 
-  print('<div class="scroller"></div></div>');
 
   print(file_get_contents('templates/footer.tmpl'));
 

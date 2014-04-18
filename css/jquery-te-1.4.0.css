@@ -27,10 +27,14 @@
 }
 /* toolbar */
 .jqte_toolbar {
-	overflow:auto;
-	padding:3px 4px;
-	background:#EEE;
-	border-bottom:#BBB 1px solid;
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-bottom: 1px solid #BBBBBB;
+    height: 35px;
+    left: 0;
+    padding: 3px 4px;
+    position: absolute;
+    right: 0;
+    top: 0
 }
 .jqte_tool {
 	float:left;

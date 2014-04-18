@@ -356,7 +356,9 @@ ul.fancytree-container {
 }
 
 .jqte_editor, .jqte_source {
-    padding:0 25%;
+    padding: 0 25%;
+    position: relative;
+    top: 35px;
 }
 
 .ui-menu .ui-menu-item a {
