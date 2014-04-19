@@ -64,6 +64,7 @@ class Menu {
 									</ul>
 								</div>
 							</li>
+							<li><a href="#" data-page="versioning"><span class="fa fa-code-fork"></span>Versioning</a></li>
 							<li><a href="#" data-page="settings"><span class="fa fa-cog"></span>Settings</a></li>
 							<li><a href="#" data-page="help"><span class="fa fa-question"></span>Help</a></li>
 							<li><a href="logout.php"><span class="fa fa-sign-out"></span>Logout</a></li>

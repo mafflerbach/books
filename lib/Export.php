@@ -17,15 +17,23 @@
 
       $db->query('select * from user where id=:id', array(':id' => $_SESSION['user']));
       $db->execute();
-      $this->user = $db->fetch();
+      $user = $db->fetch();
+      $this->user = $user[0];
 
       $db->query('select * from book where id=:id', array(':id' => $this->bookId));
       $db->execute();
-      $this->bookResult = $db->fetch();
+      $bookResult = $db->fetch();
+      $this->bookResult = $bookResult[0];
 
-      $this->outputPath = 'tmp/' . $this->user[0]['hash'] . '/gen/output/';
-      $this->bookName = $bookName = str_replace(' ', '_', $this->bookResult[0]['title']);
-      $this->genFileName = 'tmp/' . $this->user[0]['hash'] . '/gen/' . $bookName . '/' . $bookName;
+      $this->outputPath = 'tmp/' . $this->user['hash'] . '/gen/output/';
+      $this->bookName = $bookName = str_replace(' ', '_', $this->bookResult['title']);
+      $this->genFileName = 'tmp/' . $this->user['hash'] . '/gen/' . $bookName . '/' . $bookName;
+
+      if (!file_exists('tmp/' . $this->user['hash'] . '/gen/' . $bookName)) {
+        mkdir('tmp/' . $this->user['hash'] . '/gen/' . $bookName, 0777, true);
+      }
+
+      $this->gitDir = 'tmp/' . $this->user['hash'] . '/git/' . $bookName;
 
     }
 
@@ -36,89 +44,28 @@
       $doc->load('vendor/docbook/fo/docbook.xsl');
       $xsl->importStyleSheet($doc);
 
-      if (!file_exists($this->genFileName. '.xml')) {
-        $this->docbook();
+      if (!file_exists($this->gitDir. '/docbook.xml')) {
+        $this->filesystem();
       }
-      $doc->load($this->genFileName . '.xml');
+      $doc->load($this->gitDir. '/docbook.xml');
+      $doc->xinclude();
       $xsl->setParameter('', 'section.autolabel', 1);
       $xsl->setParameter('', 'xref.with.number.and.title', 0);
       $xsl->setParameter('', 'body.start.indent', '0mm');
       file_put_contents($this->outputPath . $this->bookName . '.fo', $xsl->transformToXml($doc));
 
-
-
-      $command = './buildPdf.sh ' . str_replace(' ', '_', $this->bookResult[0]['title']) . ' ' . $this->user[0]['hash'];
+      $command = './buildPdf.sh ' . str_replace(' ', '_', $this->bookResult['title']) . ' ' . $this->user['hash'];
       print(shell_exec($command));
     }
 
-    private function html() {
-      $db = \Database\Adapter::getInstance();
-
-      $db->query('select * from chapter where bookid=:bookid', array(':bookid' => $this->bookId));
-      $db->execute();
-      $result = $db->fetch();
-
-      $html = '';
-      foreach ($result as $chapter) {
-        $html .= '<div><h2>' . $chapter['title'] . '</h2>';
-
-        $db->query('select * from sections where chapterid=:chapterid', array(':chapterid' => $chapter['id']));
-        $db->execute();
-        $sections = $db->fetch();
-
-        foreach ($sections as $seciton) {
-          $html .= '<div><h3>' . $seciton['title'] . '</h3>';
-          $html .= $seciton['content'] . '</div>';
-        }
-        $html .= '</div>';
-      }
-
-      $str
-        = '
-<html>
-  <head>
-    <title>' . $this->bookResult[0]['title'] . '</title>
-  </head>
-  <body>' . $html . '</body>
-</html>';
-
-      return $str;
-
-    }
-
-    public function docbook() {
-
-      $doc = new DOMDocument('1.0', 'UTF-8');
-      $xsl = new XSLTProcessor();
-      $xsl->setParameter('', 'firstname', $this->user[0]['name']);
-      $xsl->setParameter('', 'surname', $this->user[0]['surname']);
-      $xsl->setParameter('', 'year', date("Y"));
-      $doc->load('templates/docbook.xsl');
-      $xsl->importStyleSheet($doc);
-
-      $doc->loadHTML($this->html());
-      $bookName = str_replace(' ', '_', $this->bookResult[0]['title']);
-      $path = 'tmp/' . $this->user[0]['hash'] . '/gen/' . $bookName;
-
-      if (!file_exists($path)) {
-        mkdir($path, 0777, TRUE);
-      }
-
-      if (file_exists('tmp/' . $this->user[0]['hash'])) {
-        file_put_contents($this->genFileName . '.xml',
-          utf8_decode($xsl->transformToXML($doc)));
-      }
-    }
-
     public function epub() {
-
-
       $doc = new DOMDocument('1.0', 'UTF-8');
       $xsl = new XSLTProcessor();
       $xsl->setSecurityPrefs(0);
       $doc->load('vendor/docbook/epub3/chunk.xsl');
       $xsl->importStyleSheet($doc);
-      $doc->load($this->genFileName . '.xml');
+      $doc->load($this->gitDir. '/docbook.xml');
+      $doc->xinclude();
 
       if (!file_exists($this->outputPath.'OEBPS')) {
         mkdir($this->outputPath.'OEBPS', 0777, TRUE);
@@ -129,23 +76,93 @@
         'base.dir',
         $this->outputPath.'OEBPS');
       @$xsl->transformToDoc($doc);
-
+      print($this->genFileName);
       $this->zip($this->outputPath,
         $this->genFileName. '.epub');
 
     }
 
     public function mobi() {
-      $command = './buildMobi.sh ' . str_replace(' ', '_', $this->bookResult[0]['title']) . ' ' . $this->user[0]['hash'];
+      $command = './buildMobi.sh ' . str_replace(' ', '_', $this->bookResult['title']) . ' ' . $this->user['hash'];
       print(shell_exec($command));
     }
 
     public function roundtrip() {
-      $this->docbook();
+      $this->filesystem();
       $this->epub();
-      $this->mobi();
-      $this->pdf();
+      /*$this->mobi();
+      $this->pdf();*/
       $this->cleanUp();
+
+      $git = new Git($this->gitDir);
+      $out = $git->commit($this->user['email'], $this->user['name']);
+      error_log(print_r($out, true));
+    }
+
+    public function filesystem() {
+      $db = \Database\Adapter::getInstance();
+
+      $dir = $this->gitDir;
+      if (!file_exists($dir)) {
+        mkdir($dir, 0777, true);
+        $command = 'git init '.$dir;
+        error_log(shell_exec($command));
+      }
+
+      $db->query('select * from chapter where bookid=:bookid', array(':bookid' => $this->bookId));
+      $db->execute();
+      $result = $db->fetch();
+
+      $chapterContent= '';
+      foreach ($result as $chapter) {
+
+        $db->query('select * from sections where chapterid=:chapterid', array(':chapterid' => $chapter['id']));
+        $db->execute();
+        $sections = $db->fetch();
+        $xinclude = '';
+
+        foreach ($sections as $section) {
+          $filename = str_replace(' ', '_', $section['title']).'-'.$chapter['id'].'-'.$section['id'].'.xml';
+          $content = str_replace('<p>', '<para>', $section['content'] );
+          $content = str_replace('</p>', '</para>', $content );
+
+          $sectionContent = '  <section>
+            <title>' . $section['title'] . '</title>
+            '.$content.'
+          </section>';
+
+          file_put_contents($dir.'/'.$filename, $sectionContent);
+          $xinclude .= '<xi:include href="'.$filename.'" xmlns:xi="http://www.w3.org/2001/XInclude" />';
+        }
+
+        $chapterContent .= '<chapter>
+        <title>' . $chapter['title'] . '</title>
+          '.$xinclude.'
+        </chapter>';
+        $Chapterfilename = str_replace(' ', '_', $chapter['title']).'-'.$chapter['id'].'.xml';
+        file_put_contents($dir.'/'.$Chapterfilename, $chapterContent);
+
+      }
+
+      $docbook = "<?xml version=\"1.0\"?>
+<book>
+    <info>
+        <title>Test Book</title>
+        <author>
+            <personname>
+                <firstname>".$this->user['name']."</firstname>
+                <surname>".$this->user['surname']."</surname>
+            </personname>
+        </author>
+        <copyright>
+            <year>2014</year>
+            <holder>".$this->user['name']." ".$this->user['surname']."</holder>
+        </copyright>
+    </info>
+    $chapterContent
+</book> ";
+
+      file_put_contents($dir."/docbook.xml", $docbook);
     }
 
     private function zip($source, $destination) {

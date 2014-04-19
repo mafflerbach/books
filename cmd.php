@@ -251,7 +251,9 @@
         case 'upload':
           $page = new Content\Page\Upload();
           break;
-
+        case 'versioning':
+          $page = new Content\Page\Versioning();
+          break;
         default:
           $page = new Content\Page\Notfound();
 
