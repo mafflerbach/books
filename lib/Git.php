@@ -27,6 +27,12 @@ class Git {
     return $output;
   }
 
+  public function log(){
+    $command = './gitWrapper.sh log ' . $this->gitDir;
+    exec($command, $output);
+    return $output;
+  }
+
   public function config() {
     $command = './gitWrapper.sh listconf '.$this->gitDir;
     exec($command, $output);

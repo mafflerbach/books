@@ -23,8 +23,14 @@ if [ "$1" = "listconf" ]; then
 fi
 
 # $1 action
-# $1 git Dir
+# $2 git Dir
 if [ "$1" = "init" ]; then
     git init $1;
+fi
+
+# $1 action
+# $2 git Dir
+if [ "$1" = "log" ]; then
+    git log --all --pretty=format:'%s^%cr'
 fi
 

@@ -4,6 +4,7 @@
   class Versioning {
     public function content() {
       $this->getFileList();
+
     }
 
     private function getUserDir() {
@@ -36,6 +37,18 @@
         $li2 = $ul2->appendElement('li', array('class' => 'item'));
         $li2->appendElement('a', array('class'=>'block', 'data-command' => 'commit', 'href'=>"#"), 'commit');
         $li2->appendElement('a', array('class'=>'block','data-command' => 'showVersion', 'href'=>"#"), 'show Versions');
+
+        $git = new \Git($this->getUserDir().'/'.$fileInfo->getFilename());
+        $log = $git->log();
+
+
+        $li3 = $ul2->appendElement('li', array('class' => 'version' ));
+        for ($i = 0; $i < count($log); $i++) {
+          $splitLine = explode('^', $log[$i]);
+          $li3->appendElement('span', array('style'=>'color:darkblue'), str_replace("'", '', $splitLine[0]));
+          $li3->appendElement('span', array('style'=>'color:darkred'), $splitLine[1]);
+          $li3->appendElement('br');
+        }
 
       }
 
