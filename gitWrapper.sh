@@ -31,6 +31,12 @@ fi
 # $1 action
 # $2 git Dir
 if [ "$1" = "log" ]; then
-    git log --all --pretty=format:'%s^%cr'
+    git log --all --pretty=format:'%h^%s^%cr' --abbrev-commit --date=relative
 fi
 
+# $1 action
+# $2 git Dir
+# $3 revision
+if [ "$1" = "revert" ]; then
+    git checkout $3
+fi

@@ -23,11 +23,20 @@ class Command implements
       case 'add' :
         return $this->addBook($args);
         break;
+      case 'bookList' :
+        return $this->bookList($args);
+        break;
       default:
         return 'unknown command';
         break;
 
     }
+  }
+
+  private function bookList($args) {
+    $this->db()->query('select * from book where userId=:userId', array(':userId' => $args[':userId']));
+    return $this->db()->fetch();
+
   }
 
   private function addBook($args) {

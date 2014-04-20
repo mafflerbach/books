@@ -182,17 +182,6 @@
       $c->runCommand('remove', $obj);
     }
 
-    if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveChapter') {
-      $c = new Command\Chain();
-      $c->addCommand(new Chapter\Command());
-
-      $chapter = new \Chapter\Object();
-      $chapter->id = $_POST['id'];
-      $chapter->content = $_POST['content'];
-
-      $c->runCommand('saveChapter', $chapter);
-    }
-
     if (isset($_POST['cmd']) && $_POST['cmd'] == 'saveSection') {
       $c = new Command\Chain();
       $c->addCommand(new Section\Command());
@@ -207,16 +196,6 @@
 
     if (isset($_POST['cmd']) && $_POST['cmd'] == 'export') {
       export($_POST['bookId']);
-    }
-
-    if (isset($_POST['cmd']) && $_POST['cmd'] == 'addDir') {
-      $_POST['dirname'] = $name;
-      $_POST['parent'] = $parent;
-      $hash = $_SESSION['hash'];
-    }
-
-    if (isset($_POST['cmd']) && $_POST['cmd'] == 'getFileTree') {
-
     }
 
     if (isset($_POST['cmd']) && $_POST['cmd'] == 'update') {
@@ -260,6 +239,51 @@
           break;
       }
       print($page->content());
+    }
+
+    if (isset($_POST['cmd']) && $_POST['cmd'] == 'revert') {
+
+      $bookId = $_POST['bookId'];
+      $db = \Database\Adapter::getInstance();
+
+      $db->query('select * from user where id = :id', array(':id' => $_SESSION['user']));
+      $user = $db->fetch();
+
+      $db->query('select * from book where id=:id', array(':id' => $bookId));
+      $db->execute();
+      $bookResult = $db->fetch();
+      $bookName = str_replace(' ', '_', $bookResult[0]['title']);
+
+      $dir = 'tmp/' . $user[0]['hash'] . '/git/' . $bookName;
+
+      $message = $_POST['rev'];
+      $git = new Git($dir);
+      print_r($git->revert($message));
+      print_r($git->commit('revert'));
+
+    }
+
+    if (isset($_POST['cmd']) && $_POST['cmd'] == 'commit') {
+
+      $bookId = $_POST['bookId'];
+      $export = new Export($bookId);
+      $export->filesystem();
+
+      $db = \Database\Adapter::getInstance();
+
+      $db->query('select * from user where id = :id', array(':id' => $_SESSION['user']));
+      $user = $db->fetch();
+
+      $db->query('select * from book where id=:id', array(':id' => $bookId));
+      $db->execute();
+      $bookResult = $db->fetch();
+      $bookName = str_replace(' ', '_', $bookResult[0]['title']);
+
+      $dir = 'tmp/' . $user[0]['hash'] . '/git/' . $bookName;
+
+      $message = $_POST['message'];
+      $git = new Git($dir);
+      print_r($git->commit($message));
     }
   }
 

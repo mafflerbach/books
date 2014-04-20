@@ -95,7 +95,7 @@
       $this->cleanUp();
 
       $git = new Git($this->gitDir);
-      $out = $git->commit($this->user['email'], $this->user['name']);
+      $out = $git->commit('', $this->user['email'], $this->user['name']);
       error_log(print_r($out, true));
     }
 
