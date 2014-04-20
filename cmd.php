@@ -260,6 +260,7 @@
       $git = new Git($dir);
       print_r($git->revert($message));
       print_r($git->commit('revert'));
+      // do import in to db
 
     }
 

@@ -13,9 +13,9 @@ function initEditor() {
       color: false,
       fsize: false,
       remove: false,
+      br: false,
       formats: [
-        ["p", "Paragraph"],
-        ["pre", "pre"]
+        ["p", "Paragraph"]
       ]
     }
   );
@@ -33,8 +33,8 @@ function initEditor() {
       },
       dataType: "json"
     }).done(function (data) {
-        console.log('save');
-      });
+      console.log('save');
+    });
 
   });
 

@@ -75,8 +75,7 @@
       $xsl->setParameter('',
         'base.dir',
         $this->outputPath.'OEBPS');
-      @$xsl->transformToDoc($doc);
-      print($this->genFileName);
+      $xsl->transformToDoc($doc);
       $this->zip($this->outputPath,
         $this->genFileName. '.epub');
 
@@ -125,6 +124,7 @@
           $filename = str_replace(' ', '_', $section['title']).'-'.$chapter['id'].'-'.$section['id'].'.xml';
           $content = str_replace('<p>', '<para>', $section['content'] );
           $content = str_replace('</p>', '</para>', $content );
+          $content = str_replace('<br>', '', $content );
 
           $sectionContent = '  <section>
             <title>' . $section['title'] . '</title>
