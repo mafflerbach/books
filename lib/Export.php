@@ -123,22 +123,16 @@
         foreach ($sections as $section) {
           $filename = str_replace(' ', '_', $section['title']).'-'.$chapter['id'].'-'.$section['id'].'.xml';
           $content = str_replace('<p>', '<para>', $section['content'] );
-          $content = str_replace('</p>', '</para>', $content );
+          $content = str_replace('</p>', '</para>'."\n", $content );
           $content = str_replace('<br>', '', $content );
 
-          $sectionContent = '  <section>
-            <title>' . $section['title'] . '</title>
-            '.$content.'
-          </section>';
+          $sectionContent = "<section>\n<title>".$section['title']."</title>\n$content\n</section>\n";
 
           file_put_contents($dir.'/'.$filename, $sectionContent);
-          $xinclude .= '<xi:include href="'.$filename.'" xmlns:xi="http://www.w3.org/2001/XInclude" />';
+          $xinclude .= '<xi:include href="'.$filename.'" xmlns:xi="http://www.w3.org/2001/XInclude" />'."\n";
         }
 
-        $chapterContent .= '<chapter>
-        <title>' . $chapter['title'] . '</title>
-          '.$xinclude.'
-        </chapter>';
+        $chapterContent .= "<chapter>\n<title>" . $chapter['title'] . "</title>\n$xinclude</chapter>\n";
         $Chapterfilename = str_replace(' ', '_', $chapter['title']).'-'.$chapter['id'].'.xml';
         file_put_contents($dir.'/'.$Chapterfilename, $chapterContent);
 

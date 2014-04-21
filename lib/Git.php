@@ -52,4 +52,16 @@
       return $output;
     }
 
+    public function diff($rev1, $rev2) {
+      $command = './gitWrapper.sh revert ' . $this->gitDir .' ' . $revision;
+      $output = shell_exec($command);
+
+      return $output;
+    }
+
+    private function diffOutput ($output) {
+
+    }
+
+
   }
