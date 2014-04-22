@@ -89,8 +89,8 @@
     public function roundtrip() {
       $this->filesystem();
       $this->epub();
-      /*$this->mobi();
-      $this->pdf();*/
+      $this->mobi();
+      $this->pdf();
       $this->cleanUp();
 
       $git = new Git($this->gitDir);
@@ -125,6 +125,16 @@
           $content = str_replace('<p>', '<para>', $section['content'] );
           $content = str_replace('</p>', '</para>'."\n", $content );
           $content = str_replace('<br>', '', $content );
+          $content = str_replace('<li>', '<listitem>', $content );
+          $content = str_replace('</li>', '</listitem>', $content );
+          $content = str_replace('<ul>', '<itemizedlist>', $content );
+          $content = str_replace('</ul>', '</itemizedlist>', $content );
+          $content = str_replace('<u>', '<emphasis role="underline">', $content );
+          $content = str_replace('</u>', '</emphasis>', $content );
+          $content = str_replace('<i>', '<emphasis role="underline">', $content );
+          $content = str_replace('</i>', '</emphasis>', $content );
+          $content = str_replace('<b>', '<emphasis role="italic">', $content );
+          $content = str_replace('</b>', '</emphasis>', $content );
 
           $sectionContent = "<section>\n<title>".$section['title']."</title>\n$content\n</section>\n";
 
