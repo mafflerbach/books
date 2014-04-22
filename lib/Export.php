@@ -135,6 +135,7 @@
           $content = str_replace('</i>', '</emphasis>', $content );
           $content = str_replace('<b>', '<emphasis role="italic">', $content );
           $content = str_replace('</b>', '</emphasis>', $content );
+          $content = str_replace('&nbsp;', ' ', $content );
 
           $sectionContent = "<section>\n<title>".$section['title']."</title>\n$content\n</section>\n";
 
