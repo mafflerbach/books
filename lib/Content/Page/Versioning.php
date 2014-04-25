@@ -49,12 +49,14 @@
           $li3->appendElement('span', array('style' => 'color:darkblue'), str_replace("'", '', $splitLine[1]));
           $li3->appendElement('span', array('style' => 'color:darkred'), $splitLine[2]);
 
-          $li3->appendElement('a',
-            array('style' => 'color:darkbrown', 'href' => '#', 'data-bookId' => $book['id'], 'data-revert' => $splitLine[0]),
-            'revert to this version');
-
+          $revert = $li3->appendElement('a',
+            array('style' => 'color:darkbrown', 'href' => '#', 'data-bookId' => $book['id'], 'data-revert' => $splitLine[0]));
+          $revert->appendElement('span', array('class' => 'fa fa-share', 'title' => 'Revert to this Version'));
+          $compare = $li3->appendElement('a', array('class' => 'inactive', 'data-compare' => $splitLine[0], 'href' => "#"));
+          $compare->appendElement('span', array('class' => 'fa fa-compress', 'title' => 'Compare'));
           $li3->appendElement('br');
         }
+
       }
       print($ul->saveXML());
 
