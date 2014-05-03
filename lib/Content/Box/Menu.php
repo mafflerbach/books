@@ -53,9 +53,9 @@ class Menu {
 								</div>
 							</li>
 							<li class="fa fa-arrow-left">
-								<a href="#" data-page="media"><span class="fa fa-book"></span>Images</a>
+								<a href="#" data-page="media"><span class="fa fa-picture-o"></span>Images</a>
 								<div class="mp-level">
-									<h2><span class="fa fa-book"></span>Images</h2>
+									<h2><span class="fa fa-picture-o"></span>Images</h2>
 									<a class="mp-back" href="#">back</a>
 									<ul>
 										<li class="icon">

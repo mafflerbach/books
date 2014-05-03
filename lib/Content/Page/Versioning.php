@@ -46,8 +46,8 @@
         $li3 = $ul2->appendElement('li', array('class' => 'version'));
         for ($i = 0; $i < count($log); $i++) {
           $splitLine = explode('^', $log[$i]);
-          $li3->appendElement('span', array('style' => 'color:darkblue'), str_replace("'", '', $splitLine[1]));
-          $li3->appendElement('span', array('style' => 'color:darkred'), $splitLine[2]);
+          $li3->appendElement('span', array('style' => 'color:darkblue', 'class'=>'message'), str_replace("'", '', $splitLine[1]));
+          $li3->appendElement('span', array('style' => 'color:darkred', 'class'=>'date'), $splitLine[2]);
 
           $revert = $li3->appendElement('a',
             array('style' => 'color:darkbrown', 'href' => '#', 'data-bookId' => $book['id'], 'data-revert' => $splitLine[0]));

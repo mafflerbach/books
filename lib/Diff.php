@@ -21,8 +21,6 @@
       $test = explode('diff --git', $this->patch);
       $commit = array();
 
-
-
       for ($i = 1; $i < count($test); $i++) {
         $commit[] = array(
           'filename' => 'file' . $i,
@@ -149,7 +147,7 @@
         $output .= '<div>';
         $output .= '<div style="overflow: auto">';
         $ids = $this->parseIds($file['patch']);
-        $output .= '<div>Chapter: '.$this->getChapterTitle($ids['chapterId']) . ', Section: '.$this->getSectionTitle($ids['sectionId']).'</div>';
+        $output .= '<div class="header">Chapter: '.$this->getChapterTitle($ids['chapterId']) . ', Section: '.$this->getSectionTitle($ids['sectionId']).'</div>';
         $output .= $this->buildTable($file);
         $output .= '</div>';
         $output .= '</div>';

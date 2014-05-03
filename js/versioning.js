@@ -85,9 +85,12 @@ $(document).ready(function () {
 
     var parent = $(this).parent('li');
 
-    console.log(parent);
-
     $('a[data-compare].active')
+
+    if (parent.children('a[data-compare].active').length > 2 || parent.children('a[data-compare].active').length < 2) {
+      $('#compareoutput').empty();
+    }
+
 
     if (parent.children('a[data-compare].active').length == 2) {
 
