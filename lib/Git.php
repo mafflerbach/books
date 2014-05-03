@@ -53,7 +53,7 @@
     }
 
     public function diff($rev1, $rev2) {
-      $command = './gitWrapper.sh revert ' . $this->gitDir .' ' . $revision;
+      $command = './gitWrapper.sh diff ' . $this->gitDir .' ' . $rev1 .' '. $rev2;
       $output = shell_exec($command);
 
       return $output;

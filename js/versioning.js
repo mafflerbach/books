@@ -76,9 +76,41 @@ $(document).ready(function () {
       }
     });
   });
+
+
+  $('a[data-compare]').click(function (e) {
+    $(this).toggleClass('inactive');
+    $(this).toggleClass('active');
+
+
+    var parent = $(this).parent('li');
+
+    console.log(parent);
+
+    $('a[data-compare].active')
+
+    if (parent.children('a[data-compare].active').length == 2) {
+
+      var rev1 = $($('a[data-compare].active').get(0)).data('compare');
+      var rev2 = $($('a[data-compare].active').get(1)).data('compare');
+      var bookId = $($('a[data-compare].active').get(0)).data('bookid');
+
+      $.ajax({
+        url: "cmd.php",
+        type: "POST",
+        data: {
+          cmd: 'compare',
+          revisions: [rev1, rev2],
+          bookId: bookId
+        }
+      }).done(function (data) {
+        $('#compareoutput').empty();
+        $('#compareoutput').append(data);
+      });
+
+    }
+
+
+  })
+
 })
-;
-
-function commit() {
-
-}

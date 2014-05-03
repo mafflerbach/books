@@ -36,6 +36,9 @@ function parseNumStat($numstat) {
 }
 
 
+
+
+
   $test = explode('diff --git', $diff);
   $commit = array();
 
@@ -45,6 +48,9 @@ function parseNumStat($numstat) {
       'patch'    => $test[$i]
     );
   }
+
+
+
 
   function printLine($line) {
     $line = htmlspecialchars($line);

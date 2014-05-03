@@ -264,6 +264,32 @@
 
     }
 
+    if (isset($_POST['cmd']) && $_POST['cmd'] == 'compare') {
+      $revs = $_POST['revisions'];
+
+
+      $db = \Database\Adapter::getInstance();
+
+      $db->query('select * from user where id = :id', array(':id' => $_SESSION['user']));
+      $user = $db->fetch();
+
+      $bookId = $_POST['bookId'];
+      $db->query('select * from book where id=:id', array(':id' => $bookId));
+      $db->execute();
+      $bookResult = $db->fetch();
+      $bookName = str_replace(' ', '_', $bookResult[0]['title']);
+
+      $dir = 'tmp/' . $user[0]['hash'] . '/git/' . $bookName;
+
+      $git = new Git($dir);
+      $return = $git->diff($revs[0], $revs[1]);
+
+      $diff = new Diff($return);
+
+      print($diff->buildDiff());
+
+    }
+
     if (isset($_POST['cmd']) && $_POST['cmd'] == 'commit') {
 
       $bookId = $_POST['bookId'];

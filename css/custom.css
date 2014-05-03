@@ -400,3 +400,57 @@ span.hour:after {
   top: 6px;
   right: 10px;
 }
+
+pre {
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    padding: 0px;
+    margin: 2px;
+}
+
+.line-code span.remove {
+    background-color: rgba(0, 200, 0, 0.1);
+}
+
+.line-code span.add {
+    background-color: rgba(255, 0, 0, 0.15);
+}
+
+.parseDiff {
+    border: 1px solid lightgray;
+    margin: 5px;
+    background: #fcfff4; /* Old browsers */
+    background: -moz-linear-gradient(top, #fcfff4 0%, #e9e9ce 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfff4), color-stop(100%,#e9e9ce)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fcfff4 0%,#e9e9ce 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fcfff4 0%,#e9e9ce 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fcfff4 0%,#e9e9ce 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fcfff4 0%,#e9e9ce 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#e9e9ce',GradientType=0 ); /* IE6-9 */
+}
+
+#compareoutput {
+    float: right;
+    max-width: 1200px;
+}
+
+.filelist {
+    float: left;
+    max-width: 600px;
+}
+
+ul.filelist , ul.filelist ul {
+    padding: 0;
+}
+
+ul.filelist , ul.filelist ul {
+    padding-left: 10px;
+}
+
+ul.filelist li {
+    list-style: none;
+}
+

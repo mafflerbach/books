@@ -47,7 +47,7 @@ fi
 # $4 revision2
 # $5 output
 if [ "$1" = "diff" ]; then
-    git diff --word-diff -U0  --numstat --word-diff-regex=. $3 $4 > $5/patch
-    git diff --word-diff -U0  --numstat --word-diff-regex=. $3 $4 > $5/numstats
+    git diff --word-diff -U0 --word-diff-regex=. $3 $4
+    #git diff --word-diff -U0  --numstat --word-diff-regex=. $3 $4
 fi
 
